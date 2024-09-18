@@ -43,4 +43,14 @@ public partial class MainWindow : Window
         //     MessageBox.Show($"Failed to launch VR app: {ex.Message}");
         // }
     }
+
+    private void SetDimensions_Click(object sender, RoutedEventArgs e)
+    {
+        // Create an instance of the DimensionsWindow
+        SetDimensions dimensionsWindow = new SetDimensions();
+            
+        // Show the DimensionsWindow on top of the MainWindow
+        dimensionsWindow.Owner = this;  // Set MainWindow as the owner of the DimensionsWindow
+        dimensionsWindow.ShowDialog();  // Opens it as a modal dialog (blocks MainWindow until closed)
+    }
 }
