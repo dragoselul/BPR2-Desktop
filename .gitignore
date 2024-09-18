@@ -1,3 +1,5 @@
 /.idea
 /obj
 /bin/Debug
+/UnitTests/obj
+/UnitTests/bin/Debug
