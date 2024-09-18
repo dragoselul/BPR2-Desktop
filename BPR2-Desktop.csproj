@@ -30,6 +30,19 @@
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
       </Page>
+      <Page Remove="UnitTests\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="UnitTests\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="UnitTests\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="UnitTests\**" />
     </ItemGroup>
 
 </Project>
