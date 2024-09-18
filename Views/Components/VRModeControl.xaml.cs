@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace BPR2_Desktop.Components;
+namespace BPR2_Desktop.Views.Components;
 
 public partial class VRModeControl : UserControl
 {

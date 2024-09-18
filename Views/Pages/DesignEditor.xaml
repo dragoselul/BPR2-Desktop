@@ -1,0 +1,39 @@
+﻿<Page x:Class="BPR2_Desktop.Views.Pages.DesignEditor"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:components="clr-namespace:BPR2_Desktop.Views.Components"
+      mc:Ignorable="d"
+      Title="DesignEditor" Height="Auto" Width="Auto"
+      ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+      ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+    
+    <Grid Margin="0,0,0,24">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+            
+        <!-- Left side (Layout and settings) -->
+        <StackPanel Grid.Column="0" Margin="20">
+                
+            <!-- Use VRModeControl -->
+            <components:VRModeControl />
+
+            <!-- Use DesignCanvasControl -->
+            <components:DesignCanvasControl />
+
+            <!-- Set Dimensions and Save buttons -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                <ui:Button Appearance="Info" Content="Set dimensions" Margin="10" Click="SetDimensions_Click" />
+                <ui:Button Appearance="Info" Content="Save" Margin="10" />
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Right side (Assets) -->
+        <components:AssetsPanelControl Grid.Column="1" Margin="20"/>
+    </Grid>
+</Page>
