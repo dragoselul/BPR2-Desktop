@@ -45,6 +45,13 @@ public partial class SetDimensions : Window
                 string width = WidthTextBox.Text;
                 string length = LengthTextBox.Text;
                 string height = HeightTextBox.Text;
+                
+                // Check if any of the required fields are empty
+                if (string.IsNullOrWhiteSpace(width) || string.IsNullOrWhiteSpace(length) || string.IsNullOrWhiteSpace(height))
+                {
+                    MessageBox.Show("Please fill in all fields for Square dimensions (Width, Length, and Height).", "Input Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return; // Stop the method execution
+                }
 
                 dataToSave = new
                 {
@@ -58,6 +65,13 @@ public partial class SetDimensions : Window
             {
                 // Capture value for Wall Length
                 string wallLength = WallLengthTextBox.Text;
+                
+                // Check if the wall length field is empty
+                if (string.IsNullOrWhiteSpace(wallLength))
+                {
+                    MessageBox.Show("Please fill in the Wall Length field for the Complicated Shape.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return; // Stop the method execution
+                }
 
                 dataToSave = new
                 {
