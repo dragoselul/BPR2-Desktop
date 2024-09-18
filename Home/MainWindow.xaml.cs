@@ -21,6 +21,20 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+
+        // Loaded += (sender, args) =>
+        // {
+        //     Wpf.Ui.Appearance.SystemThemeWatcher.Watch(
+        //         this, // Window class
+        //         Wpf.Ui.Controls.WindowBackdropType.Auto, // Background type
+        //         true // Whether to change accents automatically
+        //     );
+        // };
+        // Wpf.Ui.Appearance.ApplicationThemeManager.Apply(
+        //     Wpf.Ui.Appearance.ApplicationTheme.Light, // Theme type
+        //     Wpf.Ui.Controls.WindowBackdropType.None,  // Background type
+        //     true                                      // Whether to change accents automatically
+        // );
     }
     
     private void SaveBlockData_Click(object sender, RoutedEventArgs e)
