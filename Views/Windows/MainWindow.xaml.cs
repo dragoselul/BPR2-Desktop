@@ -14,19 +14,14 @@ public partial class MainWindow : FluentWindow
     {
         InitializeComponent();
 
-        // Loaded += (sender, args) =>
-        // {
-        //     Wpf.Ui.Appearance.SystemThemeWatcher.Watch(
-        //         this, // Window class
-        //         Wpf.Ui.Controls.WindowBackdropType.Auto, // Background type
-        //         true // Whether to change accents automatically
-        //     );
-        // };
-        // Wpf.Ui.Appearance.ApplicationThemeManager.Apply(
-        //     Wpf.Ui.Appearance.ApplicationTheme.Light, // Theme type
-        //     Wpf.Ui.Controls.WindowBackdropType.None,  // Background type
-        //     true                                      // Whether to change accents automatically
-        // );
+        Loaded += (sender, args) =>
+        {
+            Wpf.Ui.Appearance.SystemThemeWatcher.Watch(
+                this, // Window class
+                Wpf.Ui.Controls.WindowBackdropType.Auto, // Background type
+                true // Whether to change accents automatically
+            );
+        };
     }
     
     private void OnNavigationSelectionChanged(object sender, RoutedEventArgs e)
