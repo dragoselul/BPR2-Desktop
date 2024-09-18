@@ -4,7 +4,7 @@
              Height="50" Width="150">
     <StackPanel Orientation="Horizontal">
         <TextBlock Text="VR Mode" VerticalAlignment="Center" Margin="10,0"/>
-        <ToggleButton Name="VRModeToggle" Width="50" Height="25" Background="Red" IsChecked="False" Click="ToggleVRMode">
+        <ToggleButton Name="VRModeToggle" Width="50" Height="25" Background="Red" IsChecked="False" Click="HandleVRButtonClick">
             <TextBlock Name="ToggleText" Text="OFF" HorizontalAlignment="Center" VerticalAlignment="Center" />
         </ToggleButton>
     </StackPanel>
