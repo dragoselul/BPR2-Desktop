@@ -1,10 +1,11 @@
-﻿using System.Net.Sockets;
+using System.Net.Sockets;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
-namespace BPR2_Desktop.Components;
+namespace BPR2_Desktop.Views.Components;
 
 public partial class VRModeControl : UserControl
 {
@@ -13,9 +14,8 @@ public partial class VRModeControl : UserControl
         InitializeComponent();
     }
 
-    private void HandleVRButtonClick(object sender, RoutedEventArgs e)
+    private void ToggleVRMode(object sender, RoutedEventArgs e)
     {
-        
         if (VRModeToggle.IsChecked == null)
         {
             return;
@@ -23,15 +23,11 @@ public partial class VRModeControl : UserControl
         if (VRModeToggle.IsChecked.Value)
         {
             VRModeToggle.Background = Brushes.Green;
-            ToggleText.Text = "ON";
         }
         else
         {
             VRModeToggle.Background = Brushes.Red;
-            ToggleText.Text = "OFF";
         }
-
-        
         SendMessageToUnity("spawn");
     }
 

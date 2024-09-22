@@ -2,10 +2,13 @@
 using System.IO;
 using System.Text.Json;
 using System.Windows.Controls;
+using Wpf.Ui.Controls;
+using MessageBox = System.Windows.MessageBox;
+using MessageBoxButton = System.Windows.MessageBoxButton;
 
-namespace BPR2_Desktop.Home;
+namespace BPR2_Desktop.Views.Windows;
 
-public partial class SetDimensions : Window
+public partial class SetDimensions : FluentWindow
 {
     public SetDimensions()
     {
