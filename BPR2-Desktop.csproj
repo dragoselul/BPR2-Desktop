@@ -35,6 +35,11 @@
       <Page Update="Views\Components\VRModeControl.xaml">
         <Generator>MSBuild:Compile</Generator>
       </Page>
+      <Page Update="Views\Windows\InputDialog.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
     </ItemGroup>
 
     <ItemGroup>

@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.IO;
+using System.Text.Json;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -10,16 +13,99 @@ namespace BPR2_Desktop.Views.Components
     {
         private UIElement draggedElement;
         private Point lastPosition;
+        private int squareCounter = 1;
+        private int polygonCounter = 1;
 
         public DesignCanvasControl()
         {
             InitializeComponent();
         }
+        
+        
+        public void LoadDesignFromFile(string filePath)
+        {
+            
+            if (DesignCanvas == null)
+            {
+                MessageBox.Show("Canvas not initialized.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            DesignCanvas.Children.Clear();
+
+            string json = File.ReadAllText(filePath);
+            var elementPositions = JsonSerializer.Deserialize<List<ElementPosition>>(json);
+
+            foreach (var elementPosition in elementPositions)
+            {
+                Image newElement = new Image
+                {
+                    Width = 100,
+                    Height = 100,
+                    Stretch = Stretch.Uniform
+                };
+
+                if (elementPosition.ElementName.StartsWith("Square"))
+                {
+                    newElement.Source = new BitmapImage(new Uri("pack://application:,,,/Pictures/square.png"));
+                    newElement.Name = $"Square{squareCounter++}";
+                }
+                else if (elementPosition.ElementName.StartsWith("Polygon"))
+                {
+                    newElement.Source = new BitmapImage(new Uri("pack://application:,,,/Pictures/polygon.png"));
+                    newElement.Name = $"Polygon{polygonCounter++}";
+                }
+
+                Canvas.SetLeft(newElement, elementPosition.X);
+                Canvas.SetTop(newElement, elementPosition.Y);
+
+                // Attach events to allow the element to be moved within the canvas
+                newElement.MouseLeftButtonDown += Element_MouseLeftButtonDown;
+                newElement.MouseMove += Element_MouseMove;
+                newElement.MouseLeftButtonUp += Element_MouseLeftButtonUp;
+
+                // Add the element to the canvas
+                DesignCanvas.Children.Add(newElement);
+            }
+        }
+        
+        public void SaveElementPositionsToFile(string filePath)
+        {
+            var elementPositions = new List<ElementPosition>();
+
+            foreach (UIElement element in DesignCanvas.Children)
+            {
+                double left = Canvas.GetLeft(element);
+                double top = Canvas.GetTop(element);
+
+                if (double.IsNaN(left)) left = 0;
+                if (double.IsNaN(top)) top = 0;
+
+                string elementName = (element as FrameworkElement)?.Name ?? "UnnamedElement";
+
+                elementPositions.Add(new ElementPosition
+                {
+                    ElementName = elementName,
+                    X = left,
+                    Y = top
+                });
+            }
+
+            string json = JsonSerializer.Serialize(elementPositions, new JsonSerializerOptions { WriteIndented = true });
+
+            File.WriteAllText(filePath, json);
+        }
+
+        
+        public class ElementPosition
+        {
+            public string ElementName { get; set; }
+            public double X { get; set; }
+            public double Y { get; set; }
+        }
 
         // Handles the drop event when a new asset is dragged onto the canvas
         private void Canvas_Drop(object sender, DragEventArgs e)
         {
-            // Get the dropped data (either "Square" or "Polygon")
             if (e.Data.GetDataPresent(DataFormats.StringFormat))
             {
                 string assetType = e.Data.GetData(DataFormats.StringFormat) as string;
@@ -34,15 +120,15 @@ namespace BPR2_Desktop.Views.Components
 
                 if (assetType == "Square")
                 {
-                    // Set the image source to the square image
                     newElement.Source = new BitmapImage(new Uri("pack://application:,,,/Pictures/square.png"));
                     newElement.Height = 40;
+                    newElement.Name = $"Square{squareCounter++}";
                 }
                 else if (assetType == "Polygon")
                 {
-                    // Set the image source to the polygon image
                     newElement.Source = new BitmapImage(new Uri("pack://application:,,,/Pictures/polygon.png"));
                     newElement.Height = 90;
+                    newElement.Name = $"Polygon{polygonCounter++}";
                 }
 
                 if (newElement != null)
