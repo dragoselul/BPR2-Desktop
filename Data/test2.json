@@ -1,7 +1,19 @@
-[
-  {
-    "ElementName": "Polygon1",
-    "X": 243.375,
-    "Y": 139
-  }
-]
+{
+  "dimensions": {
+    "X": 2,
+    "Z": 4,
+    "Y": 4
+  },
+  "elements": [
+    {
+      "ElementName": "Polygon1",
+      "X": 56.375,
+      "Y": 177
+    },
+    {
+      "ElementName": "Square1",
+      "X": 38,
+      "Y": 0
+    }
+  ]
+}

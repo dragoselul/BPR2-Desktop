@@ -2,6 +2,8 @@
 using System.IO;
 using System.Text.Json;
 using System.Windows.Controls;
+using BPR2_Desktop.Views.Components;
+using BPR2_Desktop.Views.Pages;
 using Wpf.Ui.Controls;
 using MessageBox = System.Windows.MessageBox;
 using MessageBoxButton = System.Windows.MessageBoxButton;
@@ -10,9 +12,15 @@ namespace BPR2_Desktop.Views.Windows;
 
 public partial class SetDimensions : FluentWindow
 {
-    public SetDimensions()
+    private readonly DesignCanvasControl _designCanvasControl;  // Reference to the design canvas control
+    private readonly DesignEditor _designEditor;  // Reference to DesignEditor
+    public SetDimensions(DesignCanvasControl designCanvasControl, DesignEditor designEditor)
     {
         InitializeComponent();
+        _designCanvasControl = designCanvasControl;  // Store the reference
+        _designEditor = designEditor;
+
+        // Initially hide both grids
         SquareDimensionsGrid.Visibility = Visibility.Collapsed;
         ComplicatedShapeGrid.Visibility = Visibility.Collapsed;
     }
@@ -36,88 +44,44 @@ public partial class SetDimensions : FluentWindow
     }
 
     private void Save_Click(object sender, RoutedEventArgs e)
+    {
+        var selectedShape = (ShapeComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+
+        if (selectedShape == "Square")
         {
-            var selectedShape = (ShapeComboBox.SelectedItem as System.Windows.Controls.ComboBoxItem)?.Content.ToString();
-
-            // Prepare the data object to save
-            object dataToSave;
-
-            if (selectedShape == "Square")
+            if (double.TryParse(WidthTextBox.Text, out double width) && double.TryParse(LengthTextBox.Text, out double length) && double.TryParse(LengthTextBox.Text, out double height))
             {
-                // Capture values for Square
-                string width = WidthTextBox.Text;
-                string length = LengthTextBox.Text;
-                string height = HeightTextBox.Text;
-                
-                // Check if any of the required fields are empty
-                if (string.IsNullOrWhiteSpace(width) || string.IsNullOrWhiteSpace(length) || string.IsNullOrWhiteSpace(height))
-                {
-                    MessageBox.Show("Please fill in all fields for Square dimensions (Width, Length, and Height).", "Input Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return; // Stop the method execution
-                }
-
-                dataToSave = new
-                {
-                    Shape = "Square",
-                    Width = width,
-                    Length = length,
-                    Height = height
-                };
-            }
-            else if (selectedShape == "Complicated Shape")
-            {
-                // Capture value for Wall Length
-                string wallLength = WallLengthTextBox.Text;
-                
-                // Check if the wall length field is empty
-                if (string.IsNullOrWhiteSpace(wallLength))
-                {
-                    MessageBox.Show("Please fill in the Wall Length field for the Complicated Shape.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return; // Stop the method execution
-                }
-
-                dataToSave = new
-                {
-                    Shape = "Complicated Shape",
-                    WallLength = wallLength
-                };
+                // Update the canvas in DesignEditor and pass the dimensions
+                _designEditor.DesignCanvasControl.UpdateDesignCanvas("Square", width, length);
+                _designEditor.UpdateDimensions(width, length, height);  // Store dimensions in DesignEditor
             }
             else
             {
-                MessageBox.Show("Please select a shape.");
+                MessageBox.Show("Please enter valid numeric values for width and length.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-
-            // Serialize the data to JSON and write to a file
-            string jsonString = JsonSerializer.Serialize(dataToSave, new JsonSerializerOptions { WriteIndented = true });
-            
-            // Get the path to the project's root directory
-            string projectDirectory = Directory.GetCurrentDirectory();
-            
-            // Define the path to the data folder
-            string dataDirectory = Path.Combine(projectDirectory, "Data");
-            
-            // Create the data directory if it doesn't exist
-            if (!Directory.Exists(dataDirectory))
+        }
+        else if (selectedShape == "Complicated Shape")
+        {
+            if (double.TryParse(WallLengthTextBox.Text, out double wallLength))
             {
-                Directory.CreateDirectory(dataDirectory);
+                // Update the canvas in DesignEditor and pass the dimensions
+                _designEditor.DesignCanvasControl.UpdateDesignCanvas("Complicated Shape", wallLength, wallLength);
+                _designEditor.UpdateDimensions(wallLength, wallLength, wallLength);  // Store dimensions in DesignEditor
             }
-
-            // Specify the file path (you can change the path as needed)
-            string filePath = Path.Combine(dataDirectory, "dimensions.json");
-
-            try
+            else
             {
-                File.WriteAllText(filePath, jsonString);
-                MessageBox.Show($"Data saved successfully to {filePath}");
-                this.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Failed to save data: {ex.Message}");
-                this.Close();
+                MessageBox.Show("Please enter a valid numeric value for wall length.", "Input Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
         }
+
+        this.Close();  // Close the SetDimensions window
+    }
+    
+
+
+
 
     private void Cancel_Click(object sender, RoutedEventArgs e)
     {
