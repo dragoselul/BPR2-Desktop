@@ -24,12 +24,13 @@
             <components:VRModeControl />
 
             <!-- Use DesignCanvasControl -->
-            <components:DesignCanvasControl />
+            <components:DesignCanvasControl x:Name="DesignCanvasControl" />
 
             <!-- Set Dimensions and Save buttons -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
                 <ui:Button Appearance="Info" Content="Set dimensions" Margin="10" Click="SetDimensions_Click" />
-                <ui:Button Appearance="Info" Content="Save" Margin="10" />
+                <ui:Button Appearance="Info" Content="Save" Margin="10" Click="Save_Click" />
+                <ui:Button Appearance="Info" Content="Load Design" Margin="10" Click="LoadDesign_Click" />
             </StackPanel>
         </StackPanel>
 
