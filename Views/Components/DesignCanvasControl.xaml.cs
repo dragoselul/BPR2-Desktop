@@ -35,6 +35,11 @@ namespace BPR2_Desktop.Views.Components
             string json = File.ReadAllText(filePath);
             var elementPositions = JsonSerializer.Deserialize<List<ElementPosition>>(json);
 
+            if(elementPositions == null)
+            {
+                MessageBox.Show("Invalid file format or empty file.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             foreach (var elementPosition in elementPositions)
             {
                 Image newElement = new Image
@@ -82,7 +87,7 @@ namespace BPR2_Desktop.Views.Components
 
                 string elementName = (element as FrameworkElement)?.Name ?? "UnnamedElement";
 
-                elementPositions.Add(new ElementPosition
+                elementPositions.Add(new ElementPosition(elementName)
                 {
                     ElementName = elementName,
                     X = left,
@@ -98,9 +103,14 @@ namespace BPR2_Desktop.Views.Components
         
         public class ElementPosition
         {
-            public string ElementName { get; set; }
-            public double X { get; set; }
-            public double Y { get; set; }
+            public ElementPosition(string elementName)
+            {
+                ElementName = elementName;
+            }
+
+            public string ElementName { get; init; }
+            public double X { get; init; }
+            public double Y { get; init; }
         }
 
         // Handles the drop event when a new asset is dragged onto the canvas
