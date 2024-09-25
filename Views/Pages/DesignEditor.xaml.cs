@@ -9,7 +9,6 @@ namespace BPR2_Desktop.Views.Pages;
 
 public partial class DesignEditor : Page
 {
-    private string currentDesignFile = null; // To track the loaded design file
     
     public DesignEditor()
     {
@@ -22,9 +21,9 @@ public partial class DesignEditor : Page
         if (designCanvasControl != null)
         {
             // If a design is loaded, update the existing file
-            if (currentDesignFile != null)
+            if (AppState.Instance.CurrentDesignFile != null)
             {
-                designCanvasControl.SaveElementPositionsToFile(currentDesignFile);
+                designCanvasControl.SaveElementPositionsToFile(AppState.Instance.CurrentDesignFile);
             }
             else
             {
@@ -45,13 +44,16 @@ public partial class DesignEditor : Page
                     string filePath = Path.Combine(dataDirectory, $"{designName}.json");
                     designCanvasControl.SaveElementPositionsToFile(filePath);
 
-                    currentDesignFile = filePath;
+                    // Store the file path in AppState for access across files
+                    AppState.Instance.CurrentDesignFile = filePath;
 
                     MessageBox.Show($"Design saved as {designName}.json", "Save Complete", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
         }
     }
+
+
     
     private void SetDimensions_Click(object sender, RoutedEventArgs e)
     {
@@ -66,12 +68,13 @@ public partial class DesignEditor : Page
 
         dimensionsWindow.ShowDialog();  
     }
-    
+
+
     private void LoadDesign_Click(object sender, RoutedEventArgs e)
     {
         string projectDirectory = Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName).FullName;
         string dataDirectory = Path.Combine(projectDirectory, "Data");
-        
+
         if (!Directory.Exists(dataDirectory))
         {
             MessageBox.Show("Data folder does not exist.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -101,7 +104,9 @@ public partial class DesignEditor : Page
             if (designCanvasControl != null)
             {
                 designCanvasControl.LoadDesignFromFile(selectedFile);
-                currentDesignFile = selectedFile;
+
+                // Update the current design file in AppState
+                AppState.Instance.CurrentDesignFile = selectedFile;
             }
         }
     }
