@@ -3,9 +3,32 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              Height="400" Width="400"
              AllowDrop="True" Drop="Canvas_Drop" DragOver="Canvas_DragOver">
-    <Border BorderBrush="Gray" BorderThickness="0" Background="Transparent">
-        <Canvas x:Name="DesignCanvas" Width="400" Height="400" Background="#FFFACD">
-            <!-- Placeholder for dragged items -->
-        </Canvas>
-    </Border>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="0" Margin="10">
+            <Button Content="Zoom In" Width="100" Height="30" Click="ZoomIn_Click"/>
+            <Button Content="Zoom Out" Width="100" Height="30" Margin="10,0,0,0" Click="ZoomOut_Click"/>
+        </StackPanel>
+
+        <ScrollViewer x:Name="scrollViewer" Grid.Row="1"
+                      HorizontalScrollBarVisibility="Auto" 
+                      VerticalScrollBarVisibility="Auto"
+                      >
+            <Border BorderBrush="Gray" BorderThickness="0" Background="Transparent">
+                <Canvas x:Name="DesignCanvas" Width="400" Height="400" Background="#FFFACD"
+                        MouseDown="Canvas_MouseDown"
+                        MouseMove="Canvas_MouseMove"
+                        MouseUp="Canvas_MouseUp">
+                    <Canvas.LayoutTransform>
+                        <ScaleTransform x:Name="scaleTransform" ScaleX="1" ScaleY="1" />
+                    </Canvas.LayoutTransform>
+                </Canvas>
+            </Border>
+        </ScrollViewer>
+    </Grid>
 </UserControl>

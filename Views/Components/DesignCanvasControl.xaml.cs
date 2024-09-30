@@ -18,10 +18,15 @@ namespace BPR2_Desktop.Views.Components
         private Point lastPosition;
         private int squareCounter = 1;
         private int polygonCounter = 1;
+        
+        private Point? _lastDragPoint;
+        private double _zoom = 1.0;
+        private const double ZoomFactor = 0.1;
 
         public DesignCanvasControl()
         {
             InitializeComponent();
+            this.MouseWheel += OnMouseWheelZoom;
         }
 
 
@@ -55,14 +60,10 @@ namespace BPR2_Desktop.Views.Components
 
                 // Clear existing elements from the canvas
                 DesignCanvas.Children.Clear();
-                System.Diagnostics.Debug.WriteLine(
-                    $"Dimensions: {designData.dimensions.width}x{designData.dimensions.length}");
 
                 // Recreate the elements on the canvas using images
                 foreach (var element in designData.elements)
                 {
-                    System.Diagnostics.Debug.WriteLine(
-                        $"Element: {element.ElementName}, X: {element.X}, Y: {element.Z}");
 
                     Image newElement = null;
 
@@ -217,9 +218,6 @@ namespace BPR2_Desktop.Views.Components
 
                 string elementName = (element as FrameworkElement)?.Name ?? "UnnamedElement";
 
-                System.Diagnostics.Debug.WriteLine($"Saving element: {elementName}, X: {left}, Y: {top}");
-
-
                 elementPositions.Add(new ElementPosition(elementName)
                 {
                     ElementName = elementName,
@@ -296,18 +294,97 @@ namespace BPR2_Desktop.Views.Components
             }
         }
 
+        private void OnMouseWheelZoom(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Delta > 0)
+            {
+                _zoom += ZoomFactor;
+            }
+            else if (_zoom > ZoomFactor)
+            {
+                _zoom -= ZoomFactor;
+            }
+
+            ApplyZoom();
+            e.Handled = true;
+        }
+        
+        private void ZoomIn_Click(object sender, RoutedEventArgs e)
+        {
+            _zoom += ZoomFactor;
+            ApplyZoom();
+        }
+
+        // Zoom out button click event handler
+        private void ZoomOut_Click(object sender, RoutedEventArgs e)
+        {
+            if (_zoom > ZoomFactor)
+            {
+                _zoom -= ZoomFactor;
+            }
+            ApplyZoom();
+        }
+
+        private void ApplyZoom()
+        {
+            scaleTransform.ScaleX = _zoom;
+            scaleTransform.ScaleY = _zoom;
+        }
+        
+        // Handle dragging start
+        private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.OriginalSource == DesignCanvas)
+            {
+                _lastDragPoint = e.GetPosition(scrollViewer);
+                Mouse.Capture(DesignCanvas);
+            }
+        }
+        
+        // Handle dragging movement
+        private void Canvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_lastDragPoint.HasValue)
+            {
+                Point currentPos = e.GetPosition(scrollViewer);
+                double deltaX = currentPos.X - _lastDragPoint.Value.X;
+                double deltaY = currentPos.Y - _lastDragPoint.Value.Y;
+                
+                Debug.WriteLine($"currentPos: {currentPos}, deltaX: {deltaX}, deltaY: {deltaY}");
+
+
+                scrollViewer.ScrollToHorizontalOffset(scrollViewer.HorizontalOffset - deltaX);
+                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - deltaY);
+                
+                Debug.WriteLine($"Before Scroll: Horizontal={scrollViewer.HorizontalOffset}, Vertical={scrollViewer.VerticalOffset}");
+
+                _lastDragPoint = currentPos;
+            }
+        }
+
+        
+
+        // Handle drag stop
+        private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (_lastDragPoint.HasValue)
+            {
+                Mouse.Capture(null);  // Release the mouse capture
+                _lastDragPoint = null;
+            }
+        }
+
         public void UpdateDesignCanvas(string shape, double widthInMeters, double lengthInMeters)
         {
             double scaleFactor = 100; // Assume 1 meter = 100 pixels
             double scaledWidth = widthInMeters * scaleFactor;
             double scaledLength = lengthInMeters * scaleFactor;
 
-            DesignCanvas.Width = Math.Min(scaledWidth, 400); // Keep within 400x400 bounds
-            DesignCanvas.Height = Math.Min(scaledLength, 400);
+            DesignCanvas.Width = scaledWidth;
+            DesignCanvas.Height = scaledLength;
 
             // Clear any existing children before adding visualizations
             DesignCanvas.Children.Clear();
-
 
             // Optional: Draw a border or indicator for the updated dimensions
             Rectangle border = new Rectangle
