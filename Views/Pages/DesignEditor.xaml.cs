@@ -39,10 +39,10 @@ public partial class DesignEditor : Page
 
         if (designCanvasControl != null)
         {
-            // If a design is already loaded, update the existing file
-            if (currentDesignFile != null)
+            // If a design is loaded, update the existing file
+            if (AppState.Instance.CurrentDesignFile != null)
             {
-                SaveDesignToFile(currentDesignFile, designCanvasControl);
+                SaveDesignToFile(AppState.Instance.CurrentDesignFile, designCanvasControl);
             }
             else
             {
@@ -66,8 +66,13 @@ public partial class DesignEditor : Page
                     // Define the file path
                     string filePath = Path.Combine(dataDirectory, $"{designName}.json");
 
+
+                    // Store the file path in AppState for access across files
+                    AppState.Instance.CurrentDesignFile = filePath;
+
                     // Save the design to the new file
                     SaveDesignToFile(filePath, designCanvasControl);
+
 
                     currentDesignFile = filePath; // Update the current design file
 
@@ -77,6 +82,7 @@ public partial class DesignEditor : Page
             }
         }
     }
+
 
     private void SaveDesignToFile(string filePath, DesignCanvasControl designCanvasControl)
     {
@@ -121,7 +127,6 @@ public partial class DesignEditor : Page
         }
     }
 
-
     private void SetDimensions_Click(object sender, RoutedEventArgs e)
     {
         var setDimensionsWindow = new SetDimensions(DesignCanvasControl, this);
@@ -134,13 +139,13 @@ public partial class DesignEditor : Page
 
         setDimensionsWindow.ShowDialog(); // Show the SetDimensions window
     }
-
+    
     private void LoadDesign_Click(object sender, RoutedEventArgs e)
     {
         string projectDirectory =
             Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName).FullName;
         string dataDirectory = Path.Combine(projectDirectory, "Data");
-
+        
         if (!Directory.Exists(dataDirectory))
         {
             MessageBox.Show("Data folder does not exist.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -169,8 +174,8 @@ public partial class DesignEditor : Page
             var designCanvasControl = FindName("DesignCanvasControl") as DesignCanvasControl;
             if (designCanvasControl != null)
             {
-                designCanvasControl.LoadDesignFromFile(selectedFile, this);
-                currentDesignFile = selectedFile;
+                designCanvasControl.LoadDesignFromFile(selectedFile,this);
+                AppState.Instance.CurrentDesignFile = selectedFile;
             }
         }
     }
