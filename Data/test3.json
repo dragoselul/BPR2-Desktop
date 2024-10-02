@@ -6,9 +6,14 @@
   },
   "ElementPositions": [
     {
-      "ElementName": "",
-      "X": 0,
-      "Y": 0
+      "ElementName": "Polygon2",
+      "X": 263.375,
+      "Z": 231
+    },
+    {
+      "ElementName": "Square2",
+      "X": 2.375,
+      "Z": 95
     }
   ]
 }

@@ -4,16 +4,16 @@
     "Z": 4,
     "Y": 4
   },
-  "elements": [
+  "ElementPositions": [
     {
       "ElementName": "Polygon1",
-      "X": 56.375,
-      "Y": 177
+      "X": 77.375,
+      "Z": 223
     },
     {
       "ElementName": "Square1",
-      "X": 38,
-      "Y": 0
+      "X": 54.375,
+      "Z": 58
     }
   ]
 }

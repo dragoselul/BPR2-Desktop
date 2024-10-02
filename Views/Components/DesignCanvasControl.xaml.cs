@@ -39,6 +39,12 @@ namespace BPR2_Desktop.Views.Components
 
                 // Deserialize the JSON into a DesignData object
                 var designData = JsonSerializer.Deserialize<DesignData>(jsonString);
+                
+                // Null check for designData
+                if (designData == null)
+                {
+                    throw new Exception("Failed to load design data. The file is empty or formatted incorrectly.");
+                }
 
                 // Check for dimensions and apply them to the canvas
                 if (designData.dimensions != null)
@@ -60,6 +66,7 @@ namespace BPR2_Desktop.Views.Components
 
                 // Clear existing elements from the canvas
                 DesignCanvas.Children.Clear();
+
 
                 // Recreate the elements on the canvas using images
                 foreach (var element in designData.elements)
@@ -119,6 +126,7 @@ namespace BPR2_Desktop.Views.Components
         public class DesignData
         {
             public Dimensions dimensions { get; set; }
+            [JsonPropertyName("ElementPositions")]
             public List<ElementPosition> elements { get; set; }
         }
 
@@ -142,7 +150,7 @@ namespace BPR2_Desktop.Views.Components
 
             [JsonPropertyName("ElementName")] public string ElementName { get; init; }
             [JsonPropertyName("X")] public double X { get; init; }
-            [JsonPropertyName("Y")] public double Z { get; init; }
+            [JsonPropertyName("Z")] public double Z { get; init; }
         }
 
         // Handles the drop event when a new asset is dragged onto the canvas

@@ -4,21 +4,21 @@
     "Z": 23,
     "Y": 23
   },
-  "elements": [
+  "ElementPositions": [
     {
       "ElementName": "Polygon1",
-      "X": 224.375,
-      "Y": 197
+      "X": 240.375,
+      "Z": 92
     },
     {
       "ElementName": "Square1",
       "X": 140.375,
-      "Y": 35
+      "Z": 0
     },
     {
       "ElementName": "Polygon2",
-      "X": 83.375,
-      "Y": 92
+      "X": 76.375,
+      "Z": 91
     }
   ]
 }
