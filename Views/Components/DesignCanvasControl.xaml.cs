@@ -384,12 +384,8 @@ namespace BPR2_Desktop.Views.Components
 
         public void UpdateDesignCanvas(string shape, double widthInMeters, double lengthInMeters)
         {
-            double scaleFactor = 100; // Assume 1 meter = 100 pixels
-            double scaledWidth = widthInMeters * scaleFactor;
-            double scaledLength = lengthInMeters * scaleFactor;
-
-            DesignCanvas.Width = scaledWidth;
-            DesignCanvas.Height = scaledLength;
+            DesignCanvas.Width = widthInMeters;
+            DesignCanvas.Height = lengthInMeters;
 
             // Clear any existing children before adding visualizations
             DesignCanvas.Children.Clear();

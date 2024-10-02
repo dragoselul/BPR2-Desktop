@@ -51,6 +51,10 @@ public partial class SetDimensions : FluentWindow
         {
             if (double.TryParse(WidthTextBox.Text, out double width) && double.TryParse(LengthTextBox.Text, out double length) && double.TryParse(LengthTextBox.Text, out double height))
             {
+                width *= 100;  // Convert to px
+                length *= 100;  // Convert to px
+                height *= 100;  // Convert to px
+                
                 // Update the canvas in DesignEditor and pass the dimensions
                 _designEditor.DesignCanvasControl.UpdateDesignCanvas("Square", width, length);
                 _designEditor.UpdateDimensions(width, length, height);  // Store dimensions in DesignEditor

@@ -1,8 +1,8 @@
 {
   "dimensions": {
-    "X": 2,
-    "Z": 4,
-    "Y": 4
+    "X": 200,
+    "Z": 400,
+    "Y": 400
   },
   "ElementPositions": [
     {
