@@ -28,7 +28,7 @@
         <!-- Form Layout Grid for Square Dimensions -->
         <Grid x:Name="SquareDimensionsGrid" Grid.Row="2" Grid.Column="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="50"/>
             </Grid.ColumnDefinitions>
@@ -37,13 +37,13 @@
                 <RowDefinition Height="55" />
                 <RowDefinition Height="55" />
             </Grid.RowDefinitions>
-            <ui:TextBlock Grid.Row="0" Grid.Column="0" Text="Width" Height="Auto" Margin="10" 
+            <ui:TextBlock Grid.Row="0" Grid.Column="0" Text="Width (meters)" Height="Auto" Margin="10" 
                        HorizontalAlignment="Left" VerticalAlignment="Center" />
             <ui:TextBox x:Name="WidthTextBox" Grid.Row="0" Grid.Column="1" Margin="10" Width="250" />
-            <ui:TextBlock Grid.Row="1" Grid.Column="0" Text="Length" Height="Auto" Margin="10" 
+            <ui:TextBlock Grid.Row="1" Grid.Column="0" Text="Length (meters)" Height="Auto" Margin="10" 
                        HorizontalAlignment="Left" VerticalAlignment="Center" />
             <ui:TextBox x:Name="LengthTextBox" Grid.Row="1" Grid.Column="1" Margin="10" />
-            <ui:TextBlock Grid.Row="2" Grid.Column="0" Text="Height" Height="Auto" Margin="10" 
+            <ui:TextBlock Grid.Row="2" Grid.Column="0" Text="Height (meters)" Height="Auto" Margin="10" 
                        HorizontalAlignment="Left" VerticalAlignment="Center" />
             <ui:TextBox x:Name="HeightTextBox" Grid.Row="2" Grid.Column="1" Height="Auto" Margin="10" />
         </Grid>
@@ -57,7 +57,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
-            <ui:TextBlock Grid.Row="0" Grid.Column="0" Text="Wall Length" Margin="10" 
+            <ui:TextBlock Grid.Row="0" Grid.Column="0" Text="Wall Length (meters)" Margin="10" 
                        HorizontalAlignment="Left" VerticalAlignment="Center" />
             <ui:TextBox x:Name="WallLengthTextBox" Grid.Row="0" Grid.Column="1" Margin="10" Width="250"/>
         </Grid>
