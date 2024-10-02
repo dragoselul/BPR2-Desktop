@@ -1,11 +1,14 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using BPR2_Desktop.Views.Pages;
 
 namespace BPR2_Desktop.Views.Components
 {
@@ -15,92 +18,129 @@ namespace BPR2_Desktop.Views.Components
         private Point lastPosition;
         private int squareCounter = 1;
         private int polygonCounter = 1;
+        
+        private Point? _lastDragPoint;
+        private double _zoom = 1.0;
+        private const double ZoomFactor = 0.1;
 
         public DesignCanvasControl()
         {
             InitializeComponent();
+            this.MouseWheel += OnMouseWheelZoom;
         }
-        
-        
-        public void LoadDesignFromFile(string filePath)
+
+
+        public void LoadDesignFromFile(string filePath, DesignEditor designEditor)
         {
-            
-            if (DesignCanvas == null)
+            try
             {
-                MessageBox.Show("Canvas not initialized.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            DesignCanvas.Children.Clear();
+                // Read the JSON file content
+                var jsonString = File.ReadAllText(filePath);
 
-            string json = File.ReadAllText(filePath);
-            var elementPositions = JsonSerializer.Deserialize<List<ElementPosition>>(json);
-
-            if(elementPositions == null)
-            {
-                MessageBox.Show("Invalid file format or empty file.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            foreach (var elementPosition in elementPositions)
-            {
-                Image newElement = new Image
+                // Deserialize the JSON into a DesignData object
+                var designData = JsonSerializer.Deserialize<DesignData>(jsonString);
+                
+                // Null check for designData
+                if (designData == null)
                 {
-                    Width = 100,
-                    Height = 100,
-                    Stretch = Stretch.Uniform
-                };
-
-                if (elementPosition.ElementName.StartsWith("Square"))
-                {
-                    newElement.Source = new BitmapImage(new Uri("pack://application:,,,/Pictures/square.png"));
-                    newElement.Name = $"Square{squareCounter++}";
-                }
-                else if (elementPosition.ElementName.StartsWith("Polygon"))
-                {
-                    newElement.Source = new BitmapImage(new Uri("pack://application:,,,/Pictures/polygon.png"));
-                    newElement.Name = $"Polygon{polygonCounter++}";
+                    throw new Exception("Failed to load design data. The file is empty or formatted incorrectly.");
                 }
 
-                Canvas.SetLeft(newElement, elementPosition.X);
-                Canvas.SetTop(newElement, elementPosition.Y);
-
-                // Attach events to allow the element to be moved within the canvas
-                newElement.MouseLeftButtonDown += Element_MouseLeftButtonDown;
-                newElement.MouseMove += Element_MouseMove;
-                newElement.MouseLeftButtonUp += Element_MouseLeftButtonUp;
-
-                // Add the element to the canvas
-                DesignCanvas.Children.Add(newElement);
-            }
-        }
-        
-        public void SaveElementPositionsToFile(string filePath)
-        {
-            var elementPositions = new List<ElementPosition>();
-
-            foreach (UIElement element in DesignCanvas.Children)
-            {
-                double left = Canvas.GetLeft(element);
-                double top = Canvas.GetTop(element);
-
-                if (double.IsNaN(left)) left = 0;
-                if (double.IsNaN(top)) top = 0;
-
-                string elementName = (element as FrameworkElement)?.Name ?? "UnnamedElement";
-
-                elementPositions.Add(new ElementPosition(elementName)
+                // Check for dimensions and apply them to the canvas
+                if (designData.dimensions != null)
                 {
-                    ElementName = elementName,
-                    X = left,
-                    Y = top
-                });
+                    double width = designData.dimensions.width;
+                    double length = designData.dimensions.length;
+                    double height = designData.dimensions.height;
+
+                    // Update the canvas dimensions or shape
+                    UpdateDesignCanvas("Loaded Design", width, length);
+
+                    // Update the dimensions in the DesignEditor
+                    designEditor.UpdateDimensions(width, length, height);
+                }
+                else
+                {
+                    throw new Exception("Dimensions not found or incorrectly formatted in the file.");
+                }
+
+                // Clear existing elements from the canvas
+                DesignCanvas.Children.Clear();
+
+
+                // Recreate the elements on the canvas using images
+                foreach (var element in designData.elements)
+                {
+
+                    Image newElement = null;
+
+                    if (element.ElementName.Contains("Square"))
+                    {
+                        // Use the image for the rectangle (e.g., square.png)
+                        newElement = new Image
+                        {
+                            Source = new BitmapImage(new Uri("pack://application:,,,/Pictures/square.png")),
+                            Width = 100,
+                            Height = 40
+                        };
+                        // Set the name for the element
+                        newElement.Name = element.ElementName;
+                    }
+                    else if (element.ElementName.Contains("Polygon"))
+                    {
+                        // Use the image for the polygon (e.g., polygon.png)
+                        newElement = new Image
+                        {
+                            Source = new BitmapImage(new Uri("pack://application:,,,/Pictures/polygon.png")),
+                            Width = 100,
+                            Height = 90
+                        };
+                        // Set the name for the element
+                        newElement.Name = element.ElementName;
+                    }
+
+                    if (newElement != null)
+                    {
+                        // Set position of the element
+                        Canvas.SetLeft(newElement, element.X);
+                        Canvas.SetTop(newElement, element.Z);
+
+                        // Attach the drag event handlers
+                        newElement.MouseLeftButtonDown += Element_MouseLeftButtonDown;
+                        newElement.MouseMove += Element_MouseMove;
+                        newElement.MouseLeftButtonUp += Element_MouseLeftButtonUp;
+
+                        // Add the element to the canvas
+                        DesignCanvas.Children.Add(newElement);
+                    }
+                }
             }
-
-            string json = JsonSerializer.Serialize(elementPositions, new JsonSerializerOptions { WriteIndented = true });
-
-            File.WriteAllText(filePath, json);
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading design: {ex.Message}", "Error", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
         }
 
-        
+
+        public class DesignData
+        {
+            public Dimensions dimensions { get; set; }
+            [JsonPropertyName("ElementPositions")]
+            public List<ElementPosition> elements { get; set; }
+        }
+
+        public class Dimensions
+        {
+            [JsonPropertyName("X")]
+            public double width { get; init; }
+            [JsonPropertyName("Z")]
+            public double length { get; init; }
+            [JsonPropertyName("Y")]
+            public double height { get; init; }
+        }
+
+
         public class ElementPosition
         {
             public ElementPosition(string elementName)
@@ -108,9 +148,9 @@ namespace BPR2_Desktop.Views.Components
                 ElementName = elementName;
             }
 
-            public string ElementName { get; init; }
-            public double X { get; init; }
-            public double Y { get; init; }
+            [JsonPropertyName("ElementName")] public string ElementName { get; init; }
+            [JsonPropertyName("X")] public double X { get; init; }
+            [JsonPropertyName("Z")] public double Z { get; init; }
         }
 
         // Handles the drop event when a new asset is dragged onto the canvas
@@ -172,6 +212,32 @@ namespace BPR2_Desktop.Views.Components
             }
         }
 
+        public List<ElementPosition> GetElementPositions()
+        {
+            var elementPositions = new List<ElementPosition>();
+
+            foreach (UIElement element in DesignCanvas.Children)
+            {
+                double left = Canvas.GetLeft(element);
+                double top = Canvas.GetTop(element);
+
+                if (double.IsNaN(left)) left = 0;
+                if (double.IsNaN(top)) top = 0;
+
+                string elementName = (element as FrameworkElement)?.Name ?? "UnnamedElement";
+
+                elementPositions.Add(new ElementPosition(elementName)
+                {
+                    ElementName = elementName,
+                    X = left,
+                    Z = top
+                });
+            }
+
+            return elementPositions;
+        }
+
+
         // Handles element drag start inside the canvas
         private void Element_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -208,11 +274,13 @@ namespace BPR2_Desktop.Views.Components
 
                 // Restrict the element from moving outside the left and right boundaries
                 if (newLeft < 0) newLeft = 0;
-                if (newLeft + elementWidth > DesignCanvas.ActualWidth) newLeft = DesignCanvas.ActualWidth - elementWidth;
+                if (newLeft + elementWidth > DesignCanvas.ActualWidth)
+                    newLeft = DesignCanvas.ActualWidth - elementWidth;
 
                 // Restrict the element from moving outside the top and bottom boundaries
                 if (newTop < 0) newTop = 0;
-                if (newTop + elementHeight > DesignCanvas.ActualHeight) newTop = DesignCanvas.ActualHeight - elementHeight;
+                if (newTop + elementHeight > DesignCanvas.ActualHeight)
+                    newTop = DesignCanvas.ActualHeight - elementHeight;
 
                 // Update the position of the dragged element
                 Canvas.SetLeft(draggedElement, newLeft);
@@ -232,6 +300,111 @@ namespace BPR2_Desktop.Views.Components
                 draggedElement.ReleaseMouseCapture();
                 draggedElement = null;
             }
+        }
+
+        private void OnMouseWheelZoom(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Delta > 0)
+            {
+                _zoom += ZoomFactor;
+            }
+            else if (_zoom > ZoomFactor)
+            {
+                _zoom -= ZoomFactor;
+            }
+
+            ApplyZoom();
+            e.Handled = true;
+        }
+        
+        private void ZoomIn_Click(object sender, RoutedEventArgs e)
+        {
+            _zoom += ZoomFactor;
+            ApplyZoom();
+        }
+
+        // Zoom out button click event handler
+        private void ZoomOut_Click(object sender, RoutedEventArgs e)
+        {
+            if (_zoom > ZoomFactor)
+            {
+                _zoom -= ZoomFactor;
+            }
+            ApplyZoom();
+        }
+
+        private void ApplyZoom()
+        {
+            scaleTransform.ScaleX = _zoom;
+            scaleTransform.ScaleY = _zoom;
+        }
+        
+        // Handle dragging start
+        private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.OriginalSource == DesignCanvas)
+            {
+                _lastDragPoint = e.GetPosition(scrollViewer);
+                Mouse.Capture(DesignCanvas);
+            }
+        }
+        
+        // Handle dragging movement
+        private void Canvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_lastDragPoint.HasValue)
+            {
+                Point currentPos = e.GetPosition(scrollViewer);
+                double deltaX = currentPos.X - _lastDragPoint.Value.X;
+                double deltaY = currentPos.Y - _lastDragPoint.Value.Y;
+                
+                Debug.WriteLine($"currentPos: {currentPos}, deltaX: {deltaX}, deltaY: {deltaY}");
+
+
+                scrollViewer.ScrollToHorizontalOffset(scrollViewer.HorizontalOffset - deltaX);
+                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - deltaY);
+                
+                Debug.WriteLine($"Before Scroll: Horizontal={scrollViewer.HorizontalOffset}, Vertical={scrollViewer.VerticalOffset}");
+
+                _lastDragPoint = currentPos;
+            }
+        }
+
+        
+
+        // Handle drag stop
+        private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (_lastDragPoint.HasValue)
+            {
+                Mouse.Capture(null);  // Release the mouse capture
+                _lastDragPoint = null;
+            }
+        }
+
+        public void UpdateDesignCanvas(string shape, double widthInMeters, double lengthInMeters)
+        {
+            double scaleFactor = 100; // Assume 1 meter = 100 pixels
+            double scaledWidth = widthInMeters * scaleFactor;
+            double scaledLength = lengthInMeters * scaleFactor;
+
+            DesignCanvas.Width = scaledWidth;
+            DesignCanvas.Height = scaledLength;
+
+            // Clear any existing children before adding visualizations
+            DesignCanvas.Children.Clear();
+
+            // Optional: Draw a border or indicator for the updated dimensions
+            Rectangle border = new Rectangle
+            {
+                Width = DesignCanvas.Width,
+                Height = DesignCanvas.Height,
+                Stroke = Brushes.Black,
+                StrokeThickness = 2
+            };
+            Canvas.SetLeft(border, 0);
+            Canvas.SetTop(border, 0);
+            DesignCanvas.Children.Add(border);
         }
     }
 }
