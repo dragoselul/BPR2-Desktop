@@ -49,7 +49,7 @@ public partial class SetDimensions : FluentWindow
 
         if (selectedShape == "Square")
         {
-            if (double.TryParse(WidthTextBox.Text, out double width) && double.TryParse(LengthTextBox.Text, out double length) && double.TryParse(LengthTextBox.Text, out double height))
+            if (double.TryParse(WidthTextBox.Text, out double width) && double.TryParse(LengthTextBox.Text, out double length) && double.TryParse(HeightTextBox.Text, out double height))
             {
                 width *= 100;  // Convert to px
                 length *= 100;  // Convert to px

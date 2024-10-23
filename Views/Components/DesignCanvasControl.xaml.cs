@@ -226,12 +226,15 @@ namespace BPR2_Desktop.Views.Components
 
                 string elementName = (element as FrameworkElement)?.Name ?? "UnnamedElement";
 
-                elementPositions.Add(new ElementPosition(elementName)
+                if(elementName != "")
                 {
-                    ElementName = elementName,
-                    X = left,
-                    Z = top
-                });
+                    elementPositions.Add(new ElementPosition(elementName)
+                    {
+                        ElementName = elementName,
+                        X = left,
+                        Z = top
+                    });
+                }
             }
 
             return elementPositions;
