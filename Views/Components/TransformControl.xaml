@@ -1,0 +1,14 @@
+﻿<UserControl x:Class="BPR2_Desktop.Views.Components.TransformControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Height="500" Width="300">
+    <StackPanel>
+        <TextBlock Text="Transform Control" FontSize="24" FontWeight="Bold" Margin="0,10,0,10"/>
+        
+        <!-- Rotation Input Fields -->
+        <StackPanel Orientation="Horizontal" Margin="10">
+            <TextBlock Text="Rotation:" VerticalAlignment="Center" Margin="10,0"/>
+            <TextBox x:Name="RotationInput" Width="100" TextChanged="RotationInput_TextChanged"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

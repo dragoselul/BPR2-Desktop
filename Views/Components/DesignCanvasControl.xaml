@@ -24,6 +24,7 @@
                       >
             <Border BorderBrush="Gray" BorderThickness="0" Background="Transparent">
                 <Canvas x:Name="DesignCanvas" Width="Auto" Height="Auto" Background="#FFFACD"
+                        MouseLeftButtonDown="Canvas_MouseLeftButtonDown"
                         MouseDown="Canvas_MouseDown"
                         MouseMove="Canvas_MouseMove"
                         MouseUp="Canvas_MouseUp">
