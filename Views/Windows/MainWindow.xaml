@@ -8,6 +8,7 @@
     xmlns:tray="http://schemas.lepo.co/wpfui/2022/xaml/tray"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:pages="clr-namespace:BPR2_Desktop.Views.Pages"
+    xmlns:micromanagement="clr-namespace:BPR2_Desktop.Views.Pages.Micromanagement"
     Width="1450"
     Height="802"
     MinWidth="900"
@@ -69,6 +70,10 @@
                     Content="Design Editor"
                     Icon="{ui:SymbolIcon Games24}"
                     TargetPageType="{x:Type pages:DesignEditor}" />
+                <ui:NavigationViewItem
+                    Content="Shelf Editor"
+                    Icon="{ui:SymbolIcon Games24}"
+                    TargetPageType="{x:Type micromanagement:ShelfEditor}" />
             </ui:NavigationView.MenuItems>
             <ui:NavigationView.ContentOverlay>
                 <Grid>
