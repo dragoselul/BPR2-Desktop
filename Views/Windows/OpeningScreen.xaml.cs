@@ -40,8 +40,9 @@ namespace BPR2_Desktop.Views.Windows
 
         private void Macromanagement_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow macronamagementWindow = new MainWindow();
-            macronamagementWindow.Show();
+            var mainWindow = new MainWindow();
+            mainWindow.Show();
+            this.Close();
         }
 
         private void Button_Loaded(object sender, RoutedEventArgs e)

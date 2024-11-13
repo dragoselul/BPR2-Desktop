@@ -18,7 +18,7 @@
     WindowBackdropType="Mica"
     WindowCornerPreference="Default"
     WindowStartupLocation="CenterScreen"
-    mc:Ignorable="d"><!-- Title="{Binding ViewModel.ApplicationTitle, Mode=OneWay}" -->
+    mc:Ignorable="d">
 
     <ui:FluentWindow.InputBindings>
         <KeyBinding
@@ -48,26 +48,16 @@
             <ui:NavigationView.Header>
                 <StackPanel Margin="42,32,42,20">
                     <ui:BreadcrumbBar x:Name="BreadcrumbBar" />
-                    <!-- <controls:PageControlDocumentation Margin="0,10,0,0" NavigationView="{Binding ElementName=NavigationView}" /> -->
                 </StackPanel>
             </ui:NavigationView.Header>
-            <ui:NavigationView.AutoSuggestBox>
-                <ui:AutoSuggestBox x:Name="AutoSuggestBox" PlaceholderText="Search">
-                    <ui:AutoSuggestBox.Icon>
-                        <ui:IconSourceElement>
-                            <ui:SymbolIconSource Symbol="Search24" />
-                        </ui:IconSourceElement>
-                    </ui:AutoSuggestBox.Icon>
-                </ui:AutoSuggestBox>
-            </ui:NavigationView.AutoSuggestBox>
             <ui:NavigationView.MenuItems>
                 <ui:NavigationViewItem
-                    Content="Home"
+                    Content = "Home"
                     Icon="{ui:SymbolIcon Home24}"
-                    TargetPageType="{x:Type pages:Home}" />
+                    Click="HomeButton_Click" />
                 <ui:NavigationViewItem
                     Content="Design Editor"
-                    Icon="{ui:SymbolIcon Games24}"
+                    Icon="{ui:SymbolIcon Badge24}"
                     TargetPageType="{x:Type pages:DesignEditor}" />
             </ui:NavigationView.MenuItems>
             <ui:NavigationView.ContentOverlay>
@@ -84,20 +74,6 @@
             Title="{Binding ViewModel.ApplicationTitle}"
             Grid.Row="0"
             CloseWindowByDoubleClickOnIcon="True">
-            <!-- <ui:TitleBar.Icon> -->
-            <!--     <ui:ImageIcon Source="pack://application:,,,/Assets/wpfui.png" /> -->
-            <!-- </ui:TitleBar.Icon> -->
         </ui:TitleBar>
-
-        <!-- <tray:NotifyIcon -->
-        <!--     Grid.Row="0" -->
-        <!--     FocusOnLeftClick="True" -->
-        <!--     Icon="pack://application:,,,/Assets/wpfui.png" -->
-        <!--     MenuOnRightClick="True" -->
-        <!--     TooltipText="WPF UI Gallery"> -->
-        <!--     <tray:NotifyIcon.Menu> -->
-        <!--         <ContextMenu ItemsSource="{Binding ViewModel.TrayMenuItems, Mode=OneWay}" /> -->
-        <!--     </tray:NotifyIcon.Menu> -->
-        <!-- </tray:NotifyIcon> -->
     </Grid>
 </ui:FluentWindow>
