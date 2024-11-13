@@ -24,6 +24,17 @@ public partial class MainWindow : FluentWindow
         };
     }
     
+    private void HomeButton_Click(object sender, RoutedEventArgs e)
+        {
+            var openingScreen = new ConfirmationDialog();
+            openingScreen.Show();
+            this.Close();
+    }
+
+        // Other event handlers...
+    
+
+    
     private void OnNavigationSelectionChanged(object sender, RoutedEventArgs e)
     {
         if (sender is not Wpf.Ui.Controls.NavigationView navigationView)
