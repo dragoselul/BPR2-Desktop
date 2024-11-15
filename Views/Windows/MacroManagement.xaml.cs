@@ -23,13 +23,6 @@ public partial class MacroManagement : INavigationWindow
         navigationService.SetNavigationControl(RootNavigation);
     }
     
-    // private void HomeButton_Click(object sender, RoutedEventArgs e)
-    //     {
-    //         var openingScreen = new ConfirmationDialog();
-    //         openingScreen.Show();
-    //         this.Close();
-    // }
-    
     public INavigationView GetNavigation() => RootNavigation;
 
     public bool Navigate(Type pageType) => RootNavigation.Navigate(pageType);
@@ -44,8 +37,6 @@ public partial class MacroManagement : INavigationWindow
     protected override void OnClosed(EventArgs e)
     {
         base.OnClosed(e);
-
-        // Make sure that closing this window will begin the process of closing the application.
         Application.Current.Shutdown();
     }
 

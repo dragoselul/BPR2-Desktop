@@ -75,12 +75,12 @@ public partial class MacroManagementViewModel: ViewModel
 
         NavigationFooter =
         [
-            // new NavigationViewItem()
-            // {
-            //     Content = "Settings",
-            //     Icon = new SymbolIcon { Symbol = SymbolRegular.Settings24 },
-            //     TargetPageType = typeof(Views.Pages.SettingsPage)
-            // },
+            new NavigationViewItem()
+            {
+                Content = "Settings",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.Settings24 },
+                TargetPageType = typeof(Views.Pages.Settings)
+            },
         ];
 
         TrayMenuItems = [new() { Header = "Home", Tag = "tray_home" }];

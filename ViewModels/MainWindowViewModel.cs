@@ -9,8 +9,8 @@ namespace BPR2_Desktop.ViewModels;
 public partial class MainWindowViewModel
 {
     private readonly IServiceProvider _serviceProvider;
-    public double maxWidth = SystemParameters.WorkArea.Width;
-    public double maxHeight = SystemParameters.WorkArea.Height;
+    public readonly double maxWidth = SystemParameters.WorkArea.Width;
+    public readonly double maxHeight = SystemParameters.WorkArea.Height;
 
     public MainWindowViewModel(IServiceProvider serviceProvider)
     {
@@ -83,9 +83,8 @@ public partial class MainWindowViewModel
     [RelayCommand]
     private void OnHelpClick()
     {
-        MessageBox.Show("Why are you gay and press random buttons?", "U Gay", MessageBoxButton.YesNo,
-            MessageBoxImage.Stop, MessageBoxResult.Yes);
-        MessageBox.Show("We just stole your bank account information. GL&HF");
+        MessageBox.Show("Contact the administrator for help", "Help", MessageBoxButton.OK,
+            MessageBoxImage.Information);
     }
 
     [RelayCommand]
