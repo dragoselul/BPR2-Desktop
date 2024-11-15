@@ -11,11 +11,11 @@ namespace BPR2_Desktop.Views.Windows
 
         private void YesButton_Click(object sender, RoutedEventArgs e)
         {
-            var openingScreen = new OpeningScreen();
-            Application.Current.MainWindow = openingScreen;
-            openingScreen.Show();
-
-            this.Close();
+            // var openingScreen = new MainWindow();
+            // Application.Current.MainWindow = openingScreen;
+            // openingScreen.Show();
+            //
+            // this.Close();
         }
 
         private void NoButton_Click(object sender, RoutedEventArgs e)

@@ -1,84 +1,37 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media.Animation;
+using Wpf.Ui;
+using Wpf.Ui.Abstractions;
 using Wpf.Ui.Controls;
+using Button = System.Windows.Controls.Button;
+using MessageBox = System.Windows.MessageBox;
 
-namespace BPR2_Desktop.Views.Windows;
-
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
-public partial class MainWindow : FluentWindow
+namespace BPR2_Desktop.Views.Windows
 {
-    private bool _isUserClosedPane;
-    private bool _isPaneOpenedOrClosedFromCode;
-    public MainWindow()
+    public partial class MainWindow
     {
-        InitializeComponent();
-
-        Loaded += (sender, args) =>
+        public ViewModels.MainWindowViewModel ViewModel { get; }
+        public MainWindow(ViewModels.MainWindowViewModel vm)
         {
-            Wpf.Ui.Appearance.SystemThemeWatcher.Watch(
-                this, // Window class
-                Wpf.Ui.Controls.WindowBackdropType.Auto, // Background type
-                true // Whether to change accents automatically
-            );
-        };
-    }
-    
-    private void HomeButton_Click(object sender, RoutedEventArgs e)
-        {
-            var openingScreen = new ConfirmationDialog();
-            openingScreen.Show();
-            this.Close();
-    }
-
-        // Other event handlers...
-    
-
-    
-    private void OnNavigationSelectionChanged(object sender, RoutedEventArgs e)
-    {
-        if (sender is not Wpf.Ui.Controls.NavigationView navigationView)
-        {
-            return;
+            ViewModel = vm;
+            DataContext = this;
+            InitializeComponent();
         }
 
-        // NavigationView.SetCurrentValue(
-        //     NavigationView.HeaderVisibilityProperty,
-        //     navigationView.SelectedItem?.TargetPageType != typeof(DashboardPage)
-        //         ? Visibility.Visible
-        //         : Visibility.Collapsed
-        // );
-    }
-    
-    private void MainWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
-    {
-        if (_isUserClosedPane)
+        private void Button_Loaded(object sender, RoutedEventArgs e)
         {
-            return;
+            Button button = sender as Button;
+            Storyboard storyboard = (Storyboard)FindResource("ButtonFadeIn");
+            storyboard.Begin(button);
         }
-
-        _isPaneOpenedOrClosedFromCode = true;
-        NavigationView.SetCurrentValue(NavigationView.IsPaneOpenProperty, e.NewSize.Width > 1200);
-        _isPaneOpenedOrClosedFromCode = false;
-    }
-
-    private void NavigationView_OnPaneOpened(NavigationView sender, RoutedEventArgs args)
-    {
-        if (_isPaneOpenedOrClosedFromCode)
+        
+        private void OnMediaEnded(object sender, RoutedEventArgs e)
         {
-            return;
+            MediaElement.Position = TimeSpan.Zero;
+            MediaElement.Play();
         }
-
-        _isUserClosedPane = false;
-    }
-
-    private void NavigationView_OnPaneClosed(NavigationView sender, RoutedEventArgs args)
-    {
-        if (_isPaneOpenedOrClosedFromCode)
-        {
-            return;
-        }
-
-        _isUserClosedPane = true;
     }
 }
