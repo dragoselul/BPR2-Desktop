@@ -18,6 +18,21 @@ public partial class DesignEditor : Page
     public DesignEditor()
     {
         InitializeComponent();
+        DesignCanvasControl.CanvasClicked += OnCanvasClicked;
+        DesignCanvasControl.ElementClicked += OnElementClicked;
+    }
+    
+    // Event handler when an element on the canvas is clicked
+    public void OnElementClicked(UIElement clickedElement)
+    {
+        // Swap the right side panel to the TransformControl for rotation adjustments
+    RightSidePanel.Content = new TransformControl(clickedElement, DesignCanvasControl);
+    }
+    
+    private void OnCanvasClicked()
+    {
+        // Swap the right side panel back to the AssetsPanelControl
+        RightSidePanel.Content = new AssetsPanelControl();
     }
 
     public void UpdateDimensions(double width, double length, double height)

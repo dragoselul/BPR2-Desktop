@@ -18,18 +18,21 @@ namespace BPR2_Desktop.Views.Components
         private Point lastPosition;
         private int squareCounter = 1;
         private int polygonCounter = 1;
-        
+
         private Point? _lastDragPoint;
         private double _zoom = 1.0;
         private const double ZoomFactor = 0.1;
+        public event Action<UIElement> ElementClicked;
+        public event Action CanvasClicked;
+
+        private readonly Dictionary<UIElement, (double width, double height)> _originalDimensions = new();
 
         public DesignCanvasControl()
         {
             InitializeComponent();
             this.MouseWheel += OnMouseWheelZoom;
         }
-
-
+        
         public void LoadDesignFromFile(string filePath, DesignEditor designEditor)
         {
             try
@@ -39,7 +42,7 @@ namespace BPR2_Desktop.Views.Components
 
                 // Deserialize the JSON into a DesignData object
                 var designData = JsonSerializer.Deserialize<DesignData>(jsonString);
-                
+
                 // Null check for designData
                 if (designData == null)
                 {
@@ -71,7 +74,6 @@ namespace BPR2_Desktop.Views.Components
                 // Recreate the elements on the canvas using images
                 foreach (var element in designData.elements)
                 {
-
                     Image newElement = null;
 
                     if (element.ElementName.Contains("Square"))
@@ -81,7 +83,9 @@ namespace BPR2_Desktop.Views.Components
                         {
                             Source = new BitmapImage(new Uri("pack://application:,,,/Pictures/square.png")),
                             Width = 100,
-                            Height = 40
+                            Height = 40,
+                            Stretch = Stretch.UniformToFill,
+                            RenderTransformOrigin = new Point(0.5, 0.5)
                         };
                         // Set the name for the element
                         newElement.Name = element.ElementName;
@@ -105,6 +109,11 @@ namespace BPR2_Desktop.Views.Components
                         Canvas.SetLeft(newElement, element.X);
                         Canvas.SetTop(newElement, element.Z);
 
+                        // Apply the saved rotation
+                        RotateTransform rotateTransform = new RotateTransform(element.Rotation);
+                        newElement.RenderTransformOrigin = new Point(0.5, 0.5); // Rotate around center
+                        newElement.RenderTransform = rotateTransform;
+
                         // Attach the drag event handlers
                         newElement.MouseLeftButtonDown += Element_MouseLeftButtonDown;
                         newElement.MouseMove += Element_MouseMove;
@@ -126,18 +135,14 @@ namespace BPR2_Desktop.Views.Components
         public class DesignData
         {
             public Dimensions dimensions { get; set; }
-            [JsonPropertyName("ElementPositions")]
-            public List<ElementPosition> elements { get; set; }
+            [JsonPropertyName("ElementPositions")] public List<ElementPosition> elements { get; set; }
         }
 
         public class Dimensions
         {
-            [JsonPropertyName("X")]
-            public double width { get; init; }
-            [JsonPropertyName("Z")]
-            public double length { get; init; }
-            [JsonPropertyName("Y")]
-            public double height { get; init; }
+            [JsonPropertyName("X")] public double width { get; init; }
+            [JsonPropertyName("Z")] public double length { get; init; }
+            [JsonPropertyName("Y")] public double height { get; init; }
         }
 
 
@@ -151,6 +156,7 @@ namespace BPR2_Desktop.Views.Components
             [JsonPropertyName("ElementName")] public string ElementName { get; init; }
             [JsonPropertyName("X")] public double X { get; init; }
             [JsonPropertyName("Z")] public double Z { get; init; }
+            [JsonPropertyName("Rotation")] public double Rotation { get; init; }
         }
 
         // Handles the drop event when a new asset is dragged onto the canvas
@@ -226,13 +232,18 @@ namespace BPR2_Desktop.Views.Components
 
                 string elementName = (element as FrameworkElement)?.Name ?? "UnnamedElement";
 
-                if(elementName != "")
+                var rotateTransform = element.RenderTransform as RotateTransform;
+                double rotation = rotateTransform?.Angle ?? 0; // Default to 0 if no rotation is applied
+
+
+                if (!string.IsNullOrEmpty(elementName))
                 {
                     elementPositions.Add(new ElementPosition(elementName)
                     {
                         ElementName = elementName,
                         X = left,
-                        Z = top
+                        Z = top,
+                        Rotation = rotation // Save the rotation
                     });
                 }
             }
@@ -244,12 +255,37 @@ namespace BPR2_Desktop.Views.Components
         // Handles element drag start inside the canvas
         private void Element_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            UIElement clickedElement = sender as UIElement;
+
+            if (clickedElement != null)
+            {
+                // Set the RenderTransformOrigin to rotate around the center
+                clickedElement.RenderTransformOrigin = new Point(0.5, 0.5);
+
+                // Raise the ElementClicked event
+                ElementClicked?.Invoke(clickedElement);
+
+                // Capture the mouse for dragging and store the initial position
+                draggedElement = clickedElement;
+                lastPosition = e.GetPosition(DesignCanvas);
+
+                // Capture mouse input to allow dragging
+                draggedElement.CaptureMouse();
+            }
+
+            e.Handled = true;
             draggedElement = sender as UIElement;
             if (draggedElement != null)
             {
                 lastPosition = e.GetPosition(DesignCanvas);
                 draggedElement.CaptureMouse();
             }
+        }
+
+        private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // Raise the CanvasClicked event when clicking on empty space
+            CanvasClicked?.Invoke();
         }
 
         // Handles moving the dragged element within the canvas
@@ -270,8 +306,7 @@ namespace BPR2_Desktop.Views.Components
                 // Calculate new positions based on delta movement
                 double newLeft = currentLeft + deltaX;
                 double newTop = currentTop + deltaY;
-
-                // Ensure the new position is within the canvas bounds
+                
                 double elementWidth = draggedElement.RenderSize.Width;
                 double elementHeight = draggedElement.RenderSize.Height;
 
@@ -284,14 +319,129 @@ namespace BPR2_Desktop.Views.Components
                 if (newTop < 0) newTop = 0;
                 if (newTop + elementHeight > DesignCanvas.ActualHeight)
                     newTop = DesignCanvas.ActualHeight - elementHeight;
-
-                // Update the position of the dragged element
+                
                 Canvas.SetLeft(draggedElement, newLeft);
                 Canvas.SetTop(draggedElement, newTop);
-
+                
                 // Update last position
                 lastPosition = currentPosition;
+
+                // Draw bounding box and pivot for better visualization
+                DrawBoundingBox(draggedElement);
+                DrawPivotPoint(draggedElement);
             }
+        }
+
+        
+        private (double newWidth, double newHeight) GetRotatedBoundingBox(double width, double height, double angle)
+        {
+            // Normalize the angle to fall within [0, 360) degrees
+            angle %= 360;
+            if (angle < 0) angle += 360;
+            
+            double angleRadians = angle * Math.PI / 180.0;
+            double newWidth = Math.Abs(width * Math.Cos(angleRadians)) + Math.Abs(height * Math.Sin(angleRadians));
+            double newHeight = Math.Abs(width * Math.Sin(angleRadians)) + Math.Abs(height * Math.Cos(angleRadians));
+
+            // At 180 degrees, the width and height remain the same
+            return (newWidth, newHeight);
+        }
+
+        public void ApplyRotation(UIElement element, double rotationAngle)
+        {
+            // Apply the rotation transformation to the element
+            var currentAngle = element.RenderTransform as RotateTransform;
+            if (currentAngle != null)
+            {
+                if (Math.Abs(currentAngle.Angle - rotationAngle) < 0.5)
+                {
+                    return; // Skip if the angle is the same
+                }
+            }
+            RotateTransform rotateTransform = new RotateTransform(rotationAngle);
+            element.RenderTransform = rotateTransform;
+        }
+        
+        private void DrawPivotPoint(UIElement element)
+        {
+            // Remove any existing pivot point visual
+            var existingPivot = DesignCanvas.Children.OfType<Ellipse>().FirstOrDefault(e => e.Tag as string == "PivotPoint");
+            if (existingPivot != null)
+            {
+                DesignCanvas.Children.Remove(existingPivot);
+            }
+
+            // Get the RenderTransformOrigin as a fraction of the element's dimensions
+            FrameworkElement frameworkElement = element as FrameworkElement;
+            if (frameworkElement == null)
+            {
+                return;
+            }
+
+            double pivotX = element.RenderTransformOrigin.X * element.RenderSize.Width;
+            double pivotY = element.RenderTransformOrigin.Y * element.RenderSize.Height;
+
+            // Get the pivot point relative to the Canvas
+            Point pivotPoint = new Point(pivotX, pivotY);
+            GeneralTransform transformToCanvas = element.TransformToAncestor(DesignCanvas);
+            Point canvasPivotPoint = transformToCanvas.Transform(pivotPoint);
+
+            // Create an ellipse to represent the pivot point
+            Ellipse pivotMarker = new Ellipse
+            {
+                Width = 10,
+                Height = 10,
+                Fill = Brushes.Blue, // Blue color to make it visible
+                Stroke = Brushes.Black,
+                StrokeThickness = 1,
+                Tag = "PivotPoint", // Tag to easily identify and remove it later
+                IsHitTestVisible = false // Prevent the marker from interfering with interactions
+            };
+
+            // Position the marker at the pivot point
+            Canvas.SetLeft(pivotMarker, canvasPivotPoint.X - pivotMarker.Width / 2);
+            Canvas.SetTop(pivotMarker, canvasPivotPoint.Y - pivotMarker.Height / 2);
+
+            // Add the pivot marker to the canvas
+            DesignCanvas.Children.Add(pivotMarker);
+        }
+        
+        private void DrawBoundingBox(UIElement draggedElement)
+        {
+            // Remove any existing bounding box visuals
+            var existingBoundingBox = DesignCanvas.Children.OfType<Rectangle>().FirstOrDefault(r => r.Tag as string == "BoundingBox");
+            if (existingBoundingBox != null)
+            {
+                DesignCanvas.Children.Remove(existingBoundingBox);
+            }
+
+            // Calculate the bounding box dimensions
+            double angle = draggedElement.RenderTransform is RotateTransform rotateTransform
+                ? rotateTransform.Angle
+                : 0;
+            var (elementWidth, elementHeight) = (draggedElement.RenderSize.Width, draggedElement.RenderSize.Height);
+
+            // Get the current position of the dragged element
+            double newLeft = Canvas.GetLeft(draggedElement);
+            double newTop = Canvas.GetTop(draggedElement);
+
+            // Create a new rectangle to represent the bounding box
+            Rectangle boundingBox = new Rectangle
+            {
+                Width = elementWidth,
+                Height = elementHeight,
+                Stroke = Brushes.Red, // Use a red border to make it visible
+                StrokeThickness = 2,
+                Tag = "BoundingBox", // Tag to easily find and remove it later
+                IsHitTestVisible = false // Make sure it doesn't interfere with mouse interactions
+            };
+
+            // Set the position of the bounding box
+            Canvas.SetLeft(boundingBox, newLeft);
+            Canvas.SetTop(boundingBox, newTop);
+
+            // Add the bounding box to the canvas
+            DesignCanvas.Children.Add(boundingBox);
         }
 
 
@@ -319,7 +469,7 @@ namespace BPR2_Desktop.Views.Components
             ApplyZoom();
             e.Handled = true;
         }
-        
+
         private void ZoomIn_Click(object sender, RoutedEventArgs e)
         {
             _zoom += ZoomFactor;
@@ -333,6 +483,7 @@ namespace BPR2_Desktop.Views.Components
             {
                 _zoom -= ZoomFactor;
             }
+
             ApplyZoom();
         }
 
@@ -341,7 +492,7 @@ namespace BPR2_Desktop.Views.Components
             scaleTransform.ScaleX = _zoom;
             scaleTransform.ScaleY = _zoom;
         }
-        
+
         // Handle dragging start
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -351,7 +502,7 @@ namespace BPR2_Desktop.Views.Components
                 Mouse.Capture(DesignCanvas);
             }
         }
-        
+
         // Handle dragging movement
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
@@ -360,27 +511,26 @@ namespace BPR2_Desktop.Views.Components
                 Point currentPos = e.GetPosition(scrollViewer);
                 double deltaX = currentPos.X - _lastDragPoint.Value.X;
                 double deltaY = currentPos.Y - _lastDragPoint.Value.Y;
-                
+
                 Debug.WriteLine($"currentPos: {currentPos}, deltaX: {deltaX}, deltaY: {deltaY}");
-
-
+                
                 scrollViewer.ScrollToHorizontalOffset(scrollViewer.HorizontalOffset - deltaX);
                 scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - deltaY);
-                
-                Debug.WriteLine($"Before Scroll: Horizontal={scrollViewer.HorizontalOffset}, Vertical={scrollViewer.VerticalOffset}");
+
+                Debug.WriteLine(
+                    $"Before Scroll: Horizontal={scrollViewer.HorizontalOffset}, Vertical={scrollViewer.VerticalOffset}");
 
                 _lastDragPoint = currentPos;
             }
         }
 
-        
 
         // Handle drag stop
         private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if (_lastDragPoint.HasValue)
             {
-                Mouse.Capture(null);  // Release the mouse capture
+                Mouse.Capture(null); // Release the mouse capture
                 _lastDragPoint = null;
             }
         }

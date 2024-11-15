@@ -1,11 +1,15 @@
-﻿using System.Windows.Controls;
+﻿using Wpf.Ui.Abstractions.Controls;
 
 namespace BPR2_Desktop.Views.Pages;
 
-public partial class Home : Page
-{
-    public Home()
+public partial class Home : INavigableView<ViewModels.HomeViewModel>
+{   
+    public ViewModels.HomeViewModel ViewModel { get; }
+    public Home(ViewModels.HomeViewModel vm)
     {
+        ViewModel = vm;
+        DataContext = this;
+        
         InitializeComponent();
     }
 }
