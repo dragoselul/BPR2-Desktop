@@ -24,7 +24,7 @@
             <components:VRModeControl />
 
             <!-- Use DesignCanvasControl -->
-            <components:DesignCanvasControl x:Name="DesignCanvasControl" Width="Auto" Height="Auto" />
+            <components:DesignCanvasControl x:Name="DesignCanvasControl" Width="Auto" Height="Auto" ElementClicked="OnElementClicked"/>
 
             <!-- Set Dimensions and Save buttons -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
@@ -35,6 +35,8 @@
         </StackPanel>
 
         <!-- Right side (Assets) -->
+        <ContentControl Grid.Column="1" Margin="20" x:Name="RightSidePanel">
         <components:AssetsPanelControl Grid.Column="1" Margin="20"/>
+        </ContentControl>
     </Grid>
 </Page>

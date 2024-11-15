@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Controls;
+using BPR2_Desktop.ViewModels;
 using YourNamespace;
 
 namespace BPR2_Desktop.Views.Components.Micromanagement;

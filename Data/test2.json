@@ -8,12 +8,14 @@
     {
       "ElementName": "Polygon1",
       "X": 77.375,
-      "Z": 223
+      "Z": 223,
+      "Rotation": 0
     },
     {
       "ElementName": "Square1",
       "X": 54.375,
-      "Z": 58
+      "Z": 58,
+      "Rotation": 90
     }
   ]
 }
