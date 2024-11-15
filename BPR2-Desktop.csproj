@@ -73,4 +73,15 @@
       <Resource Include="Pictures\square.png" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Pictures\Logo\1b633bd3-1f1a-4f71-a478-53f0d12aa497.jfif" />
+      <Content Include="Pictures\Logo\1b633bd3-1f1a-4f71-a478-53f0d12aa497.jfif">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Videos\3129957-hd_1920_1080_25fps.mp4" />
+      <Content Include="Videos\3129957-hd_1920_1080_25fps.mp4">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>
