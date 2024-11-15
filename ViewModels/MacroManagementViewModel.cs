@@ -70,6 +70,12 @@ public partial class MacroManagementViewModel: ViewModel
                 Icon = new SymbolIcon { Symbol = SymbolRegular.DataLine24 },
                 TargetPageType = typeof(Views.Pages.MicroManagement)
             },
+            new NavigationViewItem()
+            {
+                Content = "Data",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.DataLine24 },
+                TargetPageType = typeof(Views.Pages.ShelfEditor)
+            },
             
         ];
 

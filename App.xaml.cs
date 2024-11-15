@@ -66,6 +66,8 @@ public partial class App
                 _ = services.AddSingleton<Views.Pages.Home>();
                 _ = services.AddSingleton<ViewModels.MacroManagementDesignerViewModel>();
                 _ = services.AddSingleton<Views.Pages.MacroManagementDesigner>();
+                _ = services.AddSingleton<ViewModels.ProductViewModel>();
+                _ = services.AddSingleton<Views.Pages.ShelfEditor>();
 
                 // Configuration
                 _ = services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));

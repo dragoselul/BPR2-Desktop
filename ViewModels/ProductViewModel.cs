@@ -1,8 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
+using YourNamespace;
 
-namespace YourNamespace
+namespace BPR2_Desktop.ViewModels
 {
     public class ProductViewModel : INotifyPropertyChanged
     {
@@ -53,7 +54,8 @@ namespace YourNamespace
         private void LoadAllCategories()
         {
             var dbHelper = new DatabaseHelper();
-            var allCategories = dbHelper.GetAllCategories();
+            List<string> allCategories = [];
+            var dbThread = new Thread(() => allCategories = dbHelper.GetAllCategories());
 
             Categories.Add("All Categories"); // Default option
             foreach (var category in allCategories)
@@ -65,7 +67,8 @@ namespace YourNamespace
         public void LoadProducts()
         {
             var dbHelper = new DatabaseHelper();
-            var dataTable = dbHelper.GetProducts(PageSize, CurrentOffset, SelectedCategory);
+            DataTable dataTable = new DataTable();
+            var dbThread = new Thread(() => dataTable = dbHelper.GetProducts(PageSize, CurrentOffset, SelectedCategory));
             
             if (CurrentOffset == 0)
             {
