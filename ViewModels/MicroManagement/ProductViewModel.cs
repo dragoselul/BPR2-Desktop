@@ -3,7 +3,7 @@ using System.Data;
 using BPR2_Desktop.Database;
 using BPR2_Desktop.Model;
 
-namespace BPR2_Desktop.ViewModels;
+namespace BPR2_Desktop.ViewModels.MicroManagement;
 
 public partial class ProductViewModel : ViewModel
 {

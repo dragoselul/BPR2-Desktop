@@ -43,18 +43,18 @@ public partial class App
                 _ = services.AddSingleton<INavigationService, NavigationService>();
                 
                 // Windows
-                _ = services.AddTransient<ViewModels.MacroManagementViewModel>();
+                _ = services.AddTransient<ViewModels.MacroManagement.MacroManagementViewModel>();
                 _ = services.AddTransient<MacroManagement>(serviceProvider =>
                 {
-                    var viewModel = serviceProvider.GetRequiredService<ViewModels.MacroManagementViewModel>();
+                    var viewModel = serviceProvider.GetRequiredService<ViewModels.MacroManagement.MacroManagementViewModel>();
                     var navigableService = serviceProvider.GetRequiredService<INavigationService>();
                     return new MacroManagement(viewModel, navigableService);
                 });
                 
-                _ = services.AddTransient<ViewModels.MicroManagementViewModel>();
+                _ = services.AddTransient<ViewModels.MicroManagement.MicroManagementViewModel>();
                 _ = services.AddTransient<MicroManagement>(serviceProvider =>
                 {
-                    var viewModel = serviceProvider.GetRequiredService<ViewModels.MicroManagementViewModel>();
+                    var viewModel = serviceProvider.GetRequiredService<ViewModels.MicroManagement.MicroManagementViewModel>();
                     var navigableService = serviceProvider.GetRequiredService<INavigationService>();
                     return new MicroManagement(viewModel, navigableService);
                 });
@@ -70,11 +70,11 @@ public partial class App
                 });
 
                 // Views and ViewModels for Pages
-                _ = services.AddSingleton<ViewModels.HomeViewModel>();
+                _ = services.AddSingleton<ViewModels.MacroManagement.HomeViewModel>();
                 _ = services.AddSingleton<Views.Pages.Home>();
-                _ = services.AddSingleton<ViewModels.MacroManagementDesignerViewModel>();
+                _ = services.AddSingleton<ViewModels.MacroManagement.DesignerViewModel>();
                 _ = services.AddSingleton<Views.Pages.MacroManagementDesigner>();
-                _ = services.AddSingleton<ViewModels.ProductViewModel>();
+                _ = services.AddSingleton<ViewModels.MicroManagement.ProductViewModel>();
                 _ = services.AddSingleton<Views.Pages.ShelfEditor>();
 
                 // Configuration

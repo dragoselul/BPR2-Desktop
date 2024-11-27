@@ -1,11 +1,15 @@
-﻿using System.Windows.Controls;
+﻿using Wpf.Ui.Abstractions.Controls;
 
-namespace BPR2_Desktop.Views.Pages.Micromanagement;
+namespace BPR2_Desktop.Views.Pages;
 
-public partial class ShelfEditor : Page
+public partial class ShelfEditor : INavigableView<ViewModels.MicroManagement.ProductViewModel>
 {
-    public ShelfEditor()
+    public ViewModels.MicroManagement.ProductViewModel ViewModel { get; }
+    public ShelfEditor(ViewModels.MicroManagement.ProductViewModel vm)
     {
+        ViewModel = vm;
+        DataContext = this;
+        
         InitializeComponent();
     }
 }

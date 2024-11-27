@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Wpf.Ui;
 using Wpf.Ui.Controls;
 
-namespace BPR2_Desktop.ViewModels;
+namespace BPR2_Desktop.ViewModels.MacroManagement;
 
 public partial class MacroManagementViewModel: ViewModel
 {

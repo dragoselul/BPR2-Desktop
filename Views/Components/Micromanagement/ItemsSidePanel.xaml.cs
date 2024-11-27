@@ -1,6 +1,5 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows.Controls;
-using BPR2_Desktop.ViewModels;
+﻿using System.Windows.Controls;
+using BPR2_Desktop.ViewModels.MicroManagement;
 
 namespace BPR2_Desktop.Views.Components.Micromanagement;
 
