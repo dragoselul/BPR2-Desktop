@@ -40,6 +40,11 @@
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
       </Page>
+      <Page Update="Views\Pages\ShelfEditor.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
     </ItemGroup>
 
     <ItemGroup>
@@ -55,22 +60,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0-preview1" />
-      <PackageReference Include="HelixToolkit" Version="2.25.0" />
-      <PackageReference Include="HelixToolkit.Wpf" Version="2.25.0" />
-      <PackageReference Include="HelixToolkit.Wpf.Input" Version="2.25.0" />
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
-      <PackageReference Include="System.Text.Json" Version="9.0.0" />
-      <PackageReference Include="WPF-UI.DependencyInjection" Version="4.0.0-rc.2" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Folder Include="Data\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="WPF-UI" Version="4.0.0-rc.2" />
     </ItemGroup>
 
     <ItemGroup>
@@ -78,6 +68,27 @@
       <Resource Include="Pictures\polygon.png" />
       <None Remove="Pictures\square.png" />
       <Resource Include="Pictures\square.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Pictures\Logo\1b633bd3-1f1a-4f71-a478-53f0d12aa497.jfif" />
+      <Content Include="Pictures\Logo\1b633bd3-1f1a-4f71-a478-53f0d12aa497.jfif">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Videos\3129957-hd_1920_1080_25fps.mp4" />
+      <Content Include="Videos\3129957-hd_1920_1080_25fps.mp4">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0-preview1" />
+      <PackageReference Include="HelixToolkit" Version="2.25.0" />
+      <PackageReference Include="HelixToolkit.Wpf" Version="2.25.0" />
+      <PackageReference Include="HelixToolkit.Wpf.Input" Version="2.25.0" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
+      <PackageReference Include="System.Text.Json" Version="9.0.0" />
+      <PackageReference Include="WPF-UI" Version="4.0.0-rc.2" />
+      <PackageReference Include="WPF-UI.DependencyInjection" Version="4.0.0-rc.2" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0-rc.2" />
     </ItemGroup>
 
     <ItemGroup>

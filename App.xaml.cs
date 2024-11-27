@@ -51,6 +51,14 @@ public partial class App
                     return new MacroManagement(viewModel, navigableService);
                 });
                 
+                _ = services.AddTransient<ViewModels.MicroManagementViewModel>();
+                _ = services.AddTransient<MicroManagement>(serviceProvider =>
+                {
+                    var viewModel = serviceProvider.GetRequiredService<ViewModels.MicroManagementViewModel>();
+                    var navigableService = serviceProvider.GetRequiredService<INavigationService>();
+                    return new MicroManagement(viewModel, navigableService);
+                });
+                
                 // Main window
                 _ = services.AddSingleton<ViewModels.MainWindowViewModel>(
                     serviceProvider => new ViewModels.MainWindowViewModel(serviceProvider)
@@ -66,6 +74,8 @@ public partial class App
                 _ = services.AddSingleton<Views.Pages.Home>();
                 _ = services.AddSingleton<ViewModels.MacroManagementDesignerViewModel>();
                 _ = services.AddSingleton<Views.Pages.MacroManagementDesigner>();
+                _ = services.AddSingleton<ViewModels.ProductViewModel>();
+                _ = services.AddSingleton<Views.Pages.ShelfEditor>();
 
                 // Configuration
                 _ = services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
