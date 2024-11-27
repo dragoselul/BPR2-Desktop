@@ -65,7 +65,7 @@
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Ellipse Width="400" Height="400" Stroke="White" StrokeThickness="10" Margin="0,0,0,20">
                         <Ellipse.Fill>
-                            <ImageBrush ImageSource="{DynamicResource LogoImageSource}"/>
+                            <ImageBrush ImageSource="{StaticResource LogoImageSource}"/>
                         </Ellipse.Fill>
                     </Ellipse>
                     <TextBlock Text="Please choose the type of view" FontSize="24" FontWeight="Bold" Margin="20,0,0,20" Foreground="White">

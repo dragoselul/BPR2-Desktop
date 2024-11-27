@@ -26,14 +26,14 @@ public static class ShelfTypeExtensions
         };
     }
     
-    public static ShelfTypes GetShelfByName(this string shelfType)
+    public static Dimensions GetShelfSizes(this ShelfTypes shelfType)
     {
         return shelfType switch
         {
-            "Normal" => ShelfTypes.Normal,
-            "Refrigerator" => ShelfTypes.Refrigerator,
-            "Freezer" => ShelfTypes.Freezer,
-            "DoubleSided" => ShelfTypes.DoubleSided,
+            ShelfTypes.Normal => new Dimensions(5,2,2),
+            ShelfTypes.Refrigerator => new Dimensions(5,2,2),
+            ShelfTypes.Freezer => new Dimensions(5,2,2),
+            ShelfTypes.DoubleSided =>  new Dimensions(5,2,2),
             _ => throw new ArgumentOutOfRangeException(nameof(shelfType), shelfType, null),
         };
     }

@@ -14,12 +14,10 @@
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       mc:Ignorable="d">
     <Grid Height="Auto" Width="Auto">
-        <h:HelixViewport3D Name="HelixViewport" ShowFrameRate="True">
-            <h:DefaultLights />
+        <h:HelixViewport3D Name="HelixViewport" ShowFrameRate="True" ItemsSource="{Binding ViewModel.SceneObjects}">
             <h:HelixViewport3D.Camera>
                 <PerspectiveCamera Position="0, 0, 8" LookDirection="-0, -0, -6.672" UpDirection="0, 1, 0" FieldOfView="45"/>
             </h:HelixViewport3D.Camera>
         </h:HelixViewport3D>
-        <ui:Button Content="{Binding ViewModel.ButtonText, Mode=OneWay}" Command="{Binding ViewModel.LoadObjModelCommand, Mode=OneWay}" CommandParameter="DoubleSided"/>
     </Grid>
 </Page>

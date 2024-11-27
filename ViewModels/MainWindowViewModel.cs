@@ -3,6 +3,7 @@ using BPR2_Desktop.Views.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Wpf.Ui;
 using MessageBox = System.Windows.MessageBox;
+using MicroManagement = BPR2_Desktop.Views.Windows.MicroManagement;
 
 namespace BPR2_Desktop.ViewModels;
 
@@ -73,11 +74,10 @@ public partial class MainWindowViewModel
         var microManagementWindow = _serviceProvider.GetRequiredService<MicroManagement>();
         if (currentWindow == null)
         {
-            // microManagementWindow.Show();
-            return;
+            microManagementWindow.Show();
         }
-        // _resizeNewWindow(microManagementWindow, currentWindow);
-        // _displayNewWindowAndCloseCurrent(microManagementWindow, currentWindow);
+        _resizeNewWindow(microManagementWindow, currentWindow);
+        _displayNewWindowAndCloseCurrent(microManagementWindow, currentWindow);
     }
 
     [RelayCommand]
