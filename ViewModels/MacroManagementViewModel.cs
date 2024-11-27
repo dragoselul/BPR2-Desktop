@@ -26,12 +26,7 @@ public partial class MacroManagementViewModel: ViewModel
 
     [ObservableProperty]
     private ObservableCollection<MenuItem> _trayMenuItems = [];
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Style",
-        "IDE0060:Remove unused parameter",
-        Justification = "Demo"
-    )]
+    
     public MacroManagementViewModel(INavigationService navigationService)
     {
         if (!_isInitialized)

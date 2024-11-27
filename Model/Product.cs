@@ -7,7 +7,7 @@ public class Product
     public required string Category { get; init; }
     public required string MainEAN { get; init; }
     public required string ProductName { get; init; }
-    public decimal ProductWidth { get; init; }
-    public decimal ProductHeight { get; init; }
-    public decimal ProductDepth { get; init; }
+    public required decimal ProductWidth { get; init; }
+    public required decimal ProductHeight { get; init; }
+    public required decimal ProductDepth { get; init; }
 }

@@ -71,16 +71,6 @@
             Grid.Row="0"
             CloseWindowByDoubleClickOnIcon="True">
         </ui:TitleBar>
-
-        <!-- <tray:NotifyIcon -->
-        <!--     Grid.Row="0" -->
-        <!--     FocusOnLeftClick="True" -->
-        <!--     Icon="pack://application:,,,/Assets/applicationIcon-256.png" -->
-        <!--     MenuOnRightClick="True" -->
-        <!--     TooltipText="WPF UI - MVVM Demo"> -->
-        <!--     <tray:NotifyIcon.Menu> -->
-        <!--         <ContextMenu ItemsSource="{Binding ViewModel.TrayMenuItems, Mode=OneWay}" /> -->
-        <!--     </tray:NotifyIcon.Menu> -->
-        <!-- </tray:NotifyIcon> -->
+        
     </Grid>
 </ui:FluentWindow>
