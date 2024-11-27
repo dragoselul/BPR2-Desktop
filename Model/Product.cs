@@ -2,12 +2,12 @@
 
 public class Product
 {
-    public string StoreName { get; set; }
-    public string Department { get; set; }
-    public string Category { get; set; }
-    public string MainEAN { get; set; }
-    public string ProductName { get; set; }
-    public decimal ProductWidth { get; set; }
-    public decimal ProductHeight { get; set; }
-    public decimal ProductDepth { get; set; }
+    public required string StoreName { get; init; }
+    public required string Department { get; init; }
+    public required string Category { get; init; }
+    public required string MainEAN { get; init; }
+    public required string ProductName { get; init; }
+    public decimal ProductWidth { get; init; }
+    public decimal ProductHeight { get; init; }
+    public decimal ProductDepth { get; init; }
 }
