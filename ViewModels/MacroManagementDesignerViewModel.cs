@@ -1,4 +1,6 @@
-﻿using System.Windows.Media.Media3D;
+﻿using System.Windows.Media;
+using System.Windows.Media.Media3D;
+using BPR2_Desktop.Model;
 using BPR2_Desktop.Model.Enums;
 using HelixToolkit.Wpf;
 
@@ -6,23 +8,38 @@ namespace BPR2_Desktop.ViewModels;
 
 public partial class MacroManagementDesignerViewModel : ViewModel
 {
-    public HelixViewport3D? HelixViewport { get; set; }
-    [ObservableProperty] private string _buttonText = "Load 3D Model";
+    [ObservableProperty] private List<ModelVisual3D> _sceneObjects;
+    public List<Shelf> Shelves { get; set; }
     
-    [RelayCommand]
-    private void LoadObjModel(string shelf)
+    public ModelVisual3D floor { get; set; }
+    
+    public MacroManagementDesignerViewModel()
     {
-        // Create a new importer
-        var importer = new ObjReader();
-        ShelfTypes shelfType = ShelfTypes.DoubleSided;
-        // Load the 3D model from the file
-        Model3DGroup model = importer.Read(shelfType.GetPathLocation());
-
-        // Create a ModelVisual3D to hold the 3D model
-        ModelVisual3D modelVisual = new ModelVisual3D
-        {
-            Content = model
-        };
-        HelixViewport?.Children.Add(modelVisual);
+        Shelves = new List<Shelf>();
+        _sceneObjects = new List<ModelVisual3D>();
+        CreateFloor();
     }
+
+    private void CreateFloor()
+    {
+        var light = new SunLight();
+        var floorBuilder = new MeshBuilder();
+        floorBuilder.AddBox(new Point3D(0, 0, 0), 100, 100, 0.01);
+        var floorMaterial = MaterialHelper.CreateMaterial(Colors.White);
+        var floorModel = new GeometryModel3D
+        {
+            Geometry = floorBuilder.ToMesh(),
+            Material = floorMaterial,
+            BackMaterial = floorMaterial
+        };
+        
+        floor = new ModelVisual3D
+        {
+            Content = floorModel
+        };
+        SceneObjects.Add(light);
+        SceneObjects.Add(floor);
+    }
+    
+    
 }

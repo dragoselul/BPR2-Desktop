@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Data;
 using BPR2_Desktop.Database;
 using BPR2_Desktop.Model;
@@ -22,7 +21,7 @@ public partial class ProductViewModel : ViewModel
         Products = new ObservableCollection<Product>();
         AllProducts = new ObservableCollection<Product>();
         Categories = new ObservableCollection<string>();
-
+        SearchQuery = string.Empty;
         SelectedCategory = "All Categories";
         LoadAllCategories();
         LoadProducts();
@@ -71,9 +70,9 @@ public partial class ProductViewModel : ViewModel
                 Category = row.Field<string>("category") ?? string.Empty,
                 MainEAN = row.Field<string>("main_ean") ?? string.Empty,
                 ProductName = row.Field<string>("product_name") ?? string.Empty,
-                ProductWidth = row.Field<double>("product_width"),
-                ProductHeight = row.Field<double>("product_height"),
-                ProductDepth = row.Field<double>("product_depth")
+                ProductWidth = row.Field<decimal>("product_width"),
+                ProductHeight = row.Field<decimal>("product_height"),
+                ProductDepth = row.Field<decimal>("product_depth")
             };
 
             AllProducts.Add(product);

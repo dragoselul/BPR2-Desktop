@@ -12,9 +12,6 @@ public partial class MacroManagementDesigner : INavigableView<ViewModels.MacroMa
     {
         ViewModel = vm;
         DataContext = this;
-        
         InitializeComponent();
-        
-        vm.HelixViewport = HelixViewport;
     }
 }
