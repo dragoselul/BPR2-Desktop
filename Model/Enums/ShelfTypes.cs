@@ -37,4 +37,21 @@ public static class ShelfTypeExtensions
             _ => throw new ArgumentOutOfRangeException(nameof(shelfType), shelfType, null),
         };
     }
+    
+    public static bool IsShelfDoubleSided(this ShelfTypes shelfType)
+    {
+        return shelfType switch
+        {
+            ShelfTypes.Normal => false,
+            ShelfTypes.Refrigerator => false,
+            ShelfTypes.Freezer => false,
+            ShelfTypes.DoubleSided =>  true,
+            _ => throw new ArgumentOutOfRangeException(nameof(shelfType), shelfType, null),
+        };
+    }
+
+    public static List<ShelfTypes> GetAllShelfTypes()
+    {
+        return Enum.GetValues(typeof(ShelfTypes)).Cast<ShelfTypes>().ToList();
+    }
 }

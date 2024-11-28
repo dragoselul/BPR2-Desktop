@@ -49,9 +49,15 @@ public partial class MicroManagementViewModel: ViewModel
             },
             new NavigationViewItem()
             {
-                Content = "Micro Management Designer",
+                Content = "Product Viewer",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.Database24 },
+                TargetPageType = typeof(Views.Pages.MicroManagement.ProductViewer)
+            },
+            new NavigationViewItem()
+            {
+                Content = "Designer View",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Cube24 },
-                TargetPageType = typeof(Views.Pages.ShelfEditor)
+                TargetPageType = typeof(Views.Pages.MicroManagement.ShelfDesigner)
             },
         ];
 

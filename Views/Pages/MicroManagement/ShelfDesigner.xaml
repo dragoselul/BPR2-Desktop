@@ -1,0 +1,61 @@
+﻿<Page x:Class="BPR2_Desktop.Views.Pages.MicroManagement.ShelfDesigner"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:local="clr-namespace:BPR2_Desktop.Views.Pages.MicroManagement"
+      d:DataContext="{d:DesignInstance  local:ShelfDesigner, IsDesignTimeCreatable=False}"
+      d:DesignHeight="Auto" d:DesignWidth="Auto"
+      ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+      ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      mc:Ignorable="d"
+      Title="Designer">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="0.5*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="1">
+            <StackPanel VerticalAlignment="Center">
+                <Label Target="{Binding ElementName=TypeOfShelf}" Content="Select the type of shelf" Margin="5,0,0,0"/>
+                <ComboBox Name="TypeOfShelf" ItemsSource="{Binding ViewModel.Shelfs}"
+                          SelectedItem="{Binding ViewModel.SelectedItem}"
+                          Margin="5"/>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center">
+                <Label Target="{Binding ElementName=NumberOfShelves}" Margin="5,0,0,0"
+                       Content="Select the number of shelves" />
+                <ui:NumberBox PlaceholderText="Whole numbers" Name="NumberOfShelves" Text="{Binding ViewModel.NumberOfShelves, UpdateSourceTrigger=PropertyChanged}"
+                              TextChanged="{Binding ViewModel.GenerateShelfLinesCommand}" Margin="5" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center">
+                <Label Target="{Binding ElementName=DistanceBetweenShelves}" Margin="5,0,0,0"
+                       Content="Select the distance between shelves" />
+                <ui:NumberBox PlaceholderText="In centimeters" Name="DistanceBetweenShelves" Text="{Binding ViewModel.DistanceBetweenShelves, UpdateSourceTrigger=PropertyChanged}"
+                              TextChanged="{Binding ViewModel.GenerateShelfLinesCommand}" Margin="5" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center">
+                <Label Target="{Binding ElementName=ShelveThickness}" Margin="5,0,0,0"
+                       Content="Select the thickness of a shelve" />
+                <ui:NumberBox PlaceholderText="In centimeters" Name="ShelveThickness" Text="{Binding ViewModel.ShelveThickness, UpdateSourceTrigger=PropertyChanged}"
+                              TextChanged="{Binding ViewModel.GenerateShelfLinesCommand}" Margin="5" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center">
+                <Label Target="{Binding ElementName=HeightOfShelf}" Margin="5,0,0,0"
+                       Content="Select the height of the shelf" />
+                <ui:NumberBox PlaceholderText="In meters" Name="HeightOfShelf" Text="{Binding ViewModel.HeightOfShelf, UpdateSourceTrigger=PropertyChanged}"
+                              TextChanged="{Binding ViewModel.GenerateShelfLinesCommand}" Margin="5" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center">
+                <Label Target="{Binding ElementName=WidthOfShelf}" Margin="5,0,0,0"
+                       Content="Select the width of the shelf" />
+                <ui:NumberBox PlaceholderText="In meters" Name="WidthOfShelf" Text="{Binding ViewModel.WidthOfShelf, UpdateSourceTrigger=PropertyChanged}"
+                              TextChanged="{Binding ViewModel.GenerateShelfLinesCommand}" Margin="5" />
+            </StackPanel>
+        </StackPanel>
+        <Canvas Grid.Column="0" Background="DarkGray" Margin="10">
+            <ItemsControl ItemsSource="{Binding ViewModel.Items}"></ItemsControl>
+        </Canvas>
+    </Grid>
+</Page>
