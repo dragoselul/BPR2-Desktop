@@ -21,6 +21,7 @@ namespace BPR2_Desktop;
 public partial class App
 {
     private static string? path { get; set; }
+    private static string? dbType { get; set; }
 
     private static readonly IHost _host = Host.CreateDefaultBuilder()
         .ConfigureAppConfiguration(c =>
@@ -49,7 +50,26 @@ public partial class App
                 _ = services.AddSingleton<INavigationService, NavigationService>();
                 string connectionString = LoadDBOptions();
                 _ = services.AddDbContext<ProductContext>(
-                    options => { options.UseAzureSql(connectionString).UseLazyLoadingProxies(); },
+                    options =>
+                    {
+                        switch (dbType)
+                        {
+                            case "postgres":
+                            {
+                                options.UseNpgsql(connectionString).UseLazyLoadingProxies();
+                                break;
+                            }
+                            case "azureSQL":
+                            {
+                                options.UseSqlServer(connectionString).UseLazyLoadingProxies();
+                                break;
+                            }
+                            default:
+                            {
+                                throw new Exception("Database type not supported");
+                            }
+                        }
+                    },
                     ServiceLifetime.Transient);
 
                 // Windows
@@ -136,8 +156,16 @@ public partial class App
         string database = Environment.GetEnvironmentVariable("DB_NAME") ?? "postgres";
         string user = Environment.GetEnvironmentVariable("DB_USERNAME") ?? "postgres";
         string password = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "123";
-        string connectionString =
-            $"Server=tcp:{server},1433;User ID={user};Password={password};Initial Catalog={database};";
+        string connectionString = "";
+        if (server == "localhost") // for now, we will use postgres in development
+        {
+            dbType = "postgres"; //used in development
+            connectionString = $"Host={server};Port=5432;Database={database};Username={user};Password={password};";
+            return connectionString;
+        }
+
+        dbType = "azureSQL"; //used in production
+        connectionString = $"Server=tcp:{server},1433;User ID={user};Password={password};Initial Catalog={database};";
         return connectionString +
                "Persist Security Info=False;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=5;";
     }
