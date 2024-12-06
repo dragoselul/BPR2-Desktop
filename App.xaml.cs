@@ -93,7 +93,12 @@ public partial class App
                     new ItemSidePanelViewModel(
                         serviceProvider.GetRequiredService<ProductContext>()));
                 _ = services.AddTransient<Views.Components.MicroManagement.ItemsSidePanel>();
-                _ = services.AddTransient<Views.Pages.MicroManagement.ProductViewer>();
+                _ = services.AddTransient<Views.Pages.MicroManagement.ProductViewer>(
+                    serviceProvider => new Views.Pages.MicroManagement.ProductViewer(
+                        serviceProvider.GetRequiredService<ProductViewModel>(),
+                        serviceProvider.GetRequiredService<Views.Components.MicroManagement.ItemsSidePanel>()
+                    )
+                );
 
                 // Configuration
                 _ = services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));

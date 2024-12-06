@@ -11,11 +11,6 @@ public partial class ItemsSidePanel: UserControl
 {
     public ItemSidePanelViewModel ViewModel { get; }
     private bool isLoading = false;
-
-    public ItemsSidePanel()
-    {
-        InitializeComponent();
-    }
     
     public ItemsSidePanel(ItemSidePanelViewModel vm)
     {

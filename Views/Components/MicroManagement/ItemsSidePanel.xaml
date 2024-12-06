@@ -27,8 +27,8 @@
                      VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling">
             <ui:ListView.View>
                 <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Products">
-                    <GridViewColumn Header="ProductName" DisplayMemberBinding="{Binding Product_Name}" Width="200"/>
-                    <GridViewColumn Header="Category" DisplayMemberBinding="{Binding Category}" Width="200"/>
+                    <GridViewColumn Header="Product Name" DisplayMemberBinding="{Binding Product_Name }" Width="Auto"/>
+                    <GridViewColumn Header="Category" DisplayMemberBinding="{Binding Category}" Width="Auto"/>
                 </GridView>
             </ui:ListView.View>
         </ui:ListView>

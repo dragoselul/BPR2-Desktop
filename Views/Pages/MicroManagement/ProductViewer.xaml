@@ -14,12 +14,11 @@
       Foreground="{DynamicResource TextFillColorPrimaryBrush}">
     <Grid Name="MainGrid" Margin="0,0,0,24">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="4*"/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Margin="20">
             <micromanagement:ShelfPanel Width="Auto" Height="Auto" Margin="20"/>
         </StackPanel>
-        <micromanagement:ItemsSidePanel Grid.Column="1" Margin="10"/>
     </Grid>
 </Page>
