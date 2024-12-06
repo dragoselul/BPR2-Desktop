@@ -105,15 +105,27 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
       <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0-preview1" />
+      <PackageReference Include="DotNetEnv" Version="3.1.1" />
       <PackageReference Include="HelixToolkit" Version="2.25.0" />
       <PackageReference Include="HelixToolkit.Wpf" Version="2.25.0" />
       <PackageReference Include="HelixToolkit.Wpf.Input" Version="2.25.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.1" />
       <PackageReference Include="System.Text.Json" Version="9.0.0" />
       <PackageReference Include="WPF-UI" Version="4.0.0-rc.2" />
       <PackageReference Include="WPF-UI.DependencyInjection" Version="4.0.0-rc.2" />
-      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0-rc.2" />
     </ItemGroup>
 
     <ItemGroup>

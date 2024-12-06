@@ -18,6 +18,7 @@ public partial class DesignerViewModel : ViewModel
         Shelves = new List<Shelf>();
         _sceneObjects = new List<ModelVisual3D>();
         CreateFloor();
+        LoadShelf();
     }
 
     private void CreateFloor()
@@ -41,5 +42,11 @@ public partial class DesignerViewModel : ViewModel
         SceneObjects.Add(floor);
     }
     
+    public void LoadShelf()
+    {
+        var shelf = new Shelf(new Point3D(0, 0, 0), ShelfTypes.DoubleSided);
+        Shelves.Add(shelf);
+        SceneObjects.Add(shelf.LoadObjModel());
+    }
     
 }

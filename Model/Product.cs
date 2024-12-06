@@ -1,13 +1,17 @@
-﻿namespace BPR2_Desktop.Model;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BPR2_Desktop.Model;
 
 public class Product
 {
-    public required string StoreName { get; init; }
+    public required string Store_Name { get; init; }
     public required string Department { get; init; }
     public required string Category { get; init; }
-    public required string MainEAN { get; init; }
-    public required string ProductName { get; init; }
-    public required decimal ProductWidth { get; init; }
-    public required decimal ProductHeight { get; init; }
-    public required decimal ProductDepth { get; init; }
+    [Key]
+    public required string Main_EAN { get; init; }
+    public required string Product_Name { get; init; }
+    public required double Product_Width { get; init; }
+    public required double Product_Height { get; init; }
+    public required double Product_Depth { get; init; }
 }

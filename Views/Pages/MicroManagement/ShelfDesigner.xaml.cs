@@ -13,4 +13,9 @@ public partial class ShelfDesigner : INavigableView<ViewModels.MicroManagement.S
         DataContext = this;
         InitializeComponent();
     }
+
+    private void OnTextChanged(object sender, TextChangedEventArgs e)
+    {
+        ViewModel.GenerateShelfLinesCommand.Execute(null);
+    }
 }
