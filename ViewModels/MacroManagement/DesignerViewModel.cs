@@ -4,20 +4,21 @@ using BPR2_Desktop.Model;
 using BPR2_Desktop.Model.Enums;
 using HelixToolkit.Wpf;
 
-namespace BPR2_Desktop.ViewModels;
+namespace BPR2_Desktop.ViewModels.MacroManagement;
 
-public partial class MacroManagementDesignerViewModel : ViewModel
+public partial class DesignerViewModel : ViewModel
 {
     [ObservableProperty] private List<ModelVisual3D> _sceneObjects;
     public List<Shelf> Shelves { get; set; }
     
     public ModelVisual3D floor { get; set; }
     
-    public MacroManagementDesignerViewModel()
+    public DesignerViewModel()
     {
         Shelves = new List<Shelf>();
         _sceneObjects = new List<ModelVisual3D>();
         CreateFloor();
+        LoadShelf();
     }
 
     private void CreateFloor()
@@ -41,5 +42,11 @@ public partial class MacroManagementDesignerViewModel : ViewModel
         SceneObjects.Add(floor);
     }
     
+    public void LoadShelf()
+    {
+        var shelf = new Shelf(new Point3D(0, 0, 0), ShelfTypes.DoubleSided);
+        Shelves.Add(shelf);
+        SceneObjects.Add(shelf.LoadObjModel());
+    }
     
 }

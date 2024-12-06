@@ -3,3 +3,6 @@
 /bin/Debug
 /UnitTests/obj
 /UnitTests/bin/Debug
+.env
+/.env
+/BPR2-Desktop.sln.DotSettings.user

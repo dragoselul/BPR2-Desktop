@@ -3,9 +3,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Wpf.Ui;
 using Wpf.Ui.Controls;
 
-namespace BPR2_Desktop.ViewModels;
+namespace BPR2_Desktop.ViewModels.MicroManagement;
 
-public partial class MacroManagementViewModel: ViewModel
+public partial class MicroManagementViewModel: ViewModel
 {
     private bool _isInitialized = false;
     
@@ -27,7 +27,7 @@ public partial class MacroManagementViewModel: ViewModel
     [ObservableProperty]
     private ObservableCollection<MenuItem> _trayMenuItems = [];
     
-    public MacroManagementViewModel(INavigationService navigationService)
+    public MicroManagementViewModel(INavigationService navigationService)
     {
         if (!_isInitialized)
         {
@@ -37,7 +37,7 @@ public partial class MacroManagementViewModel: ViewModel
 
     private void InitializeViewModel()
     {
-        ApplicationTitle = "Dataverse Wizards - Macro Management Store Layout System";
+        ApplicationTitle = "Dataverse Wizards - Micro Management Shelfing Layout System";
 
         NavigationItems =
         [
@@ -49,15 +49,15 @@ public partial class MacroManagementViewModel: ViewModel
             },
             new NavigationViewItem()
             {
-                Content = "Design Editor",
-                Icon = new SymbolIcon { Symbol = SymbolRegular.DataHistogram24 },
-                TargetPageType = typeof(Views.Pages.DesignEditor)
+                Content = "Layout Designer",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.Database24 },
+                TargetPageType = typeof(Views.Pages.MicroManagement.ProductViewer)
             },
             new NavigationViewItem()
             {
-                Content = "Macro Management Designer",
+                Content = "Shelf Designer",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Cube24 },
-                TargetPageType = typeof(Views.Pages.MacroManagementDesigner)
+                TargetPageType = typeof(Views.Pages.MicroManagement.ShelfDesigner)
             },
         ];
 

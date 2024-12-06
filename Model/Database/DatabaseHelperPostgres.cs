@@ -4,7 +4,7 @@ using Npgsql;
 
 namespace BPR2_Desktop.Database;
 
-public class DatabaseHelper
+public class DatabaseHelperPostgres
 {
     private const string ConnectionString = "Host=localhost;Username=postgres;Password=123;Database=postgres";
 

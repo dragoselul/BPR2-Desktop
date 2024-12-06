@@ -1,0 +1,78 @@
+﻿<Page x:Class="BPR2_Desktop.Views.Pages.MicroManagement.ShelfDesigner"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:local="clr-namespace:BPR2_Desktop.Views.Pages.MicroManagement"
+      xmlns:h="http://helix-toolkit.org/wpf"
+      d:DataContext="{d:DesignInstance  local:ShelfDesigner, IsDesignTimeCreatable=False}"
+      d:DesignHeight="Auto" d:DesignWidth="Auto"
+      ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+      ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      mc:Ignorable="d"
+      Title="Shelf Designer">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="0.5*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="1">
+            <StackPanel VerticalAlignment="Center">
+                <Label Target="{Binding ElementName=TypeOfShelf}" Content="Select the type of shelf" Margin="5,0,0,0" />
+                <ComboBox Name="TypeOfShelf" ItemsSource="{Binding ViewModel.Shelfs}"
+                          SelectedItem="{Binding ViewModel.SelectedItem}"
+                          Margin="5" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center">
+                <Label Target="{Binding ElementName=NumberOfShelves}" Margin="5,0,0,0"
+                       Content="Select the number of shelves" />
+                <ui:TextBox PlaceholderText="Whole numbers" Name="NumberOfShelves"
+                              Text="{Binding ViewModel.NumberOfShelves, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              TextChanged="OnTextChanged" Margin="5" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center">
+                <Label Target="{Binding ElementName=DistanceBetweenShelves}" Margin="5,0,0,0"
+                       Content="Select the distance between shelves" />
+                <ui:TextBox PlaceholderText="In centimeters" Name="DistanceBetweenShelves"
+                            Text="{Binding ViewModel.DistanceBetweenShelves, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            TextChanged="OnTextChanged" Margin="5" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center">
+                <Label Target="{Binding ElementName=ShelveThickness}" Margin="5,0,0,0"
+                       Content="Select the thickness of a shelve" />
+                <ui:TextBox PlaceholderText="In centimeters" Name="ShelveThickness"
+                            Text="{Binding ViewModel.ShelveThickness, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            TextChanged="OnTextChanged" Margin="5" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center">
+                <Label Target="{Binding ElementName=HeightOfShelf}" Margin="5,0,0,0"
+                       Content="Select the height of the shelf" />
+                <ui:TextBox PlaceholderText="In meters" Name="HeightOfShelf"
+                            Text="{Binding ViewModel.HeightOfShelf, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            TextChanged="OnTextChanged" Margin="5" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center">
+                <Label Target="{Binding ElementName=WidthOfShelf}" Margin="5,0,0,0"
+                       Content="Select the width of the shelf" />
+                <ui:TextBox PlaceholderText="In meters" Name="WidthOfShelf"
+                            Text="{Binding ViewModel.WidthOfShelf, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            TextChanged="OnTextChanged" Margin="5" />
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center">
+                <Label Target="{Binding ElementName=WidthOfShelf}" Margin="5,0,0,0"
+                       Content="Select the width of the shelf" />
+                <ui:Button Margin="5" Content="Save" Icon="Save24"/>
+            </StackPanel>
+        </StackPanel>
+        <h:HelixViewport3D Grid.Column="0" ShowViewCube="False" IsPanEnabled="True" IsRotationEnabled="False"
+                           IsZoomEnabled="True" Orthographic="True" ShowCameraInfo="False"
+                           ItemsSource="{Binding ViewModel.SceneObjects, Mode=TwoWay, BindsDirectlyToSource=True}">
+            
+        <h:HelixViewport3D.Camera>
+            <OrthographicCamera Position="100,35,150" LookDirection="0, 0, -140" UpDirection="0,1,0"
+                                NearPlaneDistance="0.125" Width="250" />
+        </h:HelixViewport3D.Camera>
+        </h:HelixViewport3D>
+    </Grid>
+</Page>

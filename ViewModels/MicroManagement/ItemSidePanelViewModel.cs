@@ -1,30 +1,33 @@
 ﻿using System.Collections.ObjectModel;
-using System.Data;
 using BPR2_Desktop.Database;
 using BPR2_Desktop.Model;
 
-namespace BPR2_Desktop.ViewModels;
+namespace BPR2_Desktop.ViewModels.MicroManagement;
 
-public partial class ProductViewModel : ViewModel
+public partial class ItemSidePanelViewModel: ViewModel
 {
     private const int PageSize = 100; // Number of rows to fetch at a time
     private int _currentOffset = 0;
-
+    private readonly ProductContext _context;
     [ObservableProperty] private ObservableCollection<Product> _products;
     [ObservableProperty] private ObservableCollection<Product> _allProducts;
     [ObservableProperty] private ObservableCollection<string> _categories;
     [ObservableProperty] private string _searchQuery;
     [ObservableProperty] private string _selectedCategory;
     
-    public ProductViewModel()
+    public ItemSidePanelViewModel(ProductContext context)
+    {
+        _context = context;
+        InitializeViewModel();
+    }
+
+    private void InitializeViewModel()
     {
         Products = new ObservableCollection<Product>();
         AllProducts = new ObservableCollection<Product>();
         Categories = new ObservableCollection<string>();
         SearchQuery = string.Empty;
         SelectedCategory = "All Categories";
-        LoadAllCategories();
-        LoadProducts();
     }
     
     partial void OnSearchQueryChanged(string value)
@@ -35,50 +38,37 @@ public partial class ProductViewModel : ViewModel
     partial void OnSelectedCategoryChanged(string value)
     {
         _currentOffset = 0;
-        LoadProducts();
+        if(Categories.Count == 0)
+        {
+            return;
+        }
+
+        Task.Run(async () => await LoadProducts());
     }
 
-    private async void LoadAllCategories()
+    public async Task LoadAllCategories()
     {
-        var dbHelper = new DatabaseHelper();
-        Task<List<string>> allCategoriesTask = Task.Run(() => dbHelper.GetAllCategories());
-        var allCategories = await allCategoriesTask;
+        List<string> allCategories = await _context.GetAllCategories();
 
         Categories.Add("All Categories"); // Default option
+        SelectedCategory = Categories[0];
         foreach (var category in allCategories)
         {
             Categories.Add(category);
         }
     }
-
-    public async void LoadProducts()
+    public async Task LoadProducts()
     {
-        var dbHelper = new DatabaseHelper();
-        Task<DataTable> dataTask = Task.Run(() => dbHelper.GetProducts(PageSize, _currentOffset, SelectedCategory));
-        var dataTable = await dataTask;
+        List<Product> products = await _context.GetProducts(PageSize, _currentOffset, SelectedCategory);
         if (_currentOffset == 0)
         {
             Products.Clear();
         }
-
-        foreach (DataRow row in dataTable.Rows)
+        foreach (var product in products)
         {
-            var product = new Product
-            {
-                StoreName = row.Field<string>("store_name") ?? string.Empty,
-                Department = row.Field<string>("department") ?? string.Empty,
-                Category = row.Field<string>("category") ?? string.Empty,
-                MainEAN = row.Field<string>("main_ean") ?? string.Empty,
-                ProductName = row.Field<string>("product_name") ?? string.Empty,
-                ProductWidth = row.Field<decimal>("product_width"),
-                ProductHeight = row.Field<decimal>("product_height"),
-                ProductDepth = row.Field<decimal>("product_depth")
-            };
-
             AllProducts.Add(product);
             Products.Add(product);
         }
-
         _currentOffset += PageSize;
     }
 
@@ -86,7 +76,7 @@ public partial class ProductViewModel : ViewModel
     {
         var filtered = AllProducts.Where(p =>
             (string.IsNullOrEmpty(SearchQuery) ||
-             p.ProductName.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase)) &&
+             p.Product_Name.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase)) &&
             (SelectedCategory == "All Categories" || string.IsNullOrEmpty(SelectedCategory) ||
              p.Category == SelectedCategory)).ToList();
 

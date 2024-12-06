@@ -28,7 +28,7 @@ public partial class MainWindowViewModel
     private void OnMacromanagementClick()
     {
         var currentWindow = Application.Current.MainWindow;
-        var macroManagementWindow = _serviceProvider.GetRequiredService<MacroManagement>();
+        var macroManagementWindow = _serviceProvider.GetRequiredService<Views.Windows.MacroManagement>();
         if (currentWindow == null)
         {
             macroManagementWindow.Show();
@@ -71,7 +71,7 @@ public partial class MainWindowViewModel
     private void OnMicromanagementClick()
     {
         var currentWindow = Application.Current.MainWindow;
-        var microManagementWindow = _serviceProvider.GetRequiredService<MicroManagement>();
+        var microManagementWindow = _serviceProvider.GetRequiredService<Views.Windows.MicroManagement>();
         if (currentWindow == null)
         {
             microManagementWindow.Show();

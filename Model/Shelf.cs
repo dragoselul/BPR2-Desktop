@@ -20,7 +20,7 @@ public class Shelf
         _dimension = shelfType.GetShelfSizes();
     }
     
-    private ModelVisual3D LoadObjModel()
+    public ModelVisual3D LoadObjModel()
     {
         // Create a new importer
         var importer = new ObjReader();
