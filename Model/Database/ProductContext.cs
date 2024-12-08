@@ -13,6 +13,7 @@ namespace BPR2_Desktop.Database;
 public class ProductContext : DbContext
 {
     public DbSet<Product> Products { get; set; }
+    public DbSet<ProductImage> ProductImages { get; set; }
 
     public ProductContext(DbContextOptions<ProductContext> options) : base(options)
     {
@@ -34,7 +35,7 @@ public class ProductContext : DbContext
             .ToListAsync();
     }
 
-    public Task<Product> GetProductByEAN(string ean)
+    public Task<Product?> GetProductByEAN(string ean)
     {
         return Products
             .FirstOrDefaultAsync(p => p.Main_EAN == ean);
@@ -68,5 +69,17 @@ public class ProductContext : DbContext
             .Take(pageSize);
         Task<List<Product>> list = query.ToListAsync();
         return list;
+    }
+    
+    public Task<List<ProductImage>> GetImagesForProducts(List<string> eans)
+    {
+        return ProductImages
+            .Where(pi => eans.Contains(pi.Main_EAN))
+            .ToListAsync();
+    }
+    
+    public Task<ProductImage?> GetImageByEAN(string ean)
+    {
+        return ProductImages.FirstOrDefaultAsync(pi => pi.Main_EAN == ean);
     }
 }

@@ -52,23 +52,7 @@ public partial class App
                 _ = services.AddDbContext<ProductContext>(
                     options =>
                     {
-                        switch (dbType)
-                        {
-                            case "postgres":
-                            {
-                                options.UseNpgsql(connectionString).UseLazyLoadingProxies();
-                                break;
-                            }
-                            case "azureSQL":
-                            {
-                                options.UseSqlServer(connectionString).UseLazyLoadingProxies();
-                                break;
-                            }
-                            default:
-                            {
-                                throw new Exception("Database type not supported");
-                            }
-                        }
+                        options.UseSqlServer(connectionString).UseLazyLoadingProxies();
                     },
                     ServiceLifetime.Transient);
 
