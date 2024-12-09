@@ -62,6 +62,7 @@ public class ProductContext : DbContext
         {
             query = query.Where(p => p.Category == category);
         }
+        
 
         // Apply pagination
         query = query.OrderBy(p => p.Main_EAN)

@@ -1,8 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
-using System.Windows.Shapes;
-using System.Windows.Threading;
 using BPR2_Desktop.Model.Enums;
 using HelixToolkit.Wpf;
 
@@ -11,7 +9,7 @@ namespace BPR2_Desktop.ViewModels.MicroManagement;
 public partial class ShelfDesignerViewModel : ViewModel
 {
     [ObservableProperty] private List<ShelfTypes> _shelfs;
-    [ObservableProperty] private List<ModelVisual3D> _sceneObjects;
+    [ObservableProperty] private ObservableCollection<ModelVisual3D> _sceneObjects;
     [ObservableProperty] private ShelfTypes _selectedItem = ShelfTypes.DoubleSided;
     [ObservableProperty] private int _numberOfShelves = 5;
     [ObservableProperty] private double _distanceBetweenShelves = 20;
@@ -27,7 +25,7 @@ public partial class ShelfDesignerViewModel : ViewModel
 
     private void InitializeViewModel()
     {
-        SceneObjects = new List<ModelVisual3D>();
+        SceneObjects = new ObservableCollection<ModelVisual3D>();
         Shelfs = GetShelfs();
     }
 
@@ -40,17 +38,15 @@ public partial class ShelfDesignerViewModel : ViewModel
     private void GenerateShelfLines()
     {
         //Can we generate shelf lines?
+        HeightOfShelf = NumberOfShelves * (DistanceBetweenShelves + ShelveThickness);
         if (!CanGenerateShelfLines())
             return;
-        // Clear existing lines
-        SceneObjects.Clear();
-        // Add sunlight to the scene for better visualization
-        SceneObjects.Add(new SunLight());
+
+        ModelVisual3D[] shelfBoxes = new ModelVisual3D[NumberOfShelves];
 
         for (int i = 0; i < NumberOfShelves; i++)
         {
             double yPosition = i * (DistanceBetweenShelves + ShelveThickness);
-
             // Create a fresh mesh builder for each shelf
             var meshBuilder = new MeshBuilder();
 
@@ -74,11 +70,21 @@ public partial class ShelfDesignerViewModel : ViewModel
             };
 
             // Add the shelf box as a ModelVisual3D to the Lines collection
-            SceneObjects.Add(new ModelVisual3D
-            {
-                Content = shelfBox
-            });
+            shelfBoxes[i] = new ModelVisual3D { Content = shelfBox };
         }
+
+        Application.Current.Dispatcher.Invoke(() =>
+            {
+                // Clear existing lines
+                SceneObjects.Clear();
+                // Add sunlight to the scene for better visualization
+                SceneObjects.Add(new SunLight());
+                for (int i = 0; i < shelfBoxes.Length; i++)
+                {
+                    SceneObjects.Add(shelfBoxes[i]);
+                }
+            }
+        );
     }
 
     private bool CanGenerateShelfLines()

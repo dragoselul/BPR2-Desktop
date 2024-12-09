@@ -18,4 +18,12 @@ public partial class ShelfDesigner : INavigableView<ViewModels.MicroManagement.S
     {
         ViewModel.GenerateShelfLinesCommand.Execute(null);
     }
+
+    private void OnGotFocus(object sender, RoutedEventArgs e)
+    {
+        if (sender is TextBox textBox)
+        {
+            textBox.SelectAll();
+        }
+    }
 }

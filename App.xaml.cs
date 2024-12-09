@@ -21,7 +21,6 @@ namespace BPR2_Desktop;
 public partial class App
 {
     private static string? path { get; set; }
-    private static string? dbType { get; set; }
 
     private static readonly IHost _host = Host.CreateDefaultBuilder()
         .ConfigureAppConfiguration(c =>
@@ -50,10 +49,7 @@ public partial class App
                 _ = services.AddSingleton<INavigationService, NavigationService>();
                 string connectionString = LoadDBOptions();
                 _ = services.AddDbContext<ProductContext>(
-                    options =>
-                    {
-                        options.UseSqlServer(connectionString).UseLazyLoadingProxies();
-                    },
+                    options => { options.UseNpgsql(connectionString).UseLazyLoadingProxies(); },
                     ServiceLifetime.Transient);
 
                 // Windows
@@ -93,16 +89,7 @@ public partial class App
                 _ = services.AddSingleton<ShelfDesignerViewModel>();
                 _ = services.AddSingleton<Views.Pages.MicroManagement.ShelfDesigner>();
                 _ = services.AddTransient<ProductViewModel>();
-                _ = services.AddTransient<ItemSidePanelViewModel>(serviceProvider =>
-                    new ItemSidePanelViewModel(
-                        serviceProvider.GetRequiredService<ProductContext>()));
-                _ = services.AddTransient<Views.Components.MicroManagement.ItemsSidePanel>();
-                _ = services.AddTransient<Views.Pages.MicroManagement.ProductViewer>(
-                    serviceProvider => new Views.Pages.MicroManagement.ProductViewer(
-                        serviceProvider.GetRequiredService<ProductViewModel>(),
-                        serviceProvider.GetRequiredService<Views.Components.MicroManagement.ItemsSidePanel>()
-                    )
-                );
+                _ = services.AddTransient<Views.Pages.MicroManagement.ProductViewer>();
 
                 // Configuration
                 _ = services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
@@ -137,22 +124,20 @@ public partial class App
     {
         Env.Load(path + "/.env");
         string server = Environment.GetEnvironmentVariable("SERVER_NAME") ?? "localhost";
+        string port = Environment.GetEnvironmentVariable("DB_PORT") ?? "5432";
         string database = Environment.GetEnvironmentVariable("DB_NAME") ?? "postgres";
         string user = Environment.GetEnvironmentVariable("DB_USERNAME") ?? "postgres";
         string password = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "123";
-        string connectionString = "";
-        if (server == "localhost") // for now, we will use postgres in development
-        {
-            dbType = "postgres"; //used in development
-            connectionString = $"Host={server};Port=5432;Database={database};Username={user};Password={password};";
-            return connectionString;
-        }
+        string schema = Environment.GetEnvironmentVariable("DB_SCHEMA") ?? "public";
 
-        dbType = "azureSQL"; //used in production
-        connectionString = $"Server=tcp:{server},1433;User ID={user};Password={password};Initial Catalog={database};";
-        return connectionString +
-               "Persist Security Info=False;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=5;";
+        string connectionString = $"Host={server};Port={port};Database={database};Username={user};Password={password};";
+        connectionString += $"SearchPath={schema};";
+        connectionString +=
+            "Persist Security Info=False;TrustServerCertificate=False;";
+
+        return connectionString;
     }
+
 
     /// <summary>
     /// Occurs when an exception is thrown by an application but not handled.

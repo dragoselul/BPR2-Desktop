@@ -3,9 +3,9 @@ using System.Windows.Threading;
 using BPR2_Desktop.Database;
 using BPR2_Desktop.Model;
 
-namespace BPR2_Desktop.ViewModels.MicroManagement;
+namespace BPR2_Desktop.ViewModels.UserControls;
 
-public partial class ItemSidePanelViewModel : ViewModel
+public partial class ItemListViewModel : ViewModel
 {
     private const int PageSize = 100; // Number of rows to fetch at a time
     private int _currentOffset = 0;
@@ -15,10 +15,13 @@ public partial class ItemSidePanelViewModel : ViewModel
     [ObservableProperty] private ObservableCollection<string> _categories;
     [ObservableProperty] private string _searchQuery;
     [ObservableProperty] private string _selectedCategory;
+    [ObservableProperty] private Product _selectedProduct;
+    [ObservableProperty] private Action<Product> _onSelectedProduct;
 
-    public ItemSidePanelViewModel(ProductContext context)
+    public ItemListViewModel(ProductContext context, Action<Product> onSelectedProduct)
     {
         _context = context;
+        _onSelectedProduct = onSelectedProduct;
         InitializeViewModel();
     }
 

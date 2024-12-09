@@ -5,9 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:local="clr-namespace:BPR2_Desktop.Views.Components.MicroManagement"
+             d:DataContext="{d:DesignInstance  local:ImageDisplayPanel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="{Binding ViewModel.MaxHeight}" d:DesignWidth="{Binding ViewModel.MaxHeight}">
     <Grid>
-        <ui:Image x:Name="ProductImage" Stretch="Uniform"/>
+        <ui:Image MaxWidth="{Binding ViewModel.MaxWidth}"
+                  MaxHeight="{Binding ViewModel.MaxHeight}"
+                  Source="{Binding ViewModel.Image}" Stretch="Uniform" CornerRadius="4" BorderBrush="#33000000"/>
     </Grid>
 </UserControl>

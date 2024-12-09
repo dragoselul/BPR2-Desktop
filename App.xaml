@@ -5,7 +5,6 @@
              DispatcherUnhandledException="OnDispatcherUnhandledException"
              Exit="OnExit"
              Startup="OnStartup">
-             <!--StartupUri="/Views/Windows/OpeningScreen.xaml"-->
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

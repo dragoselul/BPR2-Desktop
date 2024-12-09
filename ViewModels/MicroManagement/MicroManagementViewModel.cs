@@ -49,7 +49,7 @@ public partial class MicroManagementViewModel: ViewModel
             },
             new NavigationViewItem()
             {
-                Content = "Layout Designer",
+                Content = "Product Viewer",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Database24 },
                 TargetPageType = typeof(Views.Pages.MicroManagement.ProductViewer)
             },
