@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using BPR2_Desktop.Model;
 using BPR2_Desktop.Model.Enums;
 using HelixToolkit.Wpf;
 
@@ -22,6 +23,8 @@ public partial class ShelfDesignerViewModel : ViewModel
     {
         InitializeViewModel();
     }
+
+    public Shelf SaveShelf { get; }
 
     private void InitializeViewModel()
     {

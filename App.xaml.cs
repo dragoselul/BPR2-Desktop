@@ -10,6 +10,7 @@ using DotNetEnv.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Wpf.Ui.DependencyInjection;
 using Wpf.Ui;
 
@@ -23,18 +24,25 @@ public partial class App
     private static string? path { get; set; }
 
     private static readonly IHost _host = Host.CreateDefaultBuilder()
-        .ConfigureAppConfiguration(c =>
+        .ConfigureAppConfiguration((context, config) =>
         {
             path =
                 Path.GetDirectoryName(AppContext.BaseDirectory + "../../../")
                 ?? throw new DirectoryNotFoundException(
                     "Unable to find the base directory of the application."
                 );
-            _ = c.SetBasePath(path);
+            _ = config.SetBasePath(path);
+            Env.Load(path+"/.env");
+            config.AddEnvironmentVariables(prefix: "DB_");
         })
         .ConfigureServices(
             (context, services) =>
             {
+                // Configuration
+                _ = services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
+                _ = services.Configure<DatabaseConfig>(context.Configuration);
+                
+                // Navigation
                 _ = services.AddNavigationViewPageProvider();
                 // App Host
                 _ = services.AddHostedService<ApplicationHostService>();
@@ -47,9 +55,11 @@ public partial class App
 
                 // Service containing navigation, same as INavigationWindow... but without window
                 _ = services.AddSingleton<INavigationService, NavigationService>();
-                string connectionString = LoadDBOptions();
-                _ = services.AddDbContext<ProductContext>(
-                    options => { options.UseNpgsql(connectionString).UseLazyLoadingProxies(); },
+                _ = services.AddDbContext<ProductContext>((serviceProvider, options) =>
+                    {
+                        var databaseConfig = serviceProvider.GetRequiredService<IOptions<DatabaseConfig>>().Value;
+                        options.UseNpgsql(databaseConfig.ConnectionString()).UseLazyLoadingProxies(); 
+                    },
                     ServiceLifetime.Transient);
 
                 // Windows
@@ -90,9 +100,6 @@ public partial class App
                 _ = services.AddSingleton<Views.Pages.MicroManagement.ShelfDesigner>();
                 _ = services.AddTransient<ProductViewModel>();
                 _ = services.AddTransient<Views.Pages.MicroManagement.ProductViewer>();
-
-                // Configuration
-                _ = services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
             }
         )
         .Build();
@@ -119,25 +126,6 @@ public partial class App
 
         _host.Dispose();
     }
-
-    private static string LoadDBOptions()
-    {
-        Env.Load(path + "/.env");
-        string server = Environment.GetEnvironmentVariable("SERVER_NAME") ?? "localhost";
-        string port = Environment.GetEnvironmentVariable("DB_PORT") ?? "5432";
-        string database = Environment.GetEnvironmentVariable("DB_NAME") ?? "postgres";
-        string user = Environment.GetEnvironmentVariable("DB_USERNAME") ?? "postgres";
-        string password = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "123";
-        string schema = Environment.GetEnvironmentVariable("DB_SCHEMA") ?? "public";
-
-        string connectionString = $"Host={server};Port={port};Database={database};Username={user};Password={password};";
-        connectionString += $"SearchPath={schema};";
-        connectionString +=
-            "Persist Security Info=False;TrustServerCertificate=False;";
-
-        return connectionString;
-    }
-
 
     /// <summary>
     /// Occurs when an exception is thrown by an application but not handled.

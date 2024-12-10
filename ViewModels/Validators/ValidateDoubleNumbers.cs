@@ -13,6 +13,11 @@ public class ValidateDoubleNumbers: ValidationRule
 
             try
             {
+                var numberOfDots = ((string)value).Count(c => c == '.');
+                if (numberOfDots > 1)
+                {
+                    return new ValidationResult(false, "Illegal characters or double dots");
+                }
                 if (((string)value).EndsWith("."))
                 {
                     number = double.Parse(((String)value) + ".0");

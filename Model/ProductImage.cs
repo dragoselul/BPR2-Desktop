@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BPR2_Desktop.Model;
 
-[Table("ProductImages", Schema = "dataversewizards")]
 public class ProductImage
 {
     [Key]

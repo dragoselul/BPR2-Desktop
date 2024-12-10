@@ -50,27 +50,45 @@
                 <Label Target="{Binding ElementName=ShelveThickness}" Margin="5,0,0,0"
                        Content="Select the thickness of a shelve" />
                 <ui:TextBox PlaceholderText="In centimeters" Name="ShelveThickness"
-                            Text="{Binding ViewModel.ShelveThickness, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            TextChanged="OnTextChanged" Margin="5" GotFocus="OnGotFocus" />
+                            TextChanged="OnTextChanged" Margin="5" GotFocus="OnGotFocus">
+                    <Binding Path="ViewModel.ShelveThickness" Mode="TwoWay"
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <v:ValidateDoubleNumbers Min="0" Max="1000" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </ui:TextBox>
             </StackPanel>
             <StackPanel VerticalAlignment="Center">
                 <Label Target="{Binding ElementName=HeightOfShelf}" Margin="5,0,0,0"
                        Content="Select the height of the shelf" />
                 <ui:TextBox PlaceholderText="In meters" Name="HeightOfShelf"
-                            Text="{Binding ViewModel.HeightOfShelf, Mode=TwoWay}"
-                            IsEnabled="False" Margin="5" />
+                            IsEnabled="False" Margin="5">
+                    <Binding Path="ViewModel.HeightOfShelf" Mode="TwoWay"
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <v:ValidateDoubleNumbers Min="0" Max="1000" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </ui:TextBox>
             </StackPanel>
             <StackPanel VerticalAlignment="Center">
                 <Label Target="{Binding ElementName=WidthOfShelf}" Margin="5,0,0,0"
                        Content="Select the width of the shelf" />
                 <ui:TextBox PlaceholderText="In meters" Name="WidthOfShelf"
-                            Text="{Binding ViewModel.WidthOfShelf, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            TextChanged="OnTextChanged" Margin="5" GotFocus="OnGotFocus" />
+                            TextChanged="OnTextChanged" Margin="5" GotFocus="OnGotFocus">
+                    <Binding Path="ViewModel.WidthOfShelf" Mode="TwoWay"
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <v:ValidateDoubleNumbers Min="0" Max="1000" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </ui:TextBox>
             </StackPanel>
             <StackPanel VerticalAlignment="Center">
                 <Label Target="{Binding ElementName=WidthOfShelf}" Margin="5,0,0,0"
                        Content="Select the width of the shelf" />
-                <ui:Button Margin="5" Content="Save" Icon="Save24" />
+                <ui:Button Margin="5" Content="Save" Icon="Save24" Command="{Binding ViewModel.SaveShelf}"/>
             </StackPanel>
         </StackPanel>
         <h:HelixViewport3D Grid.Column="0" ShowViewCube="False" IsPanEnabled="True" IsRotationEnabled="False"

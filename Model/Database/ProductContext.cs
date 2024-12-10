@@ -1,22 +1,27 @@
-﻿using System.Diagnostics;
-using System.Transactions;
-using System.Windows.Documents;
-using BPR2_Desktop.Model;
+﻿using BPR2_Desktop.Model;
 using Microsoft.EntityFrameworkCore;
-using DotNetEnv;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Options;
 
 namespace BPR2_Desktop.Database;
 
 public class ProductContext : DbContext
 {
+    private readonly string _schema;
     public DbSet<Product> Products { get; set; }
     public DbSet<ProductImage> ProductImages { get; set; }
 
-    public ProductContext(DbContextOptions<ProductContext> options) : base(options)
+    public ProductContext(DbContextOptions<ProductContext> options, IOptions<DatabaseConfig> dbConfig) : base(options)
     {
+        _schema = dbConfig.Value.Schema ?? "public";
+    }
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<Product>()
+            .ToTable("products", _schema);
+        modelBuilder.Entity<ProductImage>()
+            .ToTable("ProductImages", _schema);
     }
 
     public Task<List<string>> GetAllCategories()

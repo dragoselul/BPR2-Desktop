@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BPR2_Desktop.Model;
 
-[Table("products", Schema = "dataversewizards")]
 public class Product
 {
     public required string Store_Name { get; init; }
