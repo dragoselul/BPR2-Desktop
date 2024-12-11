@@ -122,6 +122,7 @@
       </PackageReference>
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.1" />
       <PackageReference Include="System.Text.Json" Version="9.0.0" />
       <PackageReference Include="WPF-UI" Version="4.0.0-rc.2" />
