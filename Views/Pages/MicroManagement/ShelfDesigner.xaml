@@ -21,6 +21,16 @@
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="1">
             <StackPanel VerticalAlignment="Center">
+                <Label Target="{Binding ElementName=ShelfName}" Margin="5,0,0,0"
+                       Content="Name your shelf" />
+                <ui:TextBox Name="ShelfName"
+                            TextChanged="OnTextChanged" Margin="5" GotFocus="OnGotFocus">
+                    <Binding Path="ViewModel.ShelfName" Mode="TwoWay"
+                             UpdateSourceTrigger="PropertyChanged">
+                    </Binding>
+                </ui:TextBox>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center">
                 <Label Target="{Binding ElementName=TypeOfShelf}" Content="Select the type of shelf" Margin="5,0,0,0" />
                 <ComboBox Name="TypeOfShelf" ItemsSource="{Binding ViewModel.Shelfs}"
                           SelectedItem="{Binding ViewModel.SelectedItem}"
@@ -63,8 +73,8 @@
                 <Label Target="{Binding ElementName=HeightOfShelf}" Margin="5,0,0,0"
                        Content="Select the height of the shelf" />
                 <ui:TextBox PlaceholderText="In meters" Name="HeightOfShelf"
-                            IsEnabled="False" Margin="5">
-                    <Binding Path="ViewModel.HeightOfShelf" Mode="TwoWay"
+                            IsReadOnly="True" Margin="5">
+                    <Binding Path="ViewModel.HeightOfShelf" Mode="OneWay"
                              UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
                             <v:ValidateDoubleNumbers Min="0" Max="1000" />
@@ -86,9 +96,20 @@
                 </ui:TextBox>
             </StackPanel>
             <StackPanel VerticalAlignment="Center">
-                <Label Target="{Binding ElementName=WidthOfShelf}" Margin="5,0,0,0"
-                       Content="Select the width of the shelf" />
-                <ui:Button Margin="5" Content="Save" Icon="Save24" Command="{Binding ViewModel.SaveShelf}"/>
+                <Label Target="{Binding ElementName=DepthOfShelf}" Margin="5,0,0,0"
+                       Content="Select the Depth of the shelf" />
+                <ui:TextBox PlaceholderText="In meters" Name="DepthOfShelf"
+                            TextChanged="OnTextChanged" Margin="5" GotFocus="OnGotFocus">
+                    <Binding Path="ViewModel.DepthOfShelf" Mode="TwoWay"
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <v:ValidateDoubleNumbers Min="0" Max="1000" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </ui:TextBox>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center">
+                <ui:Button Margin="5" Content="Save" Icon="Save24" Command="{Binding ViewModel.SaveShelfCommand}"/>
             </StackPanel>
         </StackPanel>
         <h:HelixViewport3D Grid.Column="0" ShowViewCube="False" IsPanEnabled="True" IsRotationEnabled="False"

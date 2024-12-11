@@ -44,7 +44,8 @@ public partial class DesignerViewModel : ViewModel
     
     public void LoadShelf()
     {
-        var shelf = new Shelf(new Point3D(0, 0, 0), ShelfTypes.DoubleSided);
+        var shelf = new Shelf(ShelfTypes.DoubleSided);
+        shelf.SetPosition(new Point3D(0,0,0));
         Shelves.Add(shelf);
         SceneObjects.Add(shelf.LoadObjModel());
     }

@@ -3,6 +3,7 @@ using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using BPR2_Desktop.Model;
 using BPR2_Desktop.Model.Enums;
+using BPR2_Desktop.Model.Helpers;
 using HelixToolkit.Wpf;
 
 namespace BPR2_Desktop.ViewModels.MicroManagement;
@@ -12,11 +13,14 @@ public partial class ShelfDesignerViewModel : ViewModel
     [ObservableProperty] private List<ShelfTypes> _shelfs;
     [ObservableProperty] private ObservableCollection<ModelVisual3D> _sceneObjects;
     [ObservableProperty] private ShelfTypes _selectedItem = ShelfTypes.DoubleSided;
-    [ObservableProperty] private int _numberOfShelves = 5;
-    [ObservableProperty] private double _distanceBetweenShelves = 20;
-    [ObservableProperty] private double _heightOfShelf = 200;
-    [ObservableProperty] private double _widthOfShelf = 200;
-    [ObservableProperty] private double _shelveThickness = 3;
+    [ObservableProperty] private string _shelfName;
+    [ObservableProperty] private int _numberOfShelves;
+    [ObservableProperty] private double _distanceBetweenShelves;
+    [ObservableProperty] private double _heightOfShelf;
+    [ObservableProperty] private double _widthOfShelf;
+    [ObservableProperty] private double _depthOfShelf;
+    [ObservableProperty] private double _shelveThickness;
+    private Shelf _shelf;
 
 
     public ShelfDesignerViewModel()
@@ -24,12 +28,11 @@ public partial class ShelfDesignerViewModel : ViewModel
         InitializeViewModel();
     }
 
-    public Shelf SaveShelf { get; }
-
     private void InitializeViewModel()
     {
         SceneObjects = new ObservableCollection<ModelVisual3D>();
         Shelfs = GetShelfs();
+        _shelf = new Shelf(ShelfTypes.DoubleSided); // Default shelf type for now
     }
 
     private List<ShelfTypes> GetShelfs()
@@ -45,36 +48,8 @@ public partial class ShelfDesignerViewModel : ViewModel
         if (!CanGenerateShelfLines())
             return;
 
-        ModelVisual3D[] shelfBoxes = new ModelVisual3D[NumberOfShelves];
-
-        for (int i = 0; i < NumberOfShelves; i++)
-        {
-            double yPosition = i * (DistanceBetweenShelves + ShelveThickness);
-            // Create a fresh mesh builder for each shelf
-            var meshBuilder = new MeshBuilder();
-
-            // AddBox requires the center point and size for the box
-            meshBuilder.AddBox(
-                center: new Point3D(WidthOfShelf / 2, yPosition, 0), // Center point of the box
-                xlength: WidthOfShelf, // Length in the X direction (Width of the shelf)
-                ylength: ShelveThickness, // Length in the Y direction (Thickness of the shelf)
-                zlength: 0.3 // Length in the Z direction (Depth of the shelf, arbitrarily set to 0.3)
-            );
-
-            // Convert the mesh to a GeometryModel3D and add materials
-            var boxMesh = meshBuilder.ToMesh();
-            var boxMaterial = MaterialHelper.CreateMaterial(Colors.White);
-
-            var shelfBox = new GeometryModel3D
-            {
-                Geometry = boxMesh,
-                Material = boxMaterial,
-                BackMaterial = boxMaterial
-            };
-
-            // Add the shelf box as a ModelVisual3D to the Lines collection
-            shelfBoxes[i] = new ModelVisual3D { Content = shelfBox };
-        }
+        List<ModelVisual3D> shelfBoxes = ShelfBuilder.CreateShelves(NumberOfShelves, DistanceBetweenShelves, WidthOfShelf,
+            DepthOfShelf, ShelveThickness, Colors.White);
 
         Application.Current.Dispatcher.Invoke(() =>
             {
@@ -82,12 +57,28 @@ public partial class ShelfDesignerViewModel : ViewModel
                 SceneObjects.Clear();
                 // Add sunlight to the scene for better visualization
                 SceneObjects.Add(new SunLight());
-                for (int i = 0; i < shelfBoxes.Length; i++)
+                for (int i = 0; i < shelfBoxes.Count; i++)
                 {
                     SceneObjects.Add(shelfBoxes[i]);
                 }
             }
         );
+        SetShelfProperties();
+    }
+
+    private void SetShelfProperties()
+    {
+        var dimensions = new Dimensions(WidthOfShelf, HeightOfShelf, DepthOfShelf);
+        var shelfProperties = new ShelfProperties(dimensions, NumberOfShelves, DistanceBetweenShelves, ShelveThickness);
+        _shelf.SetProperties(shelfProperties);
+    }
+
+    [RelayCommand]
+    private void SaveShelf()
+    {
+        var objects = SceneObjects.Skip(1).ToList();
+        _shelf.CreateMergedObject(objects);
+        _shelf.SaveAsObj(ShelfName);
     }
 
     private bool CanGenerateShelfLines()
