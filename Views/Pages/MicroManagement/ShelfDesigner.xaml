@@ -72,7 +72,7 @@
             <StackPanel VerticalAlignment="Center">
                 <Label Target="{Binding ElementName=HeightOfShelf}" Margin="5,0,0,0"
                        Content="Select the height of the shelf" />
-                <ui:TextBox PlaceholderText="In meters" Name="HeightOfShelf"
+                <ui:TextBox PlaceholderText="In centimeters" Name="HeightOfShelf"
                             IsReadOnly="True" Margin="5">
                     <Binding Path="ViewModel.HeightOfShelf" Mode="OneWay"
                              UpdateSourceTrigger="PropertyChanged">
@@ -85,7 +85,7 @@
             <StackPanel VerticalAlignment="Center">
                 <Label Target="{Binding ElementName=WidthOfShelf}" Margin="5,0,0,0"
                        Content="Select the width of the shelf" />
-                <ui:TextBox PlaceholderText="In meters" Name="WidthOfShelf"
+                <ui:TextBox PlaceholderText="In centimeters" Name="WidthOfShelf"
                             TextChanged="OnTextChanged" Margin="5" GotFocus="OnGotFocus">
                     <Binding Path="ViewModel.WidthOfShelf" Mode="TwoWay"
                              UpdateSourceTrigger="PropertyChanged">
@@ -98,7 +98,7 @@
             <StackPanel VerticalAlignment="Center">
                 <Label Target="{Binding ElementName=DepthOfShelf}" Margin="5,0,0,0"
                        Content="Select the Depth of the shelf" />
-                <ui:TextBox PlaceholderText="In meters" Name="DepthOfShelf"
+                <ui:TextBox PlaceholderText="In centimeters" Name="DepthOfShelf"
                             TextChanged="OnTextChanged" Margin="5" GotFocus="OnGotFocus">
                     <Binding Path="ViewModel.DepthOfShelf" Mode="TwoWay"
                              UpdateSourceTrigger="PropertyChanged">
@@ -109,7 +109,7 @@
                 </ui:TextBox>
             </StackPanel>
             <StackPanel VerticalAlignment="Center">
-                <ui:Button Margin="5" Content="Save" Icon="Save24" Command="{Binding ViewModel.SaveShelfCommand}"/>
+                <ui:Button IsEnabled="{Binding ViewModel.CanGenerateShelfLines}" Margin="5" Content="Save" Icon="Save24" Command="{Binding ViewModel.SaveShelfCommand}"/>
             </StackPanel>
         </StackPanel>
         <h:HelixViewport3D Grid.Column="0" ShowViewCube="False" IsPanEnabled="True" IsRotationEnabled="False"

@@ -14,7 +14,7 @@ public class ProductContext : DbContext
     {
         _schema = dbConfig.Value.Schema ?? "public";
     }
-    
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -67,7 +67,7 @@ public class ProductContext : DbContext
         {
             query = query.Where(p => p.Category == category);
         }
-        
+
 
         // Apply pagination
         query = query.OrderBy(p => p.Main_EAN)
@@ -76,14 +76,22 @@ public class ProductContext : DbContext
         Task<List<Product>> list = query.ToListAsync();
         return list;
     }
-    
+
+    public async Task<List<Product>> GetProductsByName(string name)
+    {
+            var upperName = $"%{name.ToUpper()}%"; // Prepare the search string with UPPER
+            return await Products
+                .Where(p => EF.Functions.Like(p.Product_Name.ToUpper(), upperName))
+                .ToListAsync();
+    }
+
     public Task<List<ProductImage>> GetImagesForProducts(List<string> eans)
     {
         return ProductImages
             .Where(pi => eans.Contains(pi.Main_EAN))
             .ToListAsync();
     }
-    
+
     public Task<ProductImage?> GetImageByEAN(string ean)
     {
         return ProductImages.FirstOrDefaultAsync(pi => pi.Main_EAN == ean);

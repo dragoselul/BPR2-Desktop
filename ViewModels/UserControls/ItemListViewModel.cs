@@ -36,7 +36,29 @@ public partial class ItemListViewModel : ViewModel
 
     partial void OnSearchQueryChanged(string value)
     {
-        FilterProducts();
+        if (string.IsNullOrEmpty(value))
+        {
+            UpdateProducts(AllProducts.ToList());
+            return;
+        }
+        
+        Application.Current.Dispatcher.Invoke( async () =>
+        {
+            List<Product> products = await FilterProducts(value);
+            UpdateProducts(products);
+        });
+    }
+    
+    public void UpdateProducts(List<Product> products)
+    {
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+            Products.Clear();
+            foreach (var product in products)
+            {
+                Products.Add(product);
+            }
+        });
     }
 
     partial void OnSelectedCategoryChanged(string value)
@@ -111,18 +133,9 @@ public partial class ItemListViewModel : ViewModel
     }
 
 
-    private void FilterProducts()
+    private async Task<List<Product>> FilterProducts(string name)
     {
-        var filtered = AllProducts.Where(p =>
-            (string.IsNullOrEmpty(SearchQuery) ||
-             p.Product_Name.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase)) &&
-            (SelectedCategory == "All Categories" || string.IsNullOrEmpty(SelectedCategory) ||
-             p.Category == SelectedCategory)).ToList();
-
-        Products.Clear();
-        foreach (var product in filtered)
-        {
-            Products.Add(product);
-        }
+        List<Product> products = await _context.GetProductsByName(name);
+        return products;
     }
 }

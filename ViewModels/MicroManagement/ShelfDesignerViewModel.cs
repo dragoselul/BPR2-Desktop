@@ -20,6 +20,7 @@ public partial class ShelfDesignerViewModel : ViewModel
     [ObservableProperty] private double _widthOfShelf;
     [ObservableProperty] private double _depthOfShelf;
     [ObservableProperty] private double _shelveThickness;
+    [ObservableProperty] private bool _canGenerateShelfLines;
     private Shelf _shelf;
 
 
@@ -45,7 +46,8 @@ public partial class ShelfDesignerViewModel : ViewModel
     {
         //Can we generate shelf lines?
         HeightOfShelf = NumberOfShelves * (DistanceBetweenShelves + ShelveThickness);
-        if (!CanGenerateShelfLines())
+        CanGenerateShelfLines = CanGenerateShelves();
+        if (!CanGenerateShelfLines)
             return;
 
         List<ModelVisual3D> shelfBoxes = ShelfBuilder.CreateShelves(NumberOfShelves, DistanceBetweenShelves, WidthOfShelf,
@@ -80,8 +82,8 @@ public partial class ShelfDesignerViewModel : ViewModel
         _shelf.CreateMergedObject(objects);
         _shelf.SaveAsObj(ShelfName);
     }
-
-    private bool CanGenerateShelfLines()
+    
+    private bool CanGenerateShelves()
     {
         if (DistanceBetweenShelves <= 0)
             return false;
@@ -92,6 +94,8 @@ public partial class ShelfDesignerViewModel : ViewModel
         if (HeightOfShelf <= 0)
             return false;
         if (NumberOfShelves <= 0)
+            return false;
+        if (DepthOfShelf <= 0)
             return false;
         return true;
     }
