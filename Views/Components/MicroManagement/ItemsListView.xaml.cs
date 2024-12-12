@@ -54,14 +54,3 @@ public partial class ItemsListView : UserControl
         ViewModel.OnSelectedProduct(ViewModel.SelectedProduct);
     }
 }
-
-// TODO: remove this comment later, since this is nice to know
-// Option 1: Handle DataContextChanged event: runs multiple times depending on the DataContext changes
-// DataContextChanged += ItemsListView_DataContextChanged;
-
-// private void ItemsListView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-// {
-//     if (DataContext is not ItemListViewModel vm) return;
-//     ViewModel = vm;
-//     Task.Run(async () => await LoadComponent());
-// }
