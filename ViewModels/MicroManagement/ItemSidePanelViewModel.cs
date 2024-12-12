@@ -21,6 +21,11 @@ public partial class ItemSidePanelViewModel: ViewModel
         InitializeViewModel();
     }
 
+    public ItemSidePanelViewModel()
+    {
+        InitializeViewModel();
+    }
+
     private void InitializeViewModel()
     {
         Products = new ObservableCollection<Product>();
@@ -72,7 +77,7 @@ public partial class ItemSidePanelViewModel: ViewModel
         _currentOffset += PageSize;
     }
 
-    private void FilterProducts()
+    internal void FilterProducts()
     {
         var filtered = AllProducts.Where(p =>
             (string.IsNullOrEmpty(SearchQuery) ||

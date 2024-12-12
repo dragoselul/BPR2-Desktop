@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Windows;
@@ -21,7 +22,7 @@ namespace BPR2_Desktop.Views.Components
 
         private Point? _lastDragPoint;
         private double _zoom = 1.0;
-        private const double ZoomFactor = 0.1;
+        internal readonly double ZoomFactor = 0.1;
         public event Action<UIElement> ElementClicked;
         public event Action CanvasClicked;
 
@@ -160,7 +161,7 @@ namespace BPR2_Desktop.Views.Components
         }
 
         // Handles the drop event when a new asset is dragged onto the canvas
-        private void Canvas_Drop(object sender, DragEventArgs e)
+        internal void Canvas_Drop(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.StringFormat))
             {
@@ -206,7 +207,7 @@ namespace BPR2_Desktop.Views.Components
         }
 
         // Handles dragging over the canvas (changing cursor to indicate drop target)
-        private void Canvas_DragOver(object sender, DragEventArgs e)
+        internal void Canvas_DragOver(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.StringFormat))
             {
@@ -253,7 +254,7 @@ namespace BPR2_Desktop.Views.Components
 
 
         // Handles element drag start inside the canvas
-        private void Element_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        internal void Element_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             UIElement clickedElement = sender as UIElement;
 
@@ -282,14 +283,16 @@ namespace BPR2_Desktop.Views.Components
             }
         }
 
-        private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            // Raise the CanvasClicked event when clicking on empty space
-            CanvasClicked?.Invoke();
-        }
+        //MethodnotUsed
+        // private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        // {
+        //     // Raise the CanvasClicked event when clicking on empty space
+        //     CanvasClicked?.Invoke();
+        // }
+        
 
         // Handles moving the dragged element within the canvas
-        private void Element_MouseMove(object sender, MouseEventArgs e)
+        internal void Element_MouseMove(object sender, MouseEventArgs e)
         {
             if (draggedElement != null && e.LeftButton == MouseButtonState.Pressed)
             {
@@ -332,8 +335,8 @@ namespace BPR2_Desktop.Views.Components
             }
         }
 
-        
-        private (double newWidth, double newHeight) GetRotatedBoundingBox(double width, double height, double angle)
+        //Method not used 
+        /*private (double newWidth, double newHeight) GetRotatedBoundingBox(double width, double height, double angle)
         {
             // Normalize the angle to fall within [0, 360) degrees
             angle %= 360;
@@ -345,7 +348,7 @@ namespace BPR2_Desktop.Views.Components
 
             // At 180 degrees, the width and height remain the same
             return (newWidth, newHeight);
-        }
+        }*/
 
         public void ApplyRotation(UIElement element, double rotationAngle)
         {
@@ -362,7 +365,7 @@ namespace BPR2_Desktop.Views.Components
             element.RenderTransform = rotateTransform;
         }
         
-        private void DrawPivotPoint(UIElement element)
+        internal void  DrawPivotPoint(UIElement element)
         {
             // Remove any existing pivot point visual
             var existingPivot = DesignCanvas.Children.OfType<Ellipse>().FirstOrDefault(e => e.Tag as string == "PivotPoint");
@@ -406,7 +409,7 @@ namespace BPR2_Desktop.Views.Components
             DesignCanvas.Children.Add(pivotMarker);
         }
         
-        private void DrawBoundingBox(UIElement draggedElement)
+        internal void DrawBoundingBox(UIElement draggedElement)
         {
             // Remove any existing bounding box visuals
             var existingBoundingBox = DesignCanvas.Children.OfType<Rectangle>().FirstOrDefault(r => r.Tag as string == "BoundingBox");
@@ -415,6 +418,7 @@ namespace BPR2_Desktop.Views.Components
                 DesignCanvas.Children.Remove(existingBoundingBox);
             }
 
+            
             // Calculate the bounding box dimensions
             double angle = draggedElement.RenderTransform is RotateTransform rotateTransform
                 ? rotateTransform.Angle
@@ -455,7 +459,7 @@ namespace BPR2_Desktop.Views.Components
             }
         }
 
-        private void OnMouseWheelZoom(object sender, MouseWheelEventArgs e)
+        internal void OnMouseWheelZoom(object sender, MouseWheelEventArgs e)
         {
             if (e.Delta > 0)
             {
@@ -470,14 +474,14 @@ namespace BPR2_Desktop.Views.Components
             e.Handled = true;
         }
 
-        private void ZoomIn_Click(object sender, RoutedEventArgs e)
+        internal void ZoomIn_Click(object sender, RoutedEventArgs e)
         {
             _zoom += ZoomFactor;
             ApplyZoom();
         }
 
         // Zoom out button click event handler
-        private void ZoomOut_Click(object sender, RoutedEventArgs e)
+        internal void ZoomOut_Click(object sender, RoutedEventArgs e)
         {
             if (_zoom > ZoomFactor)
             {
@@ -492,9 +496,24 @@ namespace BPR2_Desktop.Views.Components
             scaleTransform.ScaleX = _zoom;
             scaleTransform.ScaleY = _zoom;
         }
+        
+        //This methods are for testing purposes
+        internal double GetZoomLevel(DesignCanvasControl designCanvas)
+        {
+            // Use reflection to access the private _zoom field
+            var zoomField = typeof(DesignCanvasControl).GetField("_zoom", BindingFlags.NonPublic | BindingFlags.Instance);
+            return (double)zoomField.GetValue(designCanvas);
+        }
+        internal void SetZoomLevel(DesignCanvasControl designCanvas, double value)
+        {
+            // Use reflection to set the private _zoom field
+            var zoomField = typeof(DesignCanvasControl).GetField("_zoom", BindingFlags.NonPublic | BindingFlags.Instance);
+            zoomField.SetValue(designCanvas, value);
+        }
+        //These 2 ^
 
         // Handle dragging start
-        private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
+        internal void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.OriginalSource == DesignCanvas)
             {
@@ -526,7 +545,7 @@ namespace BPR2_Desktop.Views.Components
 
 
         // Handle drag stop
-        private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
+        internal void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if (_lastDragPoint.HasValue)
             {

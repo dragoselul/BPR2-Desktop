@@ -19,7 +19,7 @@ public partial class ProductViewer : INavigableView<ViewModels.MicroManagement.P
         DataContext = ViewModel;
     }
     
-    private async void PredictButton_Click(object sender, RoutedEventArgs e)
+    internal async void PredictButton_Click(object sender, RoutedEventArgs e)
 {
     try
     {

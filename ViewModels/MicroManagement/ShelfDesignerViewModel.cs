@@ -81,7 +81,7 @@ public partial class ShelfDesignerViewModel : ViewModel
         }
     }
 
-    private bool CanGenerateShelfLines()
+    internal bool CanGenerateShelfLines()
     {
         if (DistanceBetweenShelves <= 0)
             return false;

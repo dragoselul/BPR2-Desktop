@@ -11,12 +11,14 @@ public partial class MacroManagement : INavigationWindow
 {
     public ViewModels.MacroManagement.MacroManagementViewModel ViewModel { get; }
 
+    public MacroManagement()
+    {
+        InitializeComponent();
+    }
     public MacroManagement(ViewModels.MacroManagement.MacroManagementViewModel viewModel, INavigationService navigationService)
     {
         ViewModel = viewModel;
         DataContext = this;
-
-        Wpf.Ui.Appearance.SystemThemeWatcher.Watch(this);
 
         InitializeComponent();
         

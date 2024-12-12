@@ -12,4 +12,6 @@ public partial class Home : INavigableView<ViewModels.MacroManagement.HomeViewMo
         
         InitializeComponent();
     }
+
+ 
 }

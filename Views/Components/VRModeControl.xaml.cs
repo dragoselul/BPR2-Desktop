@@ -1,22 +1,29 @@
+using System;
 using System.IO;
-using System.Net.Sockets;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using BPR2_Desktop.Services;
 
 namespace BPR2_Desktop.Views.Components
 {
     public partial class VRModeControl : UserControl
     {
-        private TcpClient client; // Hold the TCP client to manage connection state
+        private readonly UnityClient unityClient;
+        public string LastMessage { get; private set; }
 
         public VRModeControl()
         {
             InitializeComponent();
         }
+        
+        public VRModeControl( IUnityClient unityClient)
+        {
+            InitializeComponent();
+            unityClient = new UnityClient() ?? throw new ArgumentNullException(nameof(unityClient));
+        }
 
-        private void ToggleVRMode(object sender, RoutedEventArgs e)
+        internal void ToggleVRMode(object sender, RoutedEventArgs e)
         {
             if (VRModeToggle.IsChecked == null)
             {
@@ -36,18 +43,18 @@ namespace BPR2_Desktop.Views.Components
             else
             {
                 VRModeToggle.Background = Brushes.Red;
-                CloseConnection(); // Close connection when VR is disabled
+                unityClient.CloseConnection(); // Close connection when VR is disabled
             }
         }
 
-        private void SendJsonData()
+        internal void SendJsonData()
         {
             if (AppState.Instance.CurrentDesignFile != null)
             {
                 try
                 {
                     string jsonData = File.ReadAllText(AppState.Instance.CurrentDesignFile);
-                    SendMessageToUnity(jsonData);
+                    unityClient.SendMessage(jsonData);
                 }
                 catch (Exception ex)
                 {
@@ -56,43 +63,8 @@ namespace BPR2_Desktop.Views.Components
             }
             else
             {
-                MessageBox.Show("No design file is currently selected. Please save a design first.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-        }
-
-        public void SendMessageToUnity(string message)
-        {
-            try
-            {
-                Console.WriteLine("Attempting to connect to Unity...");
-                client = new TcpClient("127.0.0.1", 13000); // Create the TCP client
-                Console.WriteLine("Connected to Unity!");
-                using (NetworkStream stream = client.GetStream())
-                {
-                    byte[] data = Encoding.ASCII.GetBytes(message);
-                    stream.Write(data, 0, data.Length);
-                    Console.WriteLine("Message sent to Unity: " + message);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Failed to send message: " + ex.Message);
-            }
-        }
-
-        private void CloseConnection()
-        {
-            if (client != null)
-            {
-                try
-                {
-                    client.Close(); // Close the TCP client connection
-                    Console.WriteLine("Connection to Unity closed.");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Failed to close connection: " + ex.Message);
-                }
+                LastMessage = "No design file is currently selected. Please save a design first.";
+                MessageBox.Show(LastMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
     }

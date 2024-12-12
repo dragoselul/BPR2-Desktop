@@ -19,13 +19,13 @@ public partial class MainWindowViewModel
     }
 
     [RelayCommand]
-    private void OnGridMouseLeftButtonDown()
+    internal void OnGridMouseLeftButtonDown()
     {
         if (Application.Current.MainWindow != null) Application.Current.MainWindow.DragMove();
     }
 
     [RelayCommand]
-    private void OnMacromanagementClick()
+    internal void OnMacromanagementClick()
     {
         var currentWindow = Application.Current.MainWindow;
         var macroManagementWindow = _serviceProvider.GetRequiredService<Views.Windows.MacroManagement>();
@@ -38,12 +38,12 @@ public partial class MainWindowViewModel
         _displayNewWindowAndCloseCurrent(macroManagementWindow, currentWindow);
     }
 
-    private bool _isFullscreen(Window currentWindow)
+    internal bool _isFullscreen(Window currentWindow)
     {
         return currentWindow.WindowState == WindowState.Maximized;
     }
     
-    private void _resizeNewWindow(Window newWindow, Window currentWindow)
+    internal void _resizeNewWindow(Window newWindow, Window currentWindow)
     {
         newWindow.Width = currentWindow.Width;
         newWindow.Height = currentWindow.Height;
@@ -55,20 +55,20 @@ public partial class MainWindowViewModel
         }
     }
 
-    private void _displayNewWindow(INavigationWindow newWindow)
+    internal void _displayNewWindow(INavigationWindow newWindow)
     {
         newWindow.ShowWindow();
         newWindow.Navigate(typeof(Views.Pages.Home));
     }
     
-    private void _displayNewWindowAndCloseCurrent(INavigationWindow newWindow, Window currentWindow)
+    internal void _displayNewWindowAndCloseCurrent(INavigationWindow newWindow, Window currentWindow)
     {
         _displayNewWindow(newWindow);
         currentWindow.Close();
     }
 
     [RelayCommand]
-    private void OnMicromanagementClick()
+    internal void OnMicromanagementClick()
     {
         var currentWindow = Application.Current.MainWindow;
         var microManagementWindow = _serviceProvider.GetRequiredService<Views.Windows.MicroManagement>();
@@ -81,14 +81,14 @@ public partial class MainWindowViewModel
     }
 
     [RelayCommand]
-    private void OnHelpClick()
+    internal void OnHelpClick()
     {
         MessageBox.Show("Contact the administrator for help", "Help", MessageBoxButton.OK,
             MessageBoxImage.Information);
     }
 
     [RelayCommand]
-    private void OnMaximizeClick()
+    internal void OnMaximizeClick()
     {
         Application.Current.MainWindow.WindowState = Application.Current.MainWindow.WindowState == WindowState.Normal
             ? WindowState.Maximized
@@ -96,13 +96,13 @@ public partial class MainWindowViewModel
     }
 
     [RelayCommand]
-    private void OnMinimizeClick()
+    internal void OnMinimizeClick()
     {
         Application.Current.MainWindow.WindowState = WindowState.Minimized;
     }
 
     [RelayCommand]
-    private void OnExitClick()
+    internal void OnExitClick()
     {
         Application.Current.Shutdown();
     }

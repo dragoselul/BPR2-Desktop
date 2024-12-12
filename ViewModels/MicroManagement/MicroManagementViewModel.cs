@@ -27,7 +27,7 @@ public partial class MicroManagementViewModel: ViewModel
     [ObservableProperty]
     private ObservableCollection<MenuItem> _trayMenuItems = [];
     
-    public MicroManagementViewModel(INavigationService navigationService)
+    public MicroManagementViewModel()
     {
         if (!_isInitialized)
         {

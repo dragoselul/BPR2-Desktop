@@ -27,7 +27,7 @@ public partial class MacroManagementViewModel: ViewModel
     [ObservableProperty]
     private ObservableCollection<MenuItem> _trayMenuItems = [];
     
-    public MacroManagementViewModel(INavigationService navigationService)
+    public MacroManagementViewModel()
     {
         if (!_isInitialized)
         {

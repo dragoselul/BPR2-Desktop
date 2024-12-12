@@ -24,8 +24,8 @@ public partial class SetDimensions : FluentWindow
         SquareDimensionsGrid.Visibility = Visibility.Collapsed;
         ComplicatedShapeGrid.Visibility = Visibility.Collapsed;
     }
-    
-    private void ShapeComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+
+    internal void ShapeComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
     {
         var selectedShape = (ShapeComboBox.SelectedItem as System.Windows.Controls.ComboBoxItem)?.Content.ToString();
 
@@ -43,7 +43,7 @@ public partial class SetDimensions : FluentWindow
         }
     }
 
-    private void Save_Click(object sender, RoutedEventArgs e)
+    internal void Save_Click(object sender, RoutedEventArgs e)
     {
         var selectedShape = (ShapeComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
 
@@ -87,7 +87,7 @@ public partial class SetDimensions : FluentWindow
 
 
 
-    private void Cancel_Click(object sender, RoutedEventArgs e)
+    internal void Cancel_Click(object sender, RoutedEventArgs e)
     {
         this.Close();
     }

@@ -21,14 +21,14 @@ namespace BPR2_Desktop.Views.Windows
             InitializeComponent();
         }
 
-        private void Button_Loaded(object sender, RoutedEventArgs e)
+        internal void Button_Loaded(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
             Storyboard storyboard = (Storyboard)FindResource("ButtonFadeIn");
             storyboard.Begin(button);
         }
         
-        private void OnMediaEnded(object sender, RoutedEventArgs e)
+        internal void OnMediaEnded(object sender, RoutedEventArgs e)
         {
             MediaElement.Position = TimeSpan.Zero;
             MediaElement.Play();

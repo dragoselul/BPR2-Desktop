@@ -11,7 +11,7 @@ namespace BPR2_Desktop.Views.Components
             InitializeComponent();
         }
 
-        private void Asset_MouseMove(object sender, MouseEventArgs e)
+        internal void Asset_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {

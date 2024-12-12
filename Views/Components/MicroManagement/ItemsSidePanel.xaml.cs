@@ -33,7 +33,7 @@ public partial class ItemsSidePanel: UserControl
         isLoading = false;
     }
 
-    private async void OnScrollChanged(object sender, ScrollChangedEventArgs e)
+    internal async void OnScrollChanged(object sender, ScrollChangedEventArgs e)
     {
         var scrollViewer = e.OriginalSource as ScrollViewer;
         if (scrollViewer != null && scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight && !isLoading)
