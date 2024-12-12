@@ -9,6 +9,7 @@ public enum ShelfTypes
     Refrigerator,
     Freezer,
     DoubleSided,
+    Custom
 }
 
 public static class ShelfTypeExtensions
@@ -36,5 +37,22 @@ public static class ShelfTypeExtensions
             ShelfTypes.DoubleSided =>  new Dimensions(5,2,2),
             _ => throw new ArgumentOutOfRangeException(nameof(shelfType), shelfType, null),
         };
+    }
+    
+    public static bool IsShelfDoubleSided(this ShelfTypes shelfType)
+    {
+        return shelfType switch
+        {
+            ShelfTypes.Normal => false,
+            ShelfTypes.Refrigerator => false,
+            ShelfTypes.Freezer => false,
+            ShelfTypes.DoubleSided =>  true,
+            _ => throw new ArgumentOutOfRangeException(nameof(shelfType), shelfType, null),
+        };
+    }
+
+    public static List<ShelfTypes> GetAllShelfTypes()
+    {
+        return Enum.GetValues(typeof(ShelfTypes)).Cast<ShelfTypes>().ToList();
     }
 }
