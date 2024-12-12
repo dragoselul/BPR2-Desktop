@@ -4,16 +4,23 @@ namespace BPR2_Desktop.Model;
 
 public class ShelfSection
 {
-    private int _id { get; init; }
     private Point3D _position { get; set; }
     private List<Product> _products { get; set; }
 
-    public ShelfSection(int id)
+    public ShelfSection()
     {
-        _id = id;
         _position = new Point3D(0, 0, 0);
         _products = new List<Product>();
     }
+    
+    public ShelfSection(Point3D position)
+    {
+        _position = position;
+        _products = new List<Product>();
+    }
+    
+    public Point3D GetPosition() => _position;
+    public List<Product> GetProducts() => _products;
 
     public void AddProduct(Product product) => _products.Add(product);
 

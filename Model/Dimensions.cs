@@ -1,4 +1,5 @@
-﻿namespace BPR2_Desktop.Model;
+﻿
+namespace BPR2_Desktop.Model;
 
 public class Dimensions
 {

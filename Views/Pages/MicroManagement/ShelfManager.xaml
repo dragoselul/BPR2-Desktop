@@ -1,0 +1,26 @@
+﻿<Page x:Class="BPR2_Desktop.Views.Pages.MicroManagement.ShelfManager"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:BPR2_Desktop.Views.Pages.MicroManagement"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:h="http://helix-toolkit.org/wpf"
+      d:DataContext="{d:DesignInstance  local:ShelfDesigner, IsDesignTimeCreatable=False}"
+      d:DesignHeight="Auto" d:DesignWidth="Auto"
+      ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+      ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      mc:Ignorable="d"
+      Title="ShelfManager" Height="Auto" Width="Auto">
+    <Grid>
+        <h:HelixViewport3D Grid.Column="0" ShowViewCube="False" IsPanEnabled="True" IsRotationEnabled="False"
+                           IsZoomEnabled="True" Orthographic="True" ShowCameraInfo="False"
+                           ItemsSource="{Binding ViewModel.SceneObjects, Mode=TwoWay, BindsDirectlyToSource=True}">
+
+            <h:HelixViewport3D.Camera>
+                <OrthographicCamera Position="100,35,150" LookDirection="0, 0, -140" UpDirection="0,1,0"
+                                    NearPlaneDistance="0.125" Width="250" />
+            </h:HelixViewport3D.Camera>
+        </h:HelixViewport3D>
+    </Grid>
+</Page>

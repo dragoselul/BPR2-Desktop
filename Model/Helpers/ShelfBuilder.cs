@@ -100,8 +100,10 @@ public static class ShelfBuilder
         double width,
         double depth,
         double shelveThickness,
-        Color color)
+        Color color,
+        out List<Point3D> shelfPositions)
     {
+        shelfPositions = new List<Point3D>();
         List<ModelVisual3D> shelfBoxes = new List<ModelVisual3D>();
         for (int i = 0; i < numberOfShelves; i++)
         {
@@ -110,12 +112,14 @@ public static class ShelfBuilder
             var meshBuilder = new MeshBuilder();
 
             // AddBox requires the center point and size for the box
+            var point = new Point3D(width / 2, yPosition, 0);
             meshBuilder.AddBox(
-                center: new Point3D(width / 2, yPosition, 0), // Center point of the box
+                center: point, // Center point of the box
                 xlength: width, // Length in the X direction (Width of the shelf)
                 ylength: shelveThickness, // Length in the Y direction (Thickness of the shelf)
                 zlength: depth // Length in the Z direction (Depth of the shelf, arbitrarily set to 0.3)
             );
+            shelfPositions.Add(point);
 
             // Convert the mesh to a GeometryModel3D and add materials
             var boxMesh = meshBuilder.ToMesh();

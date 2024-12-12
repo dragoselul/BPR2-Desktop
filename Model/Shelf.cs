@@ -9,14 +9,15 @@ namespace BPR2_Desktop.Model;
 
 public class Shelf
 {
-    private ShelfTypes _shelfType { get; set; }
+    private ShelfType _shelfType { get; set; }
+    private string _shelfName { get; set; }
     private Point3D _position { get; set; }
     private float _rotation { get; set; }
     private ShelfProperties _properties { get; set; }
     private ModelVisual3D _shelfModel { get; set; }
     private List<ShelfSection> _shelfSections { get; set; }
 
-    public Shelf(ShelfTypes shelfType)
+    public Shelf(ShelfType shelfType)
     {
         _position = new Point3D(0, 0, 0);
         _shelfType = shelfType;
@@ -40,6 +41,8 @@ public class Shelf
         };
         return modelVisual;
     }
+    
+    public ShelfType GetShelfType() => _shelfType;
 
     public Point3D GetPosition() => _position;
     public void SetPosition(Point3D point) => _position = point;
@@ -51,6 +54,12 @@ public class Shelf
     }
 
     public void SetProperties(ShelfProperties properties) => _properties = properties;
+    
+    public void SetShelfName(string name) => _shelfName = name;
+    
+    public void SetShelfSections(List<ShelfSection> sections) => _shelfSections = sections;
+    
+    public void SetShelfType(ShelfType type) => _shelfType = type;
 
     public void CreateMergedObject(List<ModelVisual3D> models)
     {
@@ -62,11 +71,11 @@ public class Shelf
 
     public void SaveAsObj(string name, string? path = null)
     {
-        
-        if (path==null)
+        if (path == null)
         {
             path = AppContext.BaseDirectory + $"../../../3DObjects/";
         }
+
         if (_shelfModel == null)
         {
             throw new InvalidOperationException("The shelf model is not initialized.");
@@ -88,14 +97,18 @@ public class Shelf
             throw; // Re-throwing to let higher layers handle it if needed
         }
     }
-    
-    public List<ModelVisual3D> GetShelfSidesAndBack()
-{
-    // Define shelf dimensions
-    List<ModelVisual3D> shelfParts = ShelfBuilder.GetShelfSidesAndBack(_properties.Dimension, _properties.ShelveThickness, _properties.ShelveThickness);
-    return shelfParts;
-}
 
+    public List<ModelVisual3D> GetShelfSidesAndBack()
+    {
+        // Define shelf dimensions
+        List<ModelVisual3D> shelfParts = ShelfBuilder.GetShelfSidesAndBack(_properties.Dimension,
+            _properties.ShelveThickness, _properties.ShelveThickness);
+        return shelfParts;
+    }
+
+    public string GetShelfName() => _shelfName;
     
+    public ShelfProperties GetProperties() => _properties;
     
+    public List<ShelfSection> GetShelfSections() => _shelfSections;
 }

@@ -28,6 +28,7 @@ public partial class App
         {
             path =
                 Path.GetDirectoryName(AppContext.BaseDirectory + "../../../")
+                
                 ?? throw new DirectoryNotFoundException(
                     "Unable to find the base directory of the application."
                 );
@@ -55,10 +56,18 @@ public partial class App
 
                 // Service containing navigation, same as INavigationWindow... but without window
                 _ = services.AddSingleton<INavigationService, NavigationService>();
+                
+                // Database contexts
                 _ = services.AddDbContext<ProductContext>((serviceProvider, options) =>
                     {
                         var databaseConfig = serviceProvider.GetRequiredService<IOptions<DatabaseConfig>>().Value;
                         options.UseNpgsql(databaseConfig.ConnectionString()).UseLazyLoadingProxies(); 
+                    },
+                    ServiceLifetime.Transient);
+                _ = services.AddDbContext<ShelfContext>((serviceProvider, options) =>
+                    {
+                        var databaseConfig = serviceProvider.GetRequiredService<IOptions<DatabaseConfig>>().Value;
+                        options.UseNpgsql(databaseConfig.ConnectionString(), o => o.UseNetTopologySuite()).UseLazyLoadingProxies(); 
                     },
                     ServiceLifetime.Transient);
 
@@ -96,7 +105,7 @@ public partial class App
                 _ = services.AddSingleton<Views.Pages.Home>();
                 _ = services.AddSingleton<ViewModels.MacroManagement.DesignerViewModel>();
                 _ = services.AddSingleton<Views.Pages.MacroManagementDesigner>();
-                _ = services.AddSingleton<ShelfDesignerViewModel>();
+                _ = services.AddTransient<ShelfDesignerViewModel>();
                 _ = services.AddSingleton<Views.Pages.MicroManagement.ShelfDesigner>();
                 _ = services.AddTransient<ProductViewModel>();
                 _ = services.AddTransient<Views.Pages.MicroManagement.ProductViewer>();
