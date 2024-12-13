@@ -19,15 +19,6 @@
             <ColumnDefinition Width="4*" />
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
-        <h:HelixViewport3D Grid.Column="0" ShowViewCube="False" IsPanEnabled="True" IsRotationEnabled="False"
-                           IsZoomEnabled="True" Orthographic="True" ShowCameraInfo="False"
-                           ItemsSource="{Binding ViewModel.SceneObjects, Mode=TwoWay, BindsDirectlyToSource=True}">
-
-            <h:HelixViewport3D.Camera>
-                <OrthographicCamera Position="100,35,150" LookDirection="0, 0, -140" UpDirection="0,1,0"
-                                    NearPlaneDistance="0.125" Width="250" />
-            </h:HelixViewport3D.Camera>
-        </h:HelixViewport3D>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -47,5 +38,13 @@
             </StackPanel>
             <microManagement:ItemsListView Grid.Row="1" DataContext="{Binding ViewModel.ItemListViewModel}" Margin="10" />
         </Grid>
+        <h:HelixViewport3D Grid.Column="0" ShowViewCube="False" IsPanEnabled="True" IsRotationEnabled="False"
+                           IsZoomEnabled="True" Orthographic="True" ShowCameraInfo="False"
+                           ItemsSource="{Binding ViewModel.SceneObjects, Mode=TwoWay, BindsDirectlyToSource=True}">
+            <h:HelixViewport3D.Camera>
+                <OrthographicCamera Position="100,35,150" LookDirection="0, 0, -140" UpDirection="0,1,0"
+                                    NearPlaneDistance="0.125" Width="250" />
+            </h:HelixViewport3D.Camera>
+        </h:HelixViewport3D>
     </Grid>
 </Page>

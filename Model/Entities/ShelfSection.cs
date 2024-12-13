@@ -5,7 +5,7 @@ namespace BPR2_Desktop.Model.Entities;
 
 public class ShelfSection
 {
-    [Key, Column(name:"id")]
+    [Key, Column(name: "id", TypeName = "integer")]
     public int Id { get; set; }
     [Column(name:"position")]
     public virtual Position Position { get; set; }

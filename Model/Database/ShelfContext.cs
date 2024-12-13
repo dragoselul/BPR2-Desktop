@@ -2,6 +2,7 @@
 using System.Windows.Media.Media3D;
 using BPR2_Desktop.Model;
 using BPR2_Desktop.Model.Entities;
+using BPR2_Desktop.Model.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Options;
@@ -36,6 +37,10 @@ public class ShelfContext : DbContext
                 .HasConversion(
                     v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
                     v => JsonSerializer.Deserialize<Position>(v, (JsonSerializerOptions)null));
+            entity.Property(s => s.Shelf_Type)
+                .HasConversion(
+                    v => v.ToString(),
+                    v => (ShelfType)Enum.Parse(typeof(ShelfType), v));
         });
         modelBuilder.Entity<ShelfProperties>(entity =>
         {
@@ -94,8 +99,24 @@ public class ShelfContext : DbContext
 
     public async Task<ShelfProperties?> GetShelfPropertiesByShelfId(int shelfId)
     {
+        var shelf = await GetShelfById(shelfId);
+        if (shelf == null)
+        {
+            return null;
+        }
         return await ShelfProperties
-            .FirstOrDefaultAsync(sp => sp.Id == shelfId);
+            .FirstOrDefaultAsync(sp => sp.Id == shelf.Properties_Id);
+    }
+    
+    public async Task<ShelfProperties?> GetShelfPropertiesByShelfName(string name)
+    {
+         Shelf? shelf = await GetShelfByName(name);
+         if (shelf == null)
+         {
+             return null;
+         }
+        return await ShelfProperties
+            .FirstOrDefaultAsync(sp => sp.Id == shelf.Properties_Id);
     }
 
     public async Task AddShelf(BPR2_Desktop.Model.Shelf shelf)
