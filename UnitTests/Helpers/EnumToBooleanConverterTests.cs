@@ -1,7 +1,8 @@
 using System;
 using System.Globalization;
 using Xunit;
-using BPR2_Desktop.Helpers;
+using BPR2_Desktop.Model.Helpers;
+using BPR2_Desktop.Model.Helpers;
 using Wpf.Ui.Appearance;
 
 namespace BPR2_Desktop.Tests.Helpers

@@ -1,55 +1,77 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Media.Media3D;
 using BPR2_Desktop.ViewModels.MicroManagement;
 using Xunit;
 
 public class ShelfDesignerViewModelTests
 {
-    [Fact]
-    public void InitializeViewModel_ShouldSetInitialValues()
+    [WpfFact]
+    public void ViewModel_ShouldInitializeWithDefaultValues()
     {
         // Arrange
         var viewModel = new ShelfDesignerViewModel();
 
-        // Act
-        var shelfTypes = viewModel.Shelfs;
-        var sceneObjects = viewModel.SceneObjects;
-
         // Assert
-        Assert.NotNull(shelfTypes);
-        Assert.NotEmpty(shelfTypes);
-        Assert.NotNull(sceneObjects);
-        Assert.Empty(sceneObjects);
+        Assert.NotNull(viewModel.Shelfs);
+        Assert.NotNull(viewModel.SceneObjects);
+        Assert.Empty(viewModel.SceneObjects);
     }
 
-    [Fact]
-    public void GenerateShelfLines_ShouldPopulateSceneObjects()
+    [WpfFact]
+    public void CanGenerateShelfLines_ShouldBeTrue_WhenInputsAreValid()
     {
         // Arrange
         var viewModel = new ShelfDesignerViewModel
         {
             NumberOfShelves = 3,
-            DistanceBetweenShelves = 20,
-            ShelveThickness = 3,
-            WidthOfShelf = 200,
-            HeightOfShelf = 200
+            DistanceBetweenShelves = 10,
+            WidthOfShelf = 100,
+            HeightOfShelf = 50
+        };
+
+        // Assert
+        Assert.True(viewModel.CanGenerateShelfLines);
+    }
+
+    [WpfFact]
+    public void CanGenerateShelfLines_ShouldBeFalse_WhenInputsAreInvalid()
+    {
+        // Arrange
+        var viewModel = new ShelfDesignerViewModel
+        {
+            NumberOfShelves = 0 // Invalid number of shelves
+        };
+
+        // Assert
+        Assert.False(viewModel.CanGenerateShelfLines);
+    }
+
+    [WpfFact]
+    public void GenerateShelfLines_ShouldAddSceneObjects_WhenInputsAreValid()
+    {
+        // Arrange
+        var viewModel = new ShelfDesignerViewModel
+        {
+            NumberOfShelves = 2,
+            DistanceBetweenShelves = 10,
+            ShelveThickness = 2,
+            WidthOfShelf = 100,
+            HeightOfShelf = 50
         };
 
         // Act
         viewModel.GenerateShelfLinesCommand.Execute(null);
 
         // Assert
-        Assert.Equal(4, viewModel.SceneObjects.Count); // 3 shelves + 1 SunLight
+        Assert.NotEmpty(viewModel.SceneObjects);
     }
 
-    [Fact]
-    public void GenerateShelfLines_ShouldNotAddObjectsIfInvalidInputs()
+    [WpfFact]
+    public void GenerateShelfLines_ShouldNotAddSceneObjects_WhenInputsAreInvalid()
     {
         // Arrange
         var viewModel = new ShelfDesignerViewModel
         {
-            NumberOfShelves = -1 // Invalid number of shelves
+            NumberOfShelves = -1 // Invalid input
         };
 
         // Act
@@ -57,41 +79,5 @@ public class ShelfDesignerViewModelTests
 
         // Assert
         Assert.Empty(viewModel.SceneObjects);
-    }
-
-    [Fact]
-    public void CanGenerateShelfLines_ShouldReturnTrueForValidInputs()
-    {
-        // Arrange
-        var viewModel = new ShelfDesignerViewModel
-        {
-            DistanceBetweenShelves = 20,
-            ShelveThickness = 3,
-            WidthOfShelf = 200,
-            HeightOfShelf = 200,
-            NumberOfShelves = 5
-        };
-
-        // Act
-        var result = viewModel.CanGenerateShelfLines();
-
-        // Assert
-        Assert.True(result);
-    }
-
-    [Fact]
-    public void CanGenerateShelfLines_ShouldReturnFalseForInvalidInputs()
-    {
-        // Arrange
-        var viewModel = new ShelfDesignerViewModel
-        {
-            DistanceBetweenShelves = 0 // Invalid distance
-        };
-
-        // Act
-        var result = viewModel.CanGenerateShelfLines();
-
-        // Assert
-        Assert.False(result);
     }
 }

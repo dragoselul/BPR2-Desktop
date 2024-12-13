@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using BPR2_Desktop.ViewModels.MicroManagement;
+using BPR2_Desktop.ViewModels.UserControls;
 using BPR2_Desktop.Views.Components.MicroManagement;
 using Xunit;
 
@@ -35,8 +36,8 @@ namespace BPR2_Desktop.Tests.Views.Components.MicroManagement
         [StaFact]
         public void ItemsSidePanel_ShouldInitializeWithCorrectElements()
         {
-            var viewModel = new ItemSidePanelViewModel();
-            var control = new ItemsSidePanel(viewModel);
+            var viewModel = new ItemListViewModel();
+            var control = new ItemsListView();
             var window = HostControl(control);
             Task.Delay(500).Wait();
 

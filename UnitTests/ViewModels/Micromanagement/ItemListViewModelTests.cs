@@ -5,17 +5,18 @@ using System.Threading.Tasks;
 using BPR2_Desktop.Database;
 using BPR2_Desktop.Model;
 using BPR2_Desktop.ViewModels.MicroManagement;
+using BPR2_Desktop.ViewModels.UserControls;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Xunit;
 
-public class ItemSidePanelViewModelTests
+public class ItemListlViewModelTests
 {
     [WpfFact]
     public void ItemSidePanelViewModel_ShouldInitializeWithDefaultValues()
     {
         // Arrange
-        var viewModel = new ItemSidePanelViewModel();
+        var viewModel = new ItemListViewModel();
 
         // Act & Assert
         Assert.NotNull(viewModel.Products);
@@ -66,7 +67,7 @@ public class ItemSidePanelViewModelTests
             }
         };
 
-        var viewModel = new ItemSidePanelViewModel
+        var viewModel = new ItemListViewModel()
         {
             AllProducts = products,
             SearchQuery = "Product",
@@ -74,12 +75,13 @@ public class ItemSidePanelViewModelTests
         };
 
         // Act
-        viewModel.FilterProducts();
+        viewModel.FilterProducts(viewModel.SearchQuery);
 
         // Assert
         Assert.Single(viewModel.Products);
         Assert.Equal("AnotherProduct", viewModel.Products.First().Product_Name);
     }
+
     
 
     /*[WpfFact]
