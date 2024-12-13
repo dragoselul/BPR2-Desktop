@@ -5,29 +5,23 @@ using Wpf.Ui.Controls;
 
 namespace BPR2_Desktop.ViewModels.MacroManagement;
 
-public partial class MacroManagementViewModel: ViewModel
+public partial class MacroManagementViewModel : ViewModel
 {
     private bool _isInitialized = false;
-    
-    [ObservableProperty]
-    private double _windowWidth = 0;
-    
-    [ObservableProperty]
-    private double _windowHeight = 0;
 
-    [ObservableProperty]
-    private string _applicationTitle = string.Empty;
+    [ObservableProperty] private double _windowWidth = 0;
 
-    [ObservableProperty]
-    private ObservableCollection<object> _navigationItems = [];
+    [ObservableProperty] private double _windowHeight = 0;
 
-    [ObservableProperty]
-    private ObservableCollection<object> _navigationFooter = [];
+    [ObservableProperty] private string _applicationTitle = string.Empty;
 
-    [ObservableProperty]
-    private ObservableCollection<MenuItem> _trayMenuItems = [];
-    
-    public MacroManagementViewModel()
+    [ObservableProperty] private ObservableCollection<object> _navigationItems = [];
+
+    [ObservableProperty] private ObservableCollection<object> _navigationFooter = [];
+
+    [ObservableProperty] private ObservableCollection<MenuItem> _trayMenuItems = [];
+
+    public MacroManagementViewModel(INavigationService navigationService)
     {
         if (!_isInitialized)
         {

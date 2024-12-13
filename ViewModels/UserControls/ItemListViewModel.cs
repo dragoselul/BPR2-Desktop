@@ -25,11 +25,6 @@ public partial class ItemListViewModel : ViewModel
         InitializeViewModel();
     }
 
-    public ItemListViewModel()
-    {
-        InitializeViewModel();
-    }
-
     private void InitializeViewModel()
     {
         Products = new ObservableCollection<Product>();
