@@ -133,7 +133,7 @@ public partial class ItemListViewModel : ViewModel
     }
 
 
-    private async Task<List<Product>> FilterProducts(string name)
+    internal async Task<List<Product>> FilterProducts(string name)
     {
         List<Product> products = await _context.GetProductsByName(name);
         return products;

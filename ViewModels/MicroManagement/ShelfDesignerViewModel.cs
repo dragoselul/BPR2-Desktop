@@ -83,7 +83,7 @@ public partial class ShelfDesignerViewModel : ViewModel
         _shelf.SaveAsObj(ShelfName);
     }
     
-    private bool CanGenerateShelves()
+    public bool CanGenerateShelves()
     {
         if (DistanceBetweenShelves <= 0)
             return false;

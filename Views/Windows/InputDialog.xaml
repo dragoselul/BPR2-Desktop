@@ -5,15 +5,16 @@
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
                  mc:Ignorable="d"
-                 Title="Input" Height="150" Width="400"
-                 WindowStartupLocation="CenterScreen"
->
+                 Title="{Binding Prompt}" Height="150" Width="400"
+                 WindowStartupLocation="CenterScreen">
     <Grid>
         <StackPanel Margin="10">
             <TextBlock Text="Please enter the design name:" />
-            <TextBox x:Name="InputTextBox" Margin="0,10,0,10" TextChanged="InputTextBox_TextChanged" />
+            <TextBox x:Name="InputTextBox" Margin="0,10,0,10" Text="{Binding ResponseText, UpdateSourceTrigger=PropertyChanged}"
+                     x:FieldModifier="public" />
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <ui:Button Appearance="Primary" x:Name="OKButton" Content="OK" Width="75" IsDefault="True" Click="OKButton_Click" />
+                <ui:Button Appearance="Primary" x:Name="OKButton" Content="OK" Width="75" IsDefault="True" Click="OKButton_Click"
+                           IsEnabled="{Binding IsInputValid}" x:FieldModifier="public" />
                 <ui:Button Appearance="Dark" Content="Cancel" Width="75" IsCancel="True" Margin="10,0,0,0" />
             </StackPanel>
         </StackPanel>

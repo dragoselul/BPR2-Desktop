@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using BPR2_Desktop.ViewModels;
 using Wpf.Ui.Controls;
 using MessageBox = System.Windows.MessageBox;
 using MessageBoxButton = System.Windows.MessageBoxButton;
@@ -7,30 +8,38 @@ namespace BPR2_Desktop.Views.Pages
 {
     public partial class InputDialog : FluentWindow
     {
-        public string ResponseText { get; private set; }
-
+        
+        public string ResponseText => ((InputDialogViewModel)DataContext).ResponseText;
         public InputDialog(string prompt)
         {
             InitializeComponent();
-            this.Title = prompt;
+            this.DataContext = new InputDialogViewModel { Prompt = prompt };
         }
 
-        private void OKButton_Click(object sender, RoutedEventArgs e)
+        public virtual bool? ShowDialogWrapper()
         {
-            if (!string.IsNullOrWhiteSpace(InputTextBox.Text))
+            return ShowDialog();
+        }
+
+        internal void OKButton_Click(object sender, RoutedEventArgs e)
+        {
+            var viewModel = DataContext as InputDialogViewModel;
+
+            if (viewModel?.IsInputValid == true)
             {
-                ResponseText = InputTextBox.Text;
                 DialogResult = true;
             }
             else
             {
-                MessageBox.Show("Please enter a design name.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Please enter a valid input.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-        private void InputTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        
+        internal void InputTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             OKButton.IsEnabled = !string.IsNullOrWhiteSpace(InputTextBox.Text);
         }
+
     }
+
 }

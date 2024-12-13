@@ -8,9 +8,9 @@
                  xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
                  Title="Dataverse Wizards - Store Layout System"
                  d:DataContext="{d:DesignInstance windows:MainWindow}"
-                 d:Width="1302"
-                 d:Height="802"
-                 Width="1302" Height="802"
+                 d:Width="1502"
+                 d:Height="902"
+                 Width="1502" Height="902"
                  mc:Ignorable="d">
         <ui:FluentWindow.Resources>
             <ResourceDictionary>
@@ -61,7 +61,7 @@
                               LoadedBehavior="Play"
                               UnloadedBehavior="Manual"
                               Stretch="Fill"
-                              MediaEnded="OnMediaEnded" />
+                              MediaEnded="OnMediaEnded" x:FieldModifier="public" />
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Ellipse Width="400" Height="400" Stroke="White" StrokeThickness="10" Margin="0,0,0,20">
                         <Ellipse.Fill>

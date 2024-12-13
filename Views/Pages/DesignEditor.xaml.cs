@@ -14,7 +14,10 @@ public partial class DesignEditor : Page
     private double _currentWidth = 0;
     private double _currentLength = 0;
     private double _currentHeight = 0;
+    
+    
 
+    
     public DesignEditor()
     {
         InitializeComponent();
@@ -48,7 +51,7 @@ public partial class DesignEditor : Page
         return (_currentWidth, _currentLength, _currentHeight);
     }
 
-    private void Save_Click(object sender, RoutedEventArgs e)
+    internal void Save_Click(object sender, RoutedEventArgs e)
     {
         var designCanvasControl = FindName("DesignCanvasControl") as DesignCanvasControl;
 
@@ -99,7 +102,7 @@ public partial class DesignEditor : Page
     }
 
 
-    private void SaveDesignToFile(string filePath, DesignCanvasControl designCanvasControl)
+    internal void SaveDesignToFile(string filePath, DesignCanvasControl designCanvasControl)
     {
         // Retrieve the element positions
         var elements = designCanvasControl?.GetElementPositions();
@@ -142,7 +145,7 @@ public partial class DesignEditor : Page
         }
     }
 
-    private void SetDimensions_Click(object sender, RoutedEventArgs e)
+    internal void SetDimensions_Click(object sender, RoutedEventArgs e)
     {
         var setDimensionsWindow = new SetDimensions(DesignCanvasControl, this);
         Window? mainWindow = Window.GetWindow(this);
@@ -154,8 +157,8 @@ public partial class DesignEditor : Page
 
         setDimensionsWindow.ShowDialog(); // Show the SetDimensions window
     }
-    
-    private void LoadDesign_Click(object sender, RoutedEventArgs e)
+
+    internal void LoadDesign_Click(object sender, RoutedEventArgs e)
     {
         string projectDirectory =
             Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName).FullName;

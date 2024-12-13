@@ -35,7 +35,7 @@ public partial class ItemsListView : UserControl
         isLoading = false;
     }
 
-    private async void OnScrollChanged(object sender, ScrollChangedEventArgs e)
+    internal async void OnScrollChanged(object sender, ScrollChangedEventArgs e)
     {
         if (ViewModel == null)
             return;

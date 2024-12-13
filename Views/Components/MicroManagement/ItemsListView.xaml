@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:BPR2_Desktop.Views.Components.MicroManagement"
              d:DataContext="{d:DesignInstance  local:ItemsListView, IsDesignTimeCreatable=True}"
              mc:Ignorable="d"
-             d:DesignHeight="Auto" d:DesignWidth="500">
+             d:DesignHeight="Auto" d:DesignWidth="Auto">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -25,16 +25,18 @@
                     Text="{Binding ViewModel.SearchQuery, UpdateSourceTrigger=PropertyChanged}"
                     PlaceholderText="Search items..." />
         <ui:ListView ItemsSource="{Binding ViewModel.Products}" Grid.Row="4" MaxHeight="700"
+                     ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"
                      ScrollViewer.ScrollChanged="OnScrollChanged"
                      VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling"
                      SelectedItem="{Binding ViewModel.SelectedProduct, Mode=TwoWay}"
                      SelectionChanged="ListView_SelectionChanged">
             <ui:ListView.View>
                 <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Products">
-                    <GridViewColumn Header="Product Name" DisplayMemberBinding="{Binding Product_Name }" Width="Auto" />
-                    <GridViewColumn Header="Category" DisplayMemberBinding="{Binding Category}" Width="Auto" />
+                    <GridViewColumn Header="Product Name" DisplayMemberBinding="{Binding Product_Name}" Width="200" />
+                    <GridViewColumn Header="Category" DisplayMemberBinding="{Binding Category}" Width="150" />
                 </GridView>
             </ui:ListView.View>
         </ui:ListView>
+
     </Grid>
 </UserControl>
