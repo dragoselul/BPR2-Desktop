@@ -282,13 +282,6 @@ namespace BPR2_Desktop.Views.Components
                 draggedElement.CaptureMouse();
             }
         }
-
-        //MethodnotUsed
-        // private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        // {
-        //     // Raise the CanvasClicked event when clicking on empty space
-        //     CanvasClicked?.Invoke();
-        // }
         
 
         // Handles moving the dragged element within the canvas
