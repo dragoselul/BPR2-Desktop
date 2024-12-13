@@ -6,13 +6,19 @@
       xmlns:local="clr-namespace:BPR2_Desktop.Views.Pages.MicroManagement"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:h="http://helix-toolkit.org/wpf"
-      d:DataContext="{d:DesignInstance  local:ShelfDesigner, IsDesignTimeCreatable=False}"
+      xmlns:microManagement="clr-namespace:BPR2_Desktop.Views.Components.MicroManagement"
+      xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+      d:DataContext="{d:DesignInstance  local:ShelfManager, IsDesignTimeCreatable=False}"
       d:DesignHeight="Auto" d:DesignWidth="Auto"
       ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
       ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       mc:Ignorable="d"
       Title="ShelfManager" Height="Auto" Width="Auto">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
         <h:HelixViewport3D Grid.Column="0" ShowViewCube="False" IsPanEnabled="True" IsRotationEnabled="False"
                            IsZoomEnabled="True" Orthographic="True" ShowCameraInfo="False"
                            ItemsSource="{Binding ViewModel.SceneObjects, Mode=TwoWay, BindsDirectlyToSource=True}">
@@ -22,5 +28,24 @@
                                     NearPlaneDistance="0.125" Width="250" />
             </h:HelixViewport3D.Camera>
         </h:HelixViewport3D>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Margin="10">
+                <Label Content="Select a shelf previously created" />
+                <ComboBox ItemsSource="{Binding ViewModel.ShelfNames}"
+                          SelectedItem="{Binding ViewModel.SelectedShelfName}">
+                    <b:Interaction.Triggers>
+                        <b:EventTrigger EventName="SelectionChanged">
+                            <b:InvokeCommandAction Command="{Binding ViewModel.ShelfSelectedCommand}"
+                                                   CommandParameter="{Binding ViewModel.SelectedShelfName}" />
+                        </b:EventTrigger>
+                    </b:Interaction.Triggers>
+                </ComboBox>
+            </StackPanel>
+            <microManagement:ItemsListView Grid.Row="1" DataContext="{Binding ViewModel.ItemListViewModel}" Margin="10" />
+        </Grid>
     </Grid>
 </Page>

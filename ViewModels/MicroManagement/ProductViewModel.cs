@@ -22,8 +22,8 @@ public partial class ProductViewModel : ViewModel
         _itemListViewModel = new ItemListViewModel(context, OnItemSelected);
         _imageDisplayViewModel = new ImageDisplayPanelViewModel(context);
     }
-
-    private void OnItemSelected(Product selectedProduct)
+    
+    private void OnItemSelected(Product? selectedProduct)
     {
         if (selectedProduct == null)
         {

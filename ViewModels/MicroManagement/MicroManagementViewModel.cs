@@ -53,6 +53,12 @@ public partial class MicroManagementViewModel : ViewModel
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Cube24 },
                 TargetPageType = typeof(Views.Pages.MicroManagement.ShelfDesigner)
             },
+            new NavigationViewItem()
+            {
+                Content = "Shelf Manager",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.Album24 },
+                TargetPageType = typeof(Views.Pages.MicroManagement.ShelfManager)
+            },
         ];
 
         NavigationFooter =

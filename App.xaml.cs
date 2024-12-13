@@ -99,16 +99,19 @@ public partial class App
                     var viewModel = serviceProvider.GetRequiredService<ViewModels.MainWindowViewModel>();
                     return new MainWindow(viewModel);
                 });
-
-                // Views and ViewModels for Pages
+                
+                // ViewModels
                 _ = services.AddSingleton<ViewModels.MacroManagement.HomeViewModel>();
-                _ = services.AddSingleton<Views.Pages.Home>();
                 _ = services.AddSingleton<ViewModels.MacroManagement.DesignerViewModel>();
-                _ = services.AddSingleton<Views.Pages.MacroManagementDesigner>();
                 _ = services.AddTransient<ShelfDesignerViewModel>();
-                _ = services.AddSingleton<Views.Pages.MicroManagement.ShelfDesigner>();
                 _ = services.AddTransient<ProductViewModel>();
+                _ = services.AddTransient<ShelfManagerViewModel>();
+                // Views
+                _ = services.AddSingleton<Views.Pages.Home>();
+                _ = services.AddSingleton<Views.Pages.MacroManagementDesigner>();
+                _ = services.AddSingleton<Views.Pages.MicroManagement.ShelfDesigner>();
                 _ = services.AddTransient<Views.Pages.MicroManagement.ProductViewer>();
+                _ = services.AddTransient<Views.Pages.MicroManagement.ShelfManager>();
             }
         )
         .Build();

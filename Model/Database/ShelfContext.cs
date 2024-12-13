@@ -148,4 +148,9 @@ public class ShelfContext : DbContext
 
         return shelfSections;
     }
+    
+    public async Task<List<string>> GetShelfNames()
+    {
+        return await Shelves.Select(s => s.Shelf_Name).ToListAsync();
+    }
 }
