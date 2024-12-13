@@ -16,47 +16,72 @@
     <Grid Name="MainGrid" Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" /> <!-- Left panel -->
-            <ColumnDefinition Width="3*" /> <!-- Right panel -->
+            <ColumnDefinition Width="2*" /> <!-- Right panel -->
         </Grid.ColumnDefinitions>
-        
-        <!-- Shelf Panel -->
-        <StackPanel Grid.Column="0" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Top">
-            <micromanagement:ShelfPanel Width="Auto" Height="Auto" Margin="10" />
-        </StackPanel>
-
-        <!-- Form and Items Panel -->
-        <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center">
             
-            <!-- Title -->
-            <TextBlock Text="Category Assistant" FontSize="24" FontWeight="Bold" Margin="0,10,0,10"/>
-            <!-- Description  make the text italic--> 
-            <TextBlock Text="Please fill out all the fields " FontSize="14" FontStyle="Italic" Margin="0,10,0,10"/>
-            <!-- Form Fields -->
-            <StackPanel Grid.Row="0" Margin="0,10,0,10">
-                <Label Content="Product Width:" />
-                <TextBox x:Name="ProductWidthTextBox" Width="200" Margin="0,5,0,10"/>
+                <!-- Title -->
+                <TextBlock Text="Category Assistant" FontSize="24" FontWeight="Bold" Margin="0,10,0,10"/>
+                <!-- Description  make the text italic--> 
+                <TextBlock Text="Please fill out all the fields " FontSize="14" FontStyle="Italic" Margin="0,10,0,10"/>
+                <!-- Form Fields -->
+                <StackPanel Grid.Row="0" Margin="0,10,0,10">
+                    <!-- Title -->
+                    <TextBlock Text="Category Assistant" FontSize="24" FontWeight="Bold" Margin="0,10,0,10"/>
+                    <!-- Description -->
+                    <TextBlock Text="Please fill out all the fields " FontSize="14" FontStyle="Italic" Margin="0,10,0,10"/>
+    
+                    <!-- Form Fields -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" /> <!-- Column 1 -->
+                            <ColumnDefinition Width="*" /> <!-- Column 2 -->
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" /> 
+                            <RowDefinition Height="Auto" /> 
+                            <RowDefinition Height="Auto" /> 
+                        </Grid.RowDefinitions>
 
-                <Label Content="Product Height:" />
-                <TextBox x:Name="ProductHeightTextBox" Width="200" Margin="0,5,0,10"/>
+                        <!-- Column 1 -->
+                        <Label Content="Product Width:" Grid.Row="0" Grid.Column="0" />
+                        <TextBox x:Name="ProductWidthTextBox" Width="150" Margin="0,5,10,10" Grid.Row="1" Grid.Column="0"/>
 
-                <Label Content="Product Depth:" />
-                <TextBox x:Name="ProductDepthTextBox" Width="200" Margin="0,5,0,10"/>
+                        <Label Content="Product Height:" Grid.Row="2" Grid.Column="0" />
+                        <TextBox x:Name="ProductHeightTextBox" Width="150" Margin="0,5,10,10" Grid.Row="3" Grid.Column="0"/>
 
-                <Label Content="Store Name:" />
-                <TextBox x:Name="StoreNameTextBox" Width="200" Margin="0,5,0,10"/>
+                        <Label Content="Product Depth:" Grid.Row="4" Grid.Column="0" Margin="0,0,0,10" />
+                        <TextBox x:Name="ProductDepthTextBox" Width="150" Margin="0,5,10,10" Grid.Row="5" Grid.Column="0"/>
 
-                <Label Content="Department:" />
-                <TextBox x:Name="DepartmentTextBox" Width="200" Margin="0,5,0,10"/>
+                        <!-- Column 2 -->
+                        <Label Content="Store Name:" Grid.Row="0" Grid.Column="1" />
+                        <TextBox x:Name="StoreNameTextBox" Width="150" Margin="0,5,10,10" Grid.Row="1" Grid.Column="1"/>
 
-                <Button Content="Suggest Category" Click="PredictButton_Click" Width="150" Margin="0,20,0,10"/>
-                
+                        <Label Content="Department:" Grid.Row="2" Grid.Column="1" />
+                        <TextBox x:Name="DepartmentTextBox" Width="150" Margin="0,5,10,10" Grid.Row="3" Grid.Column="1"/>
+
+                        <Button Content="Suggest Category" Click="PredictButton_Click" Width="150" Grid.Row="5" Grid.Column="1" Margin="0,20,0,10"/>
+                    </Grid>
+
+                    <!-- Prediction Result -->
+                    <TextBlock x:Name="PredictionResultTextBlock" FontSize="16" FontWeight="Bold" Margin="0,20,0,10"/>
+                </StackPanel>
+
+
             </StackPanel>
-
-            <!-- Prediction Result -->
-            <TextBlock x:Name="PredictionResultTextBlock" FontSize="16" FontWeight="Bold" Margin="0,20,0,10"/>
-            
-            <!-- Items Panel -->
-            <micromanagement:ItemsSidePanel Margin="10" />
-        </StackPanel>
+            <micromanagement:ItemsListView Grid.Row="1" DataContext="{Binding ViewModel.ItemListViewModel}" Margin="10"/>
+        </Grid>
+        <!-- Form and Items Panel -->
+        
+        <micromanagement:ImageDisplayPanel Grid.Column="0" DataContext="{Binding ViewModel.ImageDisplayViewModel}"
+                                           Width="Auto" Height="Auto" Margin="10" />
     </Grid>
 </Page>

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Data;
 
-namespace BPR2_Desktop.Helpers;
+namespace BPR2_Desktop.Model.Helpers;
 
 internal class EnumToBooleanConverter : IValueConverter
 {

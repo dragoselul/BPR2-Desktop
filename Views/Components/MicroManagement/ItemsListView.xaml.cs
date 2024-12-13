@@ -1,28 +1,30 @@
 ﻿using System.Diagnostics;
 using System.Windows.Controls;
-using BPR2_Desktop.Helpers;
 using BPR2_Desktop.ViewModels;
-using BPR2_Desktop.ViewModels.MicroManagement;
-using Wpf.Ui.Abstractions.Controls;
+using BPR2_Desktop.ViewModels.UserControls;
 
 namespace BPR2_Desktop.Views.Components.MicroManagement;
 
-public partial class ItemsSidePanel: UserControl
+public partial class ItemsListView : UserControl
 {
-    public ItemSidePanelViewModel ViewModel { get; }
+    public ItemListViewModel ViewModel { get; set; }
     private bool isLoading = false;
 
-    public ItemsSidePanel()
+    public ItemsListView()
     {
+        // // or Option 2: Handle Loaded event: nice to know that it only runs once
+        Loaded += ItemsListView_Loaded; 
         InitializeComponent();
     }
+
     
-    public ItemsSidePanel(ItemSidePanelViewModel vm)
+
+    private void ItemsListView_Loaded(object sender, RoutedEventArgs e)
     {
-        DataContext = this;
+        if (DataContext is not ItemListViewModel vm) return;
         ViewModel = vm;
+        DataContext = this;
         Task.Run(async () => await LoadComponent());
-        InitializeComponent();
     }
     
     private async Task LoadComponent()
@@ -35,6 +37,8 @@ public partial class ItemsSidePanel: UserControl
 
     internal async void OnScrollChanged(object sender, ScrollChangedEventArgs e)
     {
+        if (ViewModel == null)
+            return;
         var scrollViewer = e.OriginalSource as ScrollViewer;
         if (scrollViewer != null && scrollViewer.VerticalOffset >= scrollViewer.ScrollableHeight && !isLoading)
         {
@@ -45,4 +49,8 @@ public partial class ItemsSidePanel: UserControl
         }
     }
 
+    private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        ViewModel.OnSelectedProduct(ViewModel.SelectedProduct);
+    }
 }

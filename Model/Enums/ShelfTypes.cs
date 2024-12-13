@@ -9,6 +9,7 @@ public enum ShelfTypes
     Refrigerator,
     Freezer,
     DoubleSided,
+    Custom
 }
 
 public static class ShelfTypeExtensions

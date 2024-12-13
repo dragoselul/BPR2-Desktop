@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 using BPR2_Desktop.Model.Enums;
 using Wpf.Ui.Abstractions.Controls;
 
@@ -13,5 +14,6 @@ public partial class MacroManagementDesigner : INavigableView<ViewModels.MacroMa
         ViewModel = vm;
         DataContext = this;
         InitializeComponent();
+        HelixViewport.PanGesture = new MouseGesture(MouseAction.LeftClick);
     }
 }

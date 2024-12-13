@@ -1,21 +1,27 @@
-﻿using System.Diagnostics;
-using System.Transactions;
-using System.Windows.Documents;
-using BPR2_Desktop.Model;
+﻿using BPR2_Desktop.Model;
 using Microsoft.EntityFrameworkCore;
-using DotNetEnv;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Options;
 
 namespace BPR2_Desktop.Database;
 
 public class ProductContext : DbContext
 {
+    private readonly string _schema;
     public DbSet<Product> Products { get; set; }
+    public DbSet<ProductImage> ProductImages { get; set; }
 
-    public ProductContext(DbContextOptions<ProductContext> options) : base(options)
+    public ProductContext(DbContextOptions<ProductContext> options, IOptions<DatabaseConfig> dbConfig) : base(options)
     {
+        _schema = dbConfig.Value.Schema ?? "public";
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<Product>()
+            .ToTable("products", _schema);
+        modelBuilder.Entity<ProductImage>()
+            .ToTable("ProductImages", _schema);
     }
 
     public Task<List<string>> GetAllCategories()
@@ -34,7 +40,7 @@ public class ProductContext : DbContext
             .ToListAsync();
     }
 
-    public Task<Product> GetProductByEAN(string ean)
+    public Task<Product?> GetProductByEAN(string ean)
     {
         return Products
             .FirstOrDefaultAsync(p => p.Main_EAN == ean);
@@ -62,11 +68,32 @@ public class ProductContext : DbContext
             query = query.Where(p => p.Category == category);
         }
 
+
         // Apply pagination
         query = query.OrderBy(p => p.Main_EAN)
             .Skip(offset * pageSize)
             .Take(pageSize);
         Task<List<Product>> list = query.ToListAsync();
         return list;
+    }
+
+    public async Task<List<Product>> GetProductsByName(string name)
+    {
+            var upperName = $"%{name.ToUpper()}%"; // Prepare the search string with UPPER
+            return await Products
+                .Where(p => EF.Functions.Like(p.Product_Name.ToUpper(), upperName))
+                .ToListAsync();
+    }
+
+    public Task<List<ProductImage>> GetImagesForProducts(List<string> eans)
+    {
+        return ProductImages
+            .Where(pi => eans.Contains(pi.Main_EAN))
+            .ToListAsync();
+    }
+
+    public Task<ProductImage?> GetImageByEAN(string ean)
+    {
+        return ProductImages.FirstOrDefaultAsync(pi => pi.Main_EAN == ean);
     }
 }

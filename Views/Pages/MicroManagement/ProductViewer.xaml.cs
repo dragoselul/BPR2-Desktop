@@ -1,22 +1,27 @@
-﻿using System.Net.Http;
+﻿using RoutedEventArgs = System.Windows.RoutedEventArgs;
+
+using System.Net.Http;
 using System.Text;
 using System.Windows.Controls;
-using BPR2_Desktop.Helpers;
+using BPR2_Desktop.Model.Helpers;
 using BPR2_Desktop.Views.Components.MicroManagement;
 using Newtonsoft.Json;
+using BPR2_Desktop.ViewModels.MicroManagement;
 using Wpf.Ui.Abstractions.Controls;
 
 namespace BPR2_Desktop.Views.Pages.MicroManagement;
 
-
-public partial class ProductViewer : INavigableView<ViewModels.MicroManagement.ProductViewModel>
+public partial class ProductViewer : INavigableView<ProductViewModel>
 {
-    public ViewModels.MicroManagement.ProductViewModel ViewModel { get; }
-    public ProductViewer(ViewModels.MicroManagement.ProductViewModel vm)
+    public ProductViewModel ViewModel { get; }
+
+    public ProductViewer(ProductViewModel vm)
     {
-        InitializeComponent();
         ViewModel = vm;
         DataContext = ViewModel;
+        DataContext = this;
+        InitializeComponent();
+
     }
     
     internal async void PredictButton_Click(object sender, RoutedEventArgs e)

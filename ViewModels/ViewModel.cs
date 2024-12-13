@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Wpf.Ui.Abstractions.Controls;
+using INavigationAware = Wpf.Ui.Abstractions.Controls.INavigationAware;
 
 namespace BPR2_Desktop.ViewModels;
 
