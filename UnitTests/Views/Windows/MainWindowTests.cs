@@ -37,7 +37,8 @@ namespace UnitTests
             }
 
             // Act
-            mainWindow.Button_Loaded(button, new RoutedEventArgs());
+            var eventArgs = new RoutedEventArgs(FrameworkElement.LoadedEvent, button);
+            mainWindow.Button_Loaded(button, eventArgs);
 
             // Assert
             var storyboard = mainWindow.Resources["ButtonFadeIn"] as System.Windows.Media.Animation.Storyboard;

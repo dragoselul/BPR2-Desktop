@@ -52,7 +52,7 @@ public class MacroManagementTests
     public void CloseWindow_ClosesWindow()
     {
         // Act
-        _macroManagement.CloseWindow();
+        Application.Current.Dispatcher.Invoke(() => _macroManagement.CloseWindow());
 
         // Assert
         Assert.False(_macroManagement.IsVisible); // Verifies the window is no longer visible.
@@ -124,11 +124,16 @@ public class MacroManagementTests
     }
     
     [StaFact]
-    public void GetNavigation_ThrowsNotImplementedException()
+    public void GetNavigation_DoesNotThrowNotImplementedException()
     {
-        // Act & Assert
-        Assert.Throws<NotImplementedException>(() =>
-            ((INavigationWindow)_macroManagement).GetNavigation());
+        try
+        {
+            _macroManagement.GetNavigation();
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail("Expected no exception, but got: " + ex.Message);
+        }
     }
 
     [StaFact]

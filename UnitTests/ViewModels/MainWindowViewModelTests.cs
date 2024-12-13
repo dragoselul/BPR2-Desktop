@@ -41,7 +41,7 @@ public class MainWindowViewModelTests
         var viewModel = new MainWindowViewModel(mockServiceProvider);
 
         // Act
-        viewModel.OnMacromanagementClick();
+        Application.Current.Dispatcher.Invoke(() => viewModel.OnMacromanagementClick());
         var openedWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault();
 
         // Assert
