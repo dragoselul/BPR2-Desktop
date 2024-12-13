@@ -10,27 +10,66 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Page Update="Components\AssetsPanelControl.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
-      <Page Update="Components\DesignCanvasControl.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
-      <Page Update="Components\VRModeControl.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
-      <Page Update="Home\MainWindow.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
       <Page Remove="UnitTests\**" />
+      <Page Update="Views\Styles\TextBoxStyle.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
+      <Page Update="Views\Styles\ToggleButtonStyles.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
+      <Page Update="Views\Home\MainWindow.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
+      <Page Update="Views\Home\SetDimensions.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
+      <Page Update="Views\Home\Main.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
+      <Page Update="Views\Components\AssetsPanelControl.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
+      <Page Update="Views\Components\DesignCanvasControl.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
+      <Page Update="Views\Components\VRModeControl.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
+      <Page Update="Views\Windows\InputDialog.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+      <Page Update="Views\Pages\MacroManagement\MacroManagementDesigner.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+      <Page Update="Views\Pages\MacroManagement\Home.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+      <Page Update="Views\Pages\Micromanagement\ProductViewer.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+      <Page Update="Views\Windows\MacroManagement\MacroManagement.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+      <Page Update="Views\Windows\MacroManagement\SetDimensions.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+      <Page Update="Views\Windows\MicroManagement\MicroManagement.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
     </ItemGroup>
 
     <ItemGroup>
@@ -43,6 +82,64 @@
 
     <ItemGroup>
       <None Remove="UnitTests\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Data\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Pictures\polygon.png" />
+      <Resource Include="Pictures\polygon.png" />
+      <None Remove="Pictures\square.png" />
+      <Resource Include="Pictures\square.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Pictures\Logo\1b633bd3-1f1a-4f71-a478-53f0d12aa497.jfif" />
+      <Content Include="Pictures\Logo\1b633bd3-1f1a-4f71-a478-53f0d12aa497.jfif">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Videos\3129957-hd_1920_1080_25fps.mp4" />
+      <Content Include="Videos\3129957-hd_1920_1080_25fps.mp4">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0-preview1" />
+      <PackageReference Include="DotNetEnv" Version="3.1.1" />
+      <PackageReference Include="HelixToolkit" Version="2.25.0" />
+      <PackageReference Include="HelixToolkit.Wpf" Version="2.25.0" />
+      <PackageReference Include="HelixToolkit.Wpf.Input" Version="2.25.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.1" />
+      <PackageReference Include="Prism.Core" Version="9.0.537" />
+      <PackageReference Include="Prism.Wpf" Version="9.0.537" />
+      <PackageReference Include="System.Text.Json" Version="9.0.0" />
+      <PackageReference Include="WPF-UI" Version="4.0.0-rc.2" />
+      <PackageReference Include="WPF-UI.DependencyInjection" Version="4.0.0-rc.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Pictures\Logo\1b633bd3-1f1a-4f71-a478-53f0d12aa497.jfif" />
+      <Content Include="Pictures\Logo\1b633bd3-1f1a-4f71-a478-53f0d12aa497.jfif">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Videos\3129957-hd_1920_1080_25fps.mp4" />
+      <Content Include="Videos\3129957-hd_1920_1080_25fps.mp4">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

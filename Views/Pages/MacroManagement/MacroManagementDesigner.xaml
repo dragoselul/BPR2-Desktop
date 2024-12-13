@@ -1,0 +1,23 @@
+﻿<Page x:Class="BPR2_Desktop.Views.Pages.MacroManagementDesigner"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:BPR2_Desktop.Views.Pages"
+      xmlns:h="http://helix-toolkit.org/wpf"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      Title="Macro Management"
+      d:DataContext="{d:DesignInstance  local:MacroManagementDesigner, IsDesignTimeCreatable=False}"
+      d:DesignHeight="Auto" d:DesignWidth="Auto"
+      ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+      ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      mc:Ignorable="d">
+    <Grid Height="Auto" Width="Auto">
+        <h:HelixViewport3D Name="HelixViewport" ShowFrameRate="True" ItemsSource="{Binding ViewModel.SceneObjects}">
+            <h:HelixViewport3D.Camera>
+                <PerspectiveCamera Position="0, 0, 8" LookDirection="-0, -0, -6.672" UpDirection="0, 1, 0" FieldOfView="45"/>
+            </h:HelixViewport3D.Camera>
+        </h:HelixViewport3D>
+    </Grid>
+</Page>

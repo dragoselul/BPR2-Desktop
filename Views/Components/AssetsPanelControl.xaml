@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="BPR2_Desktop.Views.Components.AssetsPanelControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Height="500" Width="300">
+    <StackPanel>
+        <TextBlock Text="Assets" FontSize="24" FontWeight="Bold" Margin="0,10,0,10"/>
+
+        <!-- Asset 1 - Square -->
+        <StackPanel Orientation="Horizontal" Margin="10"
+                    MouseMove="Asset_MouseMove" Tag="Square">
+            <Image x:Name="Square" Width="50" Height="50" Stretch="Uniform" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center" 
+                   Source="pack://application:,,,/Pictures/square.png"/>
+            <TextBlock Text="Big Shelf (200x100 cm)" VerticalAlignment="Center" Margin="10,0"/>
+        </StackPanel>
+
+        <!-- Asset 2 - Polygon -->
+        <StackPanel Orientation="Horizontal" Margin="10"
+                    MouseMove="Asset_MouseMove" Tag="Polygon">
+            <Image x:Name="Polygon" Width="50" Height="50" Stretch="Uniform" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center" 
+                   Source="pack://application:,,,/Pictures/polygon.png"/>
+            <TextBlock Text="Display Stand (100x150 cm)" VerticalAlignment="Center" Margin="10,0"/>
+        </StackPanel>
+
+        <!-- Placeholder for logo -->
+        <Border Width="100" Height="100" HorizontalAlignment="Right" Margin="0,50,10,0">
+            <Image Source="YourLogoPathHere.png" Stretch="Uniform"  />
+        </Border>
+    </StackPanel>
+</UserControl>

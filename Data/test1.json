@@ -1,0 +1,24 @@
+{
+  "dimensions": {
+    "X": 1200,
+    "Z": 2300,
+    "Y": 2300
+  },
+  "ElementPositions": [
+    {
+      "ElementName": "Polygon1",
+      "X": 240.375,
+      "Z": 92
+    },
+    {
+      "ElementName": "Square1",
+      "X": 140.375,
+      "Z": 0
+    },
+    {
+      "ElementName": "Polygon2",
+      "X": 76.375,
+      "Z": 91
+    }
+  ]
+}
