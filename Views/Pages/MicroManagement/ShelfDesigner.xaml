@@ -7,7 +7,6 @@
       xmlns:local="clr-namespace:BPR2_Desktop.Views.Pages.MicroManagement"
       xmlns:v="clr-namespace:BPR2_Desktop.ViewModels.Validators"
       xmlns:h="http://helix-toolkit.org/wpf"
-      xmlns:bpr2Desktop="clr-namespace:BPR2_Desktop"
       d:DataContext="{d:DesignInstance  local:ShelfDesigner, IsDesignTimeCreatable=False}"
       d:DesignHeight="Auto" d:DesignWidth="Auto"
       ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
@@ -38,14 +37,14 @@
             </StackPanel>
             <StackPanel VerticalAlignment="Center">
                 <Label Target="{Binding ElementName=NumberOfShelves}" Margin="5,0,0,0"
-                       Content="Select the number of shelves" />
+                       Content="Select the number of shelf sections" />
                 <ui:TextBox PlaceholderText="Whole numbers" Name="NumberOfShelves"
                             Text="{Binding ViewModel.NumberOfShelves, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             TextChanged="OnTextChanged" Margin="5" GotFocus="OnGotFocus" />
             </StackPanel>
             <StackPanel VerticalAlignment="Center">
                 <Label Target="{Binding ElementName=DistanceBetweenShelves}" Margin="5,0,0,0"
-                       Content="Select the distance between shelves" />
+                       Content="Select the distance between sections" />
                 <ui:TextBox PlaceholderText="In centimeters" Name="DistanceBetweenShelves"
                             TextChanged="OnTextChanged" Margin="5" GotFocus="OnGotFocus">
                     <Binding Path="ViewModel.DistanceBetweenShelves" Mode="TwoWay"
@@ -58,7 +57,7 @@
             </StackPanel>
             <StackPanel VerticalAlignment="Center">
                 <Label Target="{Binding ElementName=ShelveThickness}" Margin="5,0,0,0"
-                       Content="Select the thickness of a shelve" />
+                       Content="Select the thickness of a section" />
                 <ui:TextBox PlaceholderText="In centimeters" Name="ShelveThickness"
                             TextChanged="OnTextChanged" Margin="5" GotFocus="OnGotFocus">
                     <Binding Path="ViewModel.ShelveThickness" Mode="TwoWay"
@@ -71,7 +70,7 @@
             </StackPanel>
             <StackPanel VerticalAlignment="Center">
                 <Label Target="{Binding ElementName=HeightOfShelf}" Margin="5,0,0,0"
-                       Content="Select the height of the shelf" />
+                       Content="The height of the shelf is:" />
                 <ui:TextBox PlaceholderText="In centimeters" Name="HeightOfShelf"
                             IsReadOnly="True" Margin="5">
                     <Binding Path="ViewModel.HeightOfShelf" Mode="OneWay"
@@ -97,7 +96,7 @@
             </StackPanel>
             <StackPanel VerticalAlignment="Center">
                 <Label Target="{Binding ElementName=DepthOfShelf}" Margin="5,0,0,0"
-                       Content="Select the Depth of the shelf" />
+                       Content="Select the depth of the shelf" />
                 <ui:TextBox PlaceholderText="In centimeters" Name="DepthOfShelf"
                             TextChanged="OnTextChanged" Margin="5" GotFocus="OnGotFocus">
                     <Binding Path="ViewModel.DepthOfShelf" Mode="TwoWay"

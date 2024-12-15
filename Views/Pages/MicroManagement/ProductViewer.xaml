@@ -53,7 +53,7 @@
 
                     <!-- Column 2 -->
                     <Label Content="Store Name:" Grid.Row="0" Grid.Column="3" />
-                    <TextBox Text="{Binding ViewModel.Department}" x:Name="StoreNameTextBox" Width="150"
+                    <TextBox Text="{Binding ViewModel.StoreName}" x:Name="StoreNameTextBox" Width="150"
                              Margin="0,5,10,10" Grid.Row="1" Grid.Column="3" />
 
                     <Label Content="Department:" Grid.Row="0" Grid.Column="4" />

@@ -5,10 +5,13 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:components="clr-namespace:BPR2_Desktop.Views.Components"
-      mc:Ignorable="d"
-      Title="DesignEditor" Height="Auto" Width="Auto"
+      xmlns:local="clr-namespace:BPR2_Desktop.Views.Pages"
+      d:DataContext="{d:DesignInstance local:DesignEditor, IsDesignTimeCreatable=False}"
+      d:DesignHeight="Auto" d:DesignWidth="Auto"
       ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
       ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      mc:Ignorable="d"
+      Title="DesignEditor" Height="Auto" Width="Auto"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}">
     
     <Grid Margin="0,0,0,24">

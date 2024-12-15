@@ -3,6 +3,7 @@ using System.Windows.Threading;
 using BPR2_Desktop.Database;
 using BPR2_Desktop.Model;
 using BPR2_Desktop.Services;
+using BPR2_Desktop.ViewModels.MacroManagement;
 using BPR2_Desktop.ViewModels.MicroManagement;
 using BPR2_Desktop.Views.Windows;
 using DotNetEnv;
@@ -101,17 +102,19 @@ public partial class App
                 });
                 
                 // ViewModels
-                _ = services.AddSingleton<ViewModels.MacroManagement.HomeViewModel>();
-                _ = services.AddSingleton<ViewModels.MacroManagement.DesignerViewModel>();
+                _ = services.AddSingleton<HomeViewModel>();
+                _ = services.AddSingleton<DesignerViewModel>();
                 _ = services.AddTransient<ShelfDesignerViewModel>();
                 _ = services.AddTransient<ProductViewModel>();
                 _ = services.AddTransient<ShelfManagerViewModel>();
+                _ = services.AddTransient<DesignEditorViewModel>();
                 // Views
                 _ = services.AddSingleton<Views.Pages.Home>();
                 _ = services.AddSingleton<Views.Pages.MacroManagementDesigner>();
                 _ = services.AddSingleton<Views.Pages.MicroManagement.ShelfDesigner>();
                 _ = services.AddTransient<Views.Pages.MicroManagement.ProductViewer>();
                 _ = services.AddTransient<Views.Pages.MicroManagement.ShelfManager>();
+                _ = services.AddTransient<Views.Pages.DesignEditor>();
             }
         )
         .Build();

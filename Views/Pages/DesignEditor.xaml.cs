@@ -1,25 +1,27 @@
-﻿using System.IO;
+﻿
+
+using System.IO;
 using System.Text.Json;
-using System.Windows;
-using System.Windows.Controls;
+using BPR2_Desktop.ViewModels.MacroManagement;
 using BPR2_Desktop.Views.Components;
 using BPR2_Desktop.Views.Windows;
 using Microsoft.Win32;
+using Wpf.Ui.Abstractions.Controls;
 
 namespace BPR2_Desktop.Views.Pages;
 
-public partial class DesignEditor : Page
+public partial class DesignEditor : INavigableView<DesignEditorViewModel>
 {
+    public DesignEditorViewModel ViewModel { get; }
     private string currentDesignFile = null; // To track the loaded design file
     private double _currentWidth = 0;
     private double _currentLength = 0;
     private double _currentHeight = 0;
-    
-    
-
-    
-    public DesignEditor()
+    //TODO refactor everything related to logic to the viewmodel
+    public DesignEditor(DesignEditorViewModel vm)
     {
+        ViewModel = vm;
+        DataContext = this;
         InitializeComponent();
         DesignCanvasControl.CanvasClicked += OnCanvasClicked;
         DesignCanvasControl.ElementClicked += OnElementClicked;
