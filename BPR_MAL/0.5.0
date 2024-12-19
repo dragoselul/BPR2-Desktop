@@ -1,0 +1,9 @@
+Collecting pyrfr
+  Using cached pyrfr-0.9.0.tar.gz (295 kB)
+  Preparing metadata (setup.py): started
+  Preparing metadata (setup.py): finished with status 'done'
+Building wheels for collected packages: pyrfr
+  Building wheel for pyrfr (setup.py): started
+  Building wheel for pyrfr (setup.py): finished with status 'error'
+  Running setup.py clean for pyrfr
+Failed to build pyrfr
